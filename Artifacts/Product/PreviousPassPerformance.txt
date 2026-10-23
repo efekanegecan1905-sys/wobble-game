@@ -1,0 +1,6 @@
+Mac16,12
+Apple M4
+Development player; desktop measurements are NOT mobile FPS claims.
+1080x1920: actual=1080x1920, MSAA=4, mean=1.40ms, p95=2.06ms
+1170x2532: actual=1170x2532, MSAA=4, mean=1.88ms, p95=2.27ms
+1080x2400: actual=1080x2400, MSAA=4, mean=1.67ms, p95=2.10ms

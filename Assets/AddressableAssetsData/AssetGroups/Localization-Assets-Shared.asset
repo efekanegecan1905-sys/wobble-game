@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Assets-Shared
+  m_GUID: 56441e25cb2ce4ac3aa10054663c6c3d
+  m_SerializeEntries:
+  - m_GUID: 71e528480c5ba4a5fb256643dcd9cf2f
+    m_Address: Assets/Localization/Wobble Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 6795452312a7f4f08bf47fdc80b9c60e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: cf46b32b71e7b4c3b9e64b25b6c30f9d, type: 2}
+    - {fileID: 11400000, guid: 0d955c1011af744819d8a1d1c7e08df9, type: 2}
+    - {fileID: 11400000, guid: bd7052e7dae0f496ca44627615448f00, type: 2}

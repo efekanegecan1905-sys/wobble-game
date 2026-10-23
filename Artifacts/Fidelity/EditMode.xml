@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.0367758">
+  <test-suite type="TestSuite" id="1000" name="WOBBLE" fullname="WOBBLE" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.036776" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1005" name="Assembly-CSharp-Editor.dll" fullname="/private/tmp/wobble-fidelity.quohnF/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.033934" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="15973" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1006" name="Wobble" fullname="Wobble" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.033728" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1007" name="Editor" fullname="Wobble.Editor" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.033629" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1008" name="Tests" fullname="Wobble.Editor.Tests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.033502" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="BlockCutterTests" fullname="Wobble.Editor.Tests.BlockCutterTests" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.033121" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1004" name="NoOverlap_IsAMiss" fullname="Wobble.Editor.Tests.BlockCutterTests.NoOverlap_IsAMiss" methodname="NoOverlap_IsAMiss" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" seed="612291889" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.025762" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1002" name="OffsetPlacement_ResizesKeptAndCutPieces" fullname="Wobble.Editor.Tests.BlockCutterTests.OffsetPlacement_ResizesKeptAndCutPieces" methodname="OffsetPlacement_ResizesKeptAndCutPieces" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" seed="515695879" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.001938" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1003" name="PlacementInsideTolerance_SnapsPerfectlyWithoutLoss" fullname="Wobble.Editor.Tests.BlockCutterTests.PlacementInsideTolerance_SnapsPerfectlyWithoutLoss" methodname="PlacementInsideTolerance_SnapsPerfectlyWithoutLoss" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" seed="1384141599" result="Passed" start-time="2026-10-09 23:57:59Z" end-time="2026-10-09 23:57:59Z" duration="0.000261" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: /Users/efekangokce/Library/Application Support/WOBBLE Studio/WOBBLE/TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

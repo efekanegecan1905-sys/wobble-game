@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35cc806f766324982bd7bc58be687909, type: 3}
+  m_Name: Space
+  m_EditorClassIdentifier: 
+  id: 4
+  displayName: Space
+  environment:
+    skyTop: {r: 0.13725, g: 0.16471, b: 0.31373, a: 1}
+    skyBottom: {r: 0.54118, g: 0.52549, b: 0.68235, a: 1}
+    fogNear: {r: 0.46667, g: 0.45882, b: 0.60784, a: 1}
+    fogFar: {r: 0.62745, g: 0.60392, b: 0.72941, a: 1}
+    ambientTint: {r: 0.67451, g: 0.69020, b: 0.81961, a: 1}
+    keyLightTint: {r: 0.88627, g: 0.90196, b: 1.00000, a: 1}
+    distantStructureTint: {r: 0.39608, g: 0.40000, b: 0.52157, a: 1}
+    accentTint: {r: 0.65098, g: 0.56078, b: 0.83137, a: 1}
+    optionalParticleTint: {r: 0.76078, g: 0.78039, b: 0.95294, a: 1}
+    accentStrength: 0.065
+  blockTop: {r: 0.25, g: 0.28, b: 0.36, a: 1}
+  blockSide: {r: 0.1, g: 0.11, b: 0.18, a: 1}
+  veinColor: {r: 0.32, g: 0.35, b: 0.39, a: 1}
+  background: {r: 0.002, g: 0.004, b: 0.015, a: 1}
+  fog: {r: 0.061759997, g: 0.06352, b: 0.073199995, a: 1}
+  accent: {r: 0.55, g: 0.65, b: 1, a: 1}
+  metallic: 0.05
+  smoothness: 0.58
+  placementSound: {fileID: 0}
+  perfectSound: {fileID: 0}
+  fallingSound: {fileID: 0}
+  levelUpSound: {fileID: 0}
+  gameOverSound: {fileID: 0}

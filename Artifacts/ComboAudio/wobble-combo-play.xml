@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="22" result="Passed" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:27:14Z" duration="96.0716754">
+  <test-suite type="TestSuite" id="1036" name="WOBBLE" fullname="WOBBLE" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:27:14Z" duration="96.071675" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1033" name="Wobble.PlayModeTests.dll" fullname="/private/tmp/wobble-fidelity.quohnF/Library/ScriptAssemblies/Wobble.PlayModeTests.dll" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:27:14Z" duration="96.057202" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="25764" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1034" name="Wobble" fullname="Wobble" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:27:14Z" duration="96.042375" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1035" name="Tests" fullname="Wobble.Tests" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:27:14Z" duration="96.025636" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1003" name="ComboAudioTests" fullname="Wobble.Tests.ComboAudioTests" classname="Wobble.Tests.ComboAudioTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:25:39Z" duration="1.250361" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1005" name="InspectorTuningControlsLayersAndTailDuration" fullname="Wobble.Tests.ComboAudioTests.InspectorTuningControlsLayersAndTailDuration" methodname="InspectorTuningControlsLayersAndTailDuration" classname="Wobble.Tests.ComboAudioTests" runstate="Runnable" seed="598822347" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:25:38Z" duration="0.200285" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="ProfilesClampBreakAndRestartThroughRealPlacements" fullname="Wobble.Tests.ComboAudioTests.ProfilesClampBreakAndRestartThroughRealPlacements" methodname="ProfilesClampBreakAndRestartThroughRealPlacements" classname="Wobble.Tests.ComboAudioTests" runstate="Runnable" seed="1471350118" result="Passed" start-time="2026-10-12 00:25:38Z" end-time="2026-10-12 00:25:39Z" duration="1.031018" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1006" name="FeelPlayModeTests" fullname="Wobble.Tests.FeelPlayModeTests" classname="Wobble.Tests.FeelPlayModeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-12 00:25:39Z" end-time="2026-10-12 00:26:12Z" duration="33.228032" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1008" name="FourStagesRemainColliderFreeAndRenderAllPortraitRatios" fullname="Wobble.Tests.FeelPlayModeTests.FourStagesRemainColliderFreeAndRenderAllPortraitRatios" methodname="FourStagesRemainColliderFreeAndRenderAllPortraitRatios" classname="Wobble.Tests.FeelPlayModeTests" runstate="Runnable" seed="500799918" result="Passed" start-time="2026-10-12 00:25:39Z" end-time="2026-10-12 00:26:12Z" duration="32.578682" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="NormalAndPerfectImpactAreSynchronousAndDoNotAlterCollider" fullname="Wobble.Tests.FeelPlayModeTests.NormalAndPerfectImpactAreSynchronousAndDoNotAlterCollider" methodname="NormalAndPerfectImpactAreSynchronousAndDoNotAlterCollider" classname="Wobble.Tests.FeelPlayModeTests" runstate="Runnable" seed="826939160" result="Passed" start-time="2026-10-12 00:26:12Z" end-time="2026-10-12 00:26:12Z" duration="0.633303" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1009" name="MenuPlayModeTests" fullname="Wobble.Tests.MenuPlayModeTests" classname="Wobble.Tests.MenuPlayModeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-12 00:26:12Z" end-time="2026-10-12 00:26:28Z" duration="15.785610" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1012" name="CaptureEveryMenuInBothLanguagesAndPortraitSizes" fullname="Wobble.Tests.MenuPlayModeTests.CaptureEveryMenuInBothLanguagesAndPortraitSizes" methodname="CaptureEveryMenuInBothLanguagesAndPortraitSizes" classname="Wobble.Tests.MenuPlayModeTests" runstate="Runnable" seed="1842231396" result="Passed" start-time="2026-10-12 00:26:12Z" end-time="2026-10-12 00:26:23Z" duration="10.319192" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1011" name="PlayRetryAndHomePreserveLivesAndApprovedGame" fullname="Wobble.Tests.MenuPlayModeTests.PlayRetryAndHomePreserveLivesAndApprovedGame" methodname="PlayRetryAndHomePreserveLivesAndApprovedGame" classname="Wobble.Tests.MenuPlayModeTests" runstate="Runnable" seed="1849678237" result="Passed" start-time="2026-10-12 00:26:23Z" end-time="2026-10-12 00:26:24Z" duration="1.316388" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1013" name="SettingsDailyAndPlaceholderActionsUseExistingSave" fullname="Wobble.Tests.MenuPlayModeTests.SettingsDailyAndPlaceholderActionsUseExistingSave" methodname="SettingsDailyAndPlaceholderActionsUseExistingSave" classname="Wobble.Tests.MenuPlayModeTests" runstate="Runnable" seed="475143473" result="Passed" start-time="2026-10-12 00:26:24Z" end-time="2026-10-12 00:26:25Z" duration="1.183152" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1010" name="TurkishDefaultEnglishPersistsAndEveryScreenNavigates" fullname="Wobble.Tests.MenuPlayModeTests.TurkishDefaultEnglishPersistsAndEveryScreenNavigates" methodname="TurkishDefaultEnglishPersistsAndEveryScreenNavigates" classname="Wobble.Tests.MenuPlayModeTests" runstate="Runnable" seed="257473019" result="Passed" start-time="2026-10-12 00:26:25Z" end-time="2026-10-12 00:26:28Z" duration="2.949969" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1014" name="MovingBlockBounceTests" fullname="Wobble.Tests.MovingBlockBounceTests" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:39Z" duration="11.050340" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="ParameterizedMethod" id="1019" name="ExactBoundary_ReversesInPlace_AndPreservesObject" fullname="Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:28Z" duration="0.018926" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1015" name="ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveX)" fullname="Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveX)" methodname="ExactBoundary_ReversesInPlace_AndPreservesObject" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1522009164" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:28Z" duration="0.001882" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeX)" fullname="Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeX)" methodname="ExactBoundary_ReversesInPlace_AndPreservesObject" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="886009027" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:28Z" duration="0.000135" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveZ)" fullname="Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveZ)" methodname="ExactBoundary_ReversesInPlace_AndPreservesObject" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1692653182" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:28Z" duration="0.000104" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1018" name="ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeZ)" fullname="Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeZ)" methodname="ExactBoundary_ReversesInPlace_AndPreservesObject" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1746858100" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:28Z" duration="0.000088" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-case id="1025" name="LiveUpdates_AllFourDirections_BounceRepeatedlyAndRemainVisible" fullname="Wobble.Tests.MovingBlockBounceTests.LiveUpdates_AllFourDirections_BounceRepeatedlyAndRemainVisible" methodname="LiveUpdates_AllFourDirections_BounceRepeatedlyAndRemainVisible" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1654027143" result="Passed" start-time="2026-10-12 00:26:28Z" end-time="2026-10-12 00:26:39Z" duration="10.997662" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-suite type="ParameterizedMethod" id="1024" name="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping" fullname="Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:39Z" duration="0.017354" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1020" name="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveX)" fullname="Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveX)" methodname="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1019222043" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:39Z" duration="0.000448" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeX)" fullname="Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeX)" methodname="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="10190235" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:39Z" duration="0.000077" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1022" name="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveZ)" fullname="Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveZ)" methodname="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1291326126" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:39Z" duration="0.000055" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1023" name="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeZ)" fullname="Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeZ)" methodname="Overshoot_IsReflectedWithoutLosingSpeedOrWrapping" classname="Wobble.Tests.MovingBlockBounceTests" runstate="Runnable" seed="1255075589" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:39Z" duration="0.000050" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestFixture" id="1026" name="ProductPresentationTests" fullname="Wobble.Tests.ProductPresentationTests" classname="Wobble.Tests.ProductPresentationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:45Z" duration="5.769315" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1027" name="StartupIsBoundedAndPlayRetryDoNotRepeatIt" fullname="Wobble.Tests.ProductPresentationTests.StartupIsBoundedAndPlayRetryDoNotRepeatIt" methodname="StartupIsBoundedAndPlayRetryDoNotRepeatIt" classname="Wobble.Tests.ProductPresentationTests" runstate="Runnable" seed="558029748" result="Passed" start-time="2026-10-12 00:26:39Z" end-time="2026-10-12 00:26:45Z" duration="5.753356" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1028" name="WobblePlayModeTests" fullname="Wobble.Tests.WobblePlayModeTests" classname="Wobble.Tests.WobblePlayModeTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-12 00:26:45Z" end-time="2026-10-12 00:27:14Z" duration="28.924790" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1031" name="FidelitySettings_AndCutTextureCoordinates_ArePreserved" fullname="Wobble.Tests.WobblePlayModeTests.FidelitySettings_AndCutTextureCoordinates_ArePreserved" methodname="FidelitySettings_AndCutTextureCoordinates_ArePreserved" classname="Wobble.Tests.WobblePlayModeTests" runstate="Runnable" seed="2046609881" result="Passed" start-time="2026-10-12 00:26:45Z" end-time="2026-10-12 00:26:45Z" duration="0.250443" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1029" name="HomeToPerfectPlacement_CreatesNextMovingBlock" fullname="Wobble.Tests.WobblePlayModeTests.HomeToPerfectPlacement_CreatesNextMovingBlock" methodname="HomeToPerfectPlacement_CreatesNextMovingBlock" classname="Wobble.Tests.WobblePlayModeTests" runstate="Runnable" seed="148384447" result="Passed" start-time="2026-10-12 00:26:45Z" end-time="2026-10-12 00:26:45Z" duration="0.266509" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1032" name="RenderHomeGameplayAndResultsForReview" fullname="Wobble.Tests.WobblePlayModeTests.RenderHomeGameplayAndResultsForReview" methodname="RenderHomeGameplayAndResultsForReview" classname="Wobble.Tests.WobblePlayModeTests" runstate="Runnable" seed="1462311256" result="Passed" start-time="2026-10-12 00:26:45Z" end-time="2026-10-12 00:26:50Z" duration="4.491545" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1030" name="ThirtyPlacements_PreserveDirections_Levels_AndPortraitFraming" fullname="Wobble.Tests.WobblePlayModeTests.ThirtyPlacements_PreserveDirections_Levels_AndPortraitFraming" methodname="ThirtyPlacements_PreserveDirections_Levels_AndPortraitFraming" classname="Wobble.Tests.WobblePlayModeTests" runstate="Runnable" seed="1247302319" result="Passed" start-time="2026-10-12 00:26:50Z" end-time="2026-10-12 00:27:14Z" duration="23.899821" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /Users/efekangokce/Library/Application Support/WOBBLE Studio/WOBBLE/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

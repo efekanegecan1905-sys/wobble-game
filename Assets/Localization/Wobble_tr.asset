@@ -1,0 +1,651 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Wobble_tr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: tr
+  m_SharedData: {fileID: 11400000, guid: 71e528480c5ba4a5fb256643dcd9cf2f, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5129602412806930432
+  m_TableData:
+  - m_Id: 1186533990400
+    m_Localized: WOBBLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767616
+    m_Localized: CARRARA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767617
+    m_Localized: OYNA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767618
+    m_Localized: "EN \u0130Y\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767619
+    m_Localized: TEMALAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767620
+    m_Localized: "MA\u011EAZA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767621
+    m_Localized: "G\xDCNL\xDCK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767622
+    m_Localized: AYARLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767623
+    m_Localized: "\u2039 GER\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767624
+    m_Localized: KAPAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767625
+    m_Localized: "A\xC7IK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767626
+    m_Localized: KAPALI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767627
+    m_Localized: YAKINDA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767628
+    m_Localized: AYARLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767629
+    m_Localized: SES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767630
+    m_Localized: "M\xDCZ\u0130K"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767631
+    m_Localized: "T\u0130TRE\u015E\u0130M"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767632
+    m_Localized: "GRAF\u0130K KAL\u0130TES\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767633
+    m_Localized: "D\u0130L"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767634
+    m_Localized: "M\xFCzik tercihin kaydedilir. M\xFCzik par\xE7as\u0131 daha sonra
+      eklenecek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767635
+    m_Localized: "T\xFCrk\xE7e"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767636
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767637
+    m_Localized: "Y\xDCKSEK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767638
+    m_Localized: ORTA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767639
+    m_Localized: "D\xDC\u015E\xDCK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767640
+    m_Localized: TEMALAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767641
+    m_Localized: "SE\xC7\u0130L\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767642
+    m_Localized: "K\u0130L\u0130TL\u0130 \xB7 YAKINDA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767643
+    m_Localized: "Yeni malzemeler. Ayn\u0131 denge. Di\u011Fer temalar yak\u0131nda."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767644
+    m_Localized: Carrara
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767645
+    m_Localized: Obsidyen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767646
+    m_Localized: "Antik Ta\u015F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767647
+    m_Localized: Neon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767648
+    m_Localized: Uzay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767649
+    m_Localized: "MA\u011EAZA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767650
+    m_Localized: CANLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767651
+    m_Localized: ELMASLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767652
+    m_Localized: "\xD6ZEL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767653
+    m_Localized: 10 Can
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767654
+    m_Localized: 50 Can
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767655
+    m_Localized: 250 Elmas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767656
+    m_Localized: 750 Elmas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767657
+    m_Localized: 2000 Elmas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767658
+    m_Localized: "BA\u015ELANGI\xC7 PAKET\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767659
+    m_Localized: REKLAMLARI KALDIR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767660
+    m_Localized: "Gelecekte reklams\u0131z deneyim"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186550767661
+    m_Localized: "\xD6n izleme fiyatlar\u0131d\u0131r. Sat\u0131n alma hen\xFCz a\xE7\u0131k
+      de\u011Fil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961920
+    m_Localized: "Bu \xFCr\xFCn hen\xFCz sat\u0131\u015Fta de\u011Fil. \xD6deme al\u0131nmaz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961921
+    m_Localized: "\xD6zel g\xF6r\xFCn\xFCm daha sonra eklenecek. Sat\u0131n alma
+      hen\xFCz a\xE7\u0131k de\u011Fil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961922
+    m_Localized: "G\xDCNL\xDCK \xD6D\xDCL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961923
+    m_Localized: "\xD6D\xDCL\xDC AL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961924
+    m_Localized: "BUG\xDCNK\xDC \xD6D\xDCL ALINDI"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961925
+    m_Localized: "{0}. G\xDCN"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961926
+    m_Localized: "Her g\xFCn k\xFC\xE7\xFCk bir hediye. Yedi g\xFCnde bir yeniden
+      ba\u015Flar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961927
+    m_Localized: "Yeni g\xFCn UTC gece yar\u0131s\u0131nda ba\u015Flar. \u015Eimdilik
+      cihaz saati kullan\u0131l\u0131r."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961928
+    m_Localized: '{0} Elmas'
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961929
+    m_Localized: '{0} Can'
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961930
+    m_Localized: '{0} Elmas + {1} Can'
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961931
+    m_Localized: "KULE DEVR\u0130LD\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961932
+    m_Localized: TEKRAR DENE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961933
+    m_Localized: "ANA MEN\xDC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961934
+    m_Localized: DEVAM ET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961935
+    m_Localized: "PUAN  {0}\nEN \u0130Y\u0130  {1}\nM\xDCKEMMEL  {2}\nEN \u0130Y\u0130
+      KOMBO  \xD7{3}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961936
+    m_Localized: ELMAS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961937
+    m_Localized: CAN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961938
+    m_Localized: 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961939
+    m_Localized: "SEV\u0130YE {0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961940
+    m_Localized: "EN \u0130Y\u0130  {0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961941
+    m_Localized: "M\xDCKEMMEL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1186554961942
+    m_Localized: "M\xDCKEMMEL\nKOMBO \xD7{0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1186554961943
+    m_Localized: "YERLE\u015ET\u0130RMEK \u0130\xC7\u0130N DOKUN"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247724691456
+    m_Localized: WOBBLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247741468672
+    m_Localized: CARRARA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247741468673
+    m_Localized: OYNA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247741468674
+    m_Localized: "EN \u0130Y\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662976
+    m_Localized: TEMALAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662977
+    m_Localized: "MA\u011EAZA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662978
+    m_Localized: "G\xDCNL\xDCK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662979
+    m_Localized: AYARLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662980
+    m_Localized: "\u2039 GER\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662981
+    m_Localized: KAPAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662982
+    m_Localized: "A\xC7IK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662983
+    m_Localized: KAPALI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662984
+    m_Localized: YAKINDA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662985
+    m_Localized: AYARLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662986
+    m_Localized: SES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662987
+    m_Localized: "M\xDCZ\u0130K"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662988
+    m_Localized: "T\u0130TRE\u015E\u0130M"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662989
+    m_Localized: "GRAF\u0130K KAL\u0130TES\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662990
+    m_Localized: "D\u0130L"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662991
+    m_Localized: "M\xFCzik tercihin kaydedilir. M\xFCzik par\xE7as\u0131 daha sonra
+      eklenecek."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662992
+    m_Localized: "T\xFCrk\xE7e"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662993
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662994
+    m_Localized: "Y\xDCKSEK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662995
+    m_Localized: ORTA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662996
+    m_Localized: "D\xDC\u015E\xDCK"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662997
+    m_Localized: TEMALAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662998
+    m_Localized: "SE\xC7\u0130L\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662999
+    m_Localized: "K\u0130L\u0130TL\u0130 \xB7 YAKINDA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663000
+    m_Localized: "Yeni malzemeler. Ayn\u0131 denge. Di\u011Fer temalar yak\u0131nda."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663001
+    m_Localized: Carrara
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663002
+    m_Localized: Obsidyen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663003
+    m_Localized: "Antik Ta\u015F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663004
+    m_Localized: Neon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663005
+    m_Localized: Uzay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663006
+    m_Localized: "MA\u011EAZA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663007
+    m_Localized: CANLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663008
+    m_Localized: ELMASLAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663009
+    m_Localized: "\xD6ZEL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663010
+    m_Localized: 10 Can
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663011
+    m_Localized: 50 Can
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663012
+    m_Localized: 250 Elmas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663013
+    m_Localized: 750 Elmas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663014
+    m_Localized: 2000 Elmas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663015
+    m_Localized: "BA\u015ELANGI\xC7 PAKET\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663016
+    m_Localized: REKLAMLARI KALDIR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663017
+    m_Localized: "Gelecekte reklams\u0131z deneyim"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663018
+    m_Localized: "\xD6n izleme fiyatlar\u0131d\u0131r. Sat\u0131n alma hen\xFCz a\xE7\u0131k
+      de\u011Fil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663019
+    m_Localized: "Bu \xFCr\xFCn hen\xFCz sat\u0131\u015Fta de\u011Fil. \xD6deme al\u0131nmaz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663020
+    m_Localized: "\xD6zel g\xF6r\xFCn\xFCm daha sonra eklenecek. Sat\u0131n alma
+      hen\xFCz a\xE7\u0131k de\u011Fil."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663021
+    m_Localized: "G\xDCNL\xDCK \xD6D\xDCL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663022
+    m_Localized: "\xD6D\xDCL\xDC AL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663023
+    m_Localized: "BUG\xDCNK\xDC \xD6D\xDCL ALINDI"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663024
+    m_Localized: "{0}. G\xDCN"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857280
+    m_Localized: "Her g\xFCn k\xFC\xE7\xFCk bir hediye. Yedi g\xFCnde bir yeniden
+      ba\u015Flar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857281
+    m_Localized: "Yeni g\xFCn UTC gece yar\u0131s\u0131nda ba\u015Flar. \u015Eimdilik
+      cihaz saati kullan\u0131l\u0131r."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857282
+    m_Localized: '{0} Elmas'
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857283
+    m_Localized: '{0} Can'
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857284
+    m_Localized: '{0} Elmas + {1} Can'
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857285
+    m_Localized: "KULE DEVR\u0130LD\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857286
+    m_Localized: TEKRAR DENE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857287
+    m_Localized: "ANA MEN\xDC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857288
+    m_Localized: DEVAM ET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857289
+    m_Localized: "<size=22>SKOR</size>\n<size=108>{0}</size>\n<size=24>EN \u0130Y\u0130 
+      {1}\nM\xDCKEMMEL  {2}   \xB7   MAKS KOMBO  \xD7{3}</size>"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857290
+    m_Localized: ELMAS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857291
+    m_Localized: CAN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857292
+    m_Localized: 0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857293
+    m_Localized: "SEV\u0130YE {0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857294
+    m_Localized: "EN \u0130Y\u0130  {0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857295
+    m_Localized: "M\xDCKEMMEL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857296
+    m_Localized: "M\xDCKEMMEL\nKOMBO \xD7{0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 1247749857297
+    m_Localized: "YERLE\u015ET\u0130RMEK \u0130\xC7\u0130N DOKUN"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 449887991750656
+    m_Localized: "K\u0130L\u0130TL\u0130 \xB7 {0} ELMAS \xB7 YAKINDA"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 721464960475136
+    m_Localized: "Ses Kaynaklar\u0131"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5129602412806930432
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 1186554961925
+        - id: 1186554961928
+        - id: 1186554961929
+        - id: 1186554961930
+        - id: 1186554961935
+        - id: 1186554961939
+        - id: 1186554961940
+        - id: 1186554961942
+        - id: 1247745663024
+        - id: 1247749857282
+        - id: 1247749857283
+        - id: 1247749857284
+        - id: 1247749857289
+        - id: 1247749857293
+        - id: 1247749857294
+        - id: 1247749857296
+        - id: 449887991750656

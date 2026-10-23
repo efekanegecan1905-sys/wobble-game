@@ -1,0 +1,10 @@
+Mac16,12 / Apple M4
+Development desktop samples; not mobile FPS certification.
+tr-Home 1080x1920: mean=1.41ms p95=2.15ms
+tr-Home 1170x2532: mean=2.37ms p95=3.69ms
+tr-Home 1080x2400: mean=1.64ms p95=2.17ms
+Audio listener observed peak=0.1565; signal check only, not perceptual Foley approval.
+Gameplay 1080x1920: mean=1.56ms p95=2.92ms
+Gameplay 1170x2532: mean=2.08ms p95=3.07ms
+Gameplay 1080x2400: mean=1.67ms p95=2.21ms
+PASS fast retry without intro

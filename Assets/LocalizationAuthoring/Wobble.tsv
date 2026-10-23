@@ -1,0 +1,74 @@
+key	tr	en
+app.title	WOBBLE	WOBBLE
+home.collection	CARRARA	CARRARA
+home.play	OYNA	PLAY
+home.best	EN İYİ	BEST
+nav.themes	TEMALAR	THEMES
+nav.shop	MAĞAZA	SHOP
+nav.daily	GÜNLÜK	DAILY
+nav.settings	AYARLAR	SETTINGS
+common.back	‹ GERİ	‹ BACK
+common.close	KAPAT	CLOSE
+common.on	AÇIK	ON
+common.off	KAPALI	OFF
+common.soon	YAKINDA	COMING SOON
+settings.title	AYARLAR	SETTINGS
+settings.sound	SES	SOUND
+settings.music	MÜZİK	MUSIC
+settings.haptics	TİTREŞİM	HAPTICS
+settings.quality	GRAFİK KALİTESİ	GRAPHICS QUALITY
+settings.language	DİL	LANGUAGE
+settings.music_note	Müzik tercihin kaydedilir. Müzik parçası daha sonra eklenecek.	Your music preference is saved. A soundtrack will be added later.
+language.tr	Türkçe	Türkçe
+language.en	English	English
+quality.high	YÜKSEK	HIGH
+quality.medium	ORTA	MEDIUM
+quality.low	DÜŞÜK	LOW
+themes.title	TEMALAR	THEMES
+themes.selected	SEÇİLİ	SELECTED
+themes.locked	KİLİTLİ · YAKINDA	LOCKED · COMING SOON
+themes.coming	Yeni malzemeler. Aynı denge. Diğer temalar yakında.	New materials. The same balance. More themes coming soon.
+theme.carrara	Carrara	Carrara
+theme.obsidian	Obsidyen	Obsidian
+theme.ancient	Antik Taş	Ancient Stone
+theme.neon	Neon	Neon
+theme.space	Uzay	Space
+shop.title	MAĞAZA	SHOP
+shop.lives	CANLAR	LIVES
+shop.gems	ELMASLAR	GEMS
+shop.special	ÖZEL	SPECIAL
+shop.lives10	10 Can	10 Lives
+shop.lives50	50 Can	50 Lives
+shop.gems250	250 Elmas	250 Gems
+shop.gems750	750 Elmas	750 Gems
+shop.gems2000	2000 Elmas	2000 Gems
+shop.starter_pack	BAŞLANGIÇ PAKETİ	STARTER PACK
+shop.remove_ads	REKLAMLARI KALDIR	REMOVE ADS
+shop.remove_ads_detail	Gelecekte reklamsız deneyim	Future ad-free experience
+shop.placeholder	Ön izleme fiyatlarıdır. Satın alma henüz açık değil.	Preview prices. Purchases are not available yet.
+shop.unavailable	Bu ürün henüz satışta değil. Ödeme alınmaz.	This product is not available yet. No payment will be taken.
+shop.skin_hook	Özel görünüm daha sonra eklenecek. Satın alma henüz açık değil.	An exclusive skin will be added later. Purchases are not available yet.
+daily.title	GÜNLÜK ÖDÜL	DAILY REWARD
+daily.claim	ÖDÜLÜ AL	CLAIM REWARD
+daily.claimed	BUGÜNKÜ ÖDÜL ALINDI	TODAY'S REWARD CLAIMED
+daily.day	{0}. GÜN	DAY {0}
+daily.description	Her gün küçük bir hediye. Yedi günde bir yeniden başlar.	A little gift each day. The cycle repeats every seven days.
+daily.local_time	Yeni gün UTC gece yarısında başlar. Şimdilik cihaz saati kullanılır.	A new day starts at midnight UTC. Device time is used for now.
+reward.gems	{0} Elmas	{0} Gems
+reward.lives	{0} Can	{0} Lives
+reward.both	{0} Elmas + {1} Can	{0} Gems + {1} Lives
+gameover.title	KULE DEVRİLDİ	TOWER LOST
+gameover.retry	TEKRAR DENE	RETRY
+gameover.home	ANA MENÜ	HOME
+gameover.continue	DEVAM ET	CONTINUE
+gameover.summary	<size=22>SKOR</size>\n<size=108>{0}</size>\n<size=24>EN İYİ  {1}\nMÜKEMMEL  {2}   ·   MAKS KOMBO  ×{3}</size>	<size=22>SCORE</size>\n<size=108>{0}</size>\n<size=24>BEST  {1}\nPERFECTS  {2}   ·   MAX COMBO  ×{3}</size>
+themes.requirement	KİLİTLİ · {0} ELMAS · YAKINDA	LOCKED · {0} GEMS · COMING SOON
+currency.gems	ELMAS	GEMS
+currency.lives	CAN	LIVES
+hud.score	0	0
+hud.level	SEVİYE {0}	LEVEL {0}
+hud.best	EN İYİ  {0}	BEST  {0}
+hud.perfect	MÜKEMMEL	PERFECT
+hud.combo	MÜKEMMEL\nKOMBO ×{0}	PERFECT\nCOMBO ×{0}
+hud.tap	YERLEŞTİRMEK İÇİN DOKUN	TAP TO PLACE
+settings.credits	Ses Kaynakları	Audio Credits

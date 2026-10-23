@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="15" result="Passed" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.32034">
+  <test-suite type="TestSuite" id="1000" name="WOBBLE" fullname="WOBBLE" runstate="Runnable" testcasecount="15" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.320340" total="15" passed="15" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1019" name="Assembly-CSharp-Editor.dll" fullname="/private/tmp/wobble-fidelity.quohnF/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.316708" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="25842" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1020" name="Wobble" fullname="Wobble" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.316488" total="14" passed="14" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1022" name="Editor" fullname="Wobble.Editor" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.311951" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1023" name="Tests" fullname="Wobble.Editor.Tests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.311821" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1008" name="BlockCutterTests" fullname="Wobble.Editor.Tests.BlockCutterTests" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.014543" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1011" name="NoOverlap_IsAMiss" fullname="Wobble.Editor.Tests.BlockCutterTests.NoOverlap_IsAMiss" methodname="NoOverlap_IsAMiss" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" seed="691661844" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.007943" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="OffsetPlacement_ResizesKeptAndCutPieces" fullname="Wobble.Editor.Tests.BlockCutterTests.OffsetPlacement_ResizesKeptAndCutPieces" methodname="OffsetPlacement_ResizesKeptAndCutPieces" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" seed="936596773" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.001746" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="PlacementInsideTolerance_SnapsPerfectlyWithoutLoss" fullname="Wobble.Editor.Tests.BlockCutterTests.PlacementInsideTolerance_SnapsPerfectlyWithoutLoss" methodname="PlacementInsideTolerance_SnapsPerfectlyWithoutLoss" classname="Wobble.Editor.Tests.BlockCutterTests" runstate="Runnable" seed="1867503806" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000232" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1012" name="ComboProfileTests" fullname="Wobble.Editor.Tests.ComboProfileTests" classname="Wobble.Editor.Tests.ComboProfileTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.008103" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1013" name="DefaultProfilesEnrichWithoutPitchLadderAndClamp" fullname="Wobble.Editor.Tests.ComboProfileTests.DefaultProfilesEnrichWithoutPitchLadderAndClamp" methodname="DefaultProfilesEnrichWithoutPitchLadderAndClamp" classname="Wobble.Editor.Tests.ComboProfileTests" runstate="Runnable" seed="69429159" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.007616" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1014" name="FeelTests" fullname="Wobble.Editor.Tests.FeelTests" classname="Wobble.Editor.Tests.FeelTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.288732" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1018" name="ComboCannotAlterPhysicalSpeed" fullname="Wobble.Editor.Tests.FeelTests.ComboCannotAlterPhysicalSpeed" methodname="ComboCannotAlterPhysicalSpeed" classname="Wobble.Editor.Tests.FeelTests" runstate="Runnable" seed="210154752" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000199" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1016" name="ImpactAssetsAreShortBoundedDistinctAndMobileMidrangeWeighted" fullname="Wobble.Editor.Tests.FeelTests.ImpactAssetsAreShortBoundedDistinctAndMobileMidrangeWeighted" methodname="ImpactAssetsAreShortBoundedDistinctAndMobileMidrangeWeighted" classname="Wobble.Editor.Tests.FeelTests" runstate="Runnable" seed="1151631409" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.285468" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1017" name="MixerHasAllRequestedGroups" fullname="Wobble.Editor.Tests.FeelTests.MixerHasAllRequestedGroups" methodname="MixerHasAllRequestedGroups" classname="Wobble.Editor.Tests.FeelTests" runstate="Runnable" seed="89807431" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.001270" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1015" name="PacingHasGentleGainTenBlockReliefAndHardCap" fullname="Wobble.Editor.Tests.FeelTests.PacingHasGentleGainTenBlockReliefAndHardCap" methodname="PacingHasGentleGainTenBlockReliefAndHardCap" classname="Wobble.Editor.Tests.FeelTests" runstate="Runnable" seed="1151624452" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.001369" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+        <test-suite type="TestSuite" id="1021" name="Tests" fullname="Wobble.Tests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.004419" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="MenuDataTests" fullname="Wobble.Tests.MenuDataTests" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.003575" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1006" name="ContinueHooksDoNotSpendUntilExplicitConsume" fullname="Wobble.Tests.MenuDataTests.ContinueHooksDoNotSpendUntilExplicitConsume" methodname="ContinueHooksDoNotSpendUntilExplicitConsume" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" seed="210653931" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000666" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="DailyBlocksClockRollbackAndAllowsMissedDaysWithoutReset" fullname="Wobble.Tests.MenuDataTests.DailyBlocksClockRollbackAndAllowsMissedDaysWithoutReset" methodname="DailyBlocksClockRollbackAndAllowsMissedDaysWithoutReset" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" seed="2004782776" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.001330" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1004" name="DailyCycleClaimsExactlyOnceAndWrapsWithoutLostRewards" fullname="Wobble.Tests.MenuDataTests.DailyCycleClaimsExactlyOnceAndWrapsWithoutLostRewards" methodname="DailyCycleClaimsExactlyOnceAndWrapsWithoutLostRewards" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" seed="1334011697" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000192" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1003" name="ExtendedDataRoundTrips" fullname="Wobble.Tests.MenuDataTests.ExtendedDataRoundTrips" methodname="ExtendedDataRoundTrips" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" seed="1623771328" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000359" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1002" name="OldSaveMigratesWithoutLosingScoreCurrencyOrSettings" fullname="Wobble.Tests.MenuDataTests.OldSaveMigratesWithoutLosingScoreCurrencyOrSettings" methodname="OldSaveMigratesWithoutLosingScoreCurrencyOrSettings" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" seed="8776429" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000117" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1007" name="ProductAndThemeCatalogMatchesRequestedPlaceholders" fullname="Wobble.Tests.MenuDataTests.ProductAndThemeCatalogMatchesRequestedPlaceholders" methodname="ProductAndThemeCatalogMatchesRequestedPlaceholders" classname="Wobble.Tests.MenuDataTests" runstate="Runnable" seed="1794921766" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000268" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1026" name="Unity.Addressables.DocExampleCode.Editor.Tests.dll" fullname="/private/tmp/wobble-fidelity.quohnF/Library/ScriptAssemblies/Unity.Addressables.DocExampleCode.Editor.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000703" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="25842" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1027" name="AddressableAssets" fullname="AddressableAssets" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000512" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1028" name="DocExampleCode" fullname="AddressableAssets.DocExampleCode" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000416" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1024" name="TestStub" fullname="AddressableAssets.DocExampleCode.TestStub" classname="AddressableAssets.DocExampleCode.TestStub" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000296" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1025" name="RequiredTest" fullname="AddressableAssets.DocExampleCode.TestStub.RequiredTest" methodname="RequiredTest" classname="AddressableAssets.DocExampleCode.TestStub" runstate="Runnable" seed="495706055" result="Passed" start-time="2026-10-12 00:29:21Z" end-time="2026-10-12 00:29:21Z" duration="0.000026" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Saving results to: /Users/efekangokce/Library/Application Support/WOBBLE Studio/WOBBLE/TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

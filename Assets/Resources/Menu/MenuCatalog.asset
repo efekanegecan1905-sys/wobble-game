@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e90b8a1b84ef4d76b0b28b0509c286d, type: 3}
+  m_Name: MenuCatalog
+  m_EditorClassIdentifier: 
+  products:
+  - id: lives10
+    nameKey: shop.lives10
+    section: 0
+    placeholderPrice: "\u20BA19.99"
+    gems: 0
+    lives: 10
+    futureSkinId: 
+    removesAds: 0
+  - id: lives50
+    nameKey: shop.lives50
+    section: 0
+    placeholderPrice: "\u20BA59.99"
+    gems: 0
+    lives: 50
+    futureSkinId: 
+    removesAds: 0
+  - id: gems250
+    nameKey: shop.gems250
+    section: 1
+    placeholderPrice: "\u20BA19.99"
+    gems: 250
+    lives: 0
+    futureSkinId: 
+    removesAds: 0
+  - id: gems750
+    nameKey: shop.gems750
+    section: 1
+    placeholderPrice: "\u20BA49.99"
+    gems: 750
+    lives: 0
+    futureSkinId: 
+    removesAds: 0
+  - id: gems2000
+    nameKey: shop.gems2000
+    section: 1
+    placeholderPrice: "\u20BA99.99"
+    gems: 2000
+    lives: 0
+    futureSkinId: 
+    removesAds: 0
+  - id: starter
+    nameKey: shop.starter_pack
+    section: 2
+    placeholderPrice: "\u20BA39.99"
+    gems: 500
+    lives: 20
+    futureSkinId: future-exclusive
+    removesAds: 0
+  - id: removeAds
+    nameKey: shop.remove_ads
+    section: 2
+    placeholderPrice: "\u20BA79.99"
+    gems: 0
+    lives: 0
+    futureSkinId: 
+    removesAds: 1
+  themes:
+  - id: Carrara
+    nameKey: theme.carrara
+    previewMaterial: {fileID: 2100000, guid: 2f7cce960dd9a46dcbd44ea5974ca150, type: 2}
+    previewTint: {r: 0.86, g: 0.84, b: 0.79, a: 1}
+    gemPrice: 0
+    available: 1
+  - id: Obsidian
+    nameKey: theme.obsidian
+    previewMaterial: {fileID: 0}
+    previewTint: {r: 0.15, g: 0.16, b: 0.18, a: 1}
+    gemPrice: 250
+    available: 0
+  - id: AncientStone
+    nameKey: theme.ancient
+    previewMaterial: {fileID: 0}
+    previewTint: {r: 0.47, g: 0.43, b: 0.34, a: 1}
+    gemPrice: 500
+    available: 0
+  - id: Neon
+    nameKey: theme.neon
+    previewMaterial: {fileID: 0}
+    previewTint: {r: 0.25, g: 0.42, b: 0.42, a: 1}
+    gemPrice: 750
+    available: 0
+  - id: Space
+    nameKey: theme.space
+    previewMaterial: {fileID: 0}
+    previewTint: {r: 0.25, g: 0.28, b: 0.38, a: 1}
+    gemPrice: 1000
+    available: 0
+  dailyRewards:
+  - gems: 20
+    lives: 0
+  - gems: 0
+    lives: 1
+  - gems: 30
+    lives: 0
+  - gems: 0
+    lives: 1
+  - gems: 50
+    lives: 0
+  - gems: 0
+    lives: 2
+  - gems: 100
+    lives: 3

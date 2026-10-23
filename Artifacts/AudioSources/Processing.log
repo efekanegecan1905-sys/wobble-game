@@ -1,0 +1,546 @@
+Unity Editor version:    6000.0.81f1 (6238fec1e98f)
+Branch:                  6000.0/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 26.6.2 (Build 25G83)
+Darwin version:          25.6.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        16384 MB
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-efekangokce" at "2026-10-12T12:05:33.146121Z"
+Launching external process: /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Resources/PackageManager/Server/UnityPackageManager
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/MacOS/Unity
+-batchmode
+-quit
+-projectPath
+/private/tmp/wobble-fidelity.quohnF
+-executeMethod
+Wobble.Editor.StoneFoleyBuilder.Build
+-logFile
+/private/tmp/wobble-recorded-foley.log
+Successfully changed project path to: /private/tmp/wobble-fidelity.quohnF
+/private/tmp/wobble-fidelity.quohnF
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [8538546560]  Target information:
+
+Player connection [8538546560]  * "[IP] 192.168.1.22 [Port] 55505 [Flags] 2 [Guid] 3601372686 [EditorId] 3601372686 [Version] 1048832 [Id] OSXEditor(0,Efekan-MacBook-Air.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" 
+
+Player connection [8538546560] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [8538546560] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              4b6c1f83f2cb4404a1004c76bad14b76
+  Correlation Id:          6e22799f3bde10db4ed96e3b48fd87b3
+  External correlation Id: 5330505138623928713
+  Machine Id:              BFqIU8jNDSxKQzqWpOCFnMr1YfU=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-efekangokce" (connect: 0.00s, validation: 0.00s, handshake: 0.20s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-efekangokce-notifications" at "2026-10-12T12:05:33.348816Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 18968482891537-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 0.20s
+[Package Manager] Connected to IPC stream "Upm-27741" after 0.2 seconds.
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Refreshing native plugins compatible for Editor in 0.49 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.0.81f1 (6238fec1e98f)
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /private/tmp/wobble-fidelity.quohnF/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+ preferred device: Apple M4 (high power)
+Metal devices available: 1
+0: Apple M4 (high power)
+Using device Apple M4 (high power)
+Initializing Metal device caps: Apple M4
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56741
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Registered in 0.001666 seconds.
+- Loaded All Assemblies, in  0.185 seconds
+Native extension for OSXStandalone target not found
+Package Manager log level set to [2]
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.136 seconds
+Domain Reload Profiling: 321ms
+	BeginReloadAssembly (79ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (0ms)
+	RebuildCommonClasses (15ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (19ms)
+	LoadAllAssembliesAndSetupDomain (66ms)
+		LoadAssemblies (80ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (64ms)
+			TypeCache.Refresh (64ms)
+				TypeCache.ScanAssembly (58ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (136ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (120ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (15ms)
+			SetLoadedEditorAssemblies (2ms)
+			BeforeProcessingInitializeOnLoad (26ms)
+			ProcessInitializeOnLoadAttributes (55ms)
+			ProcessInitializeOnLoadMethodAttributes (21ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 38 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.collab-proxy@2.8.2 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.collab-proxy@c854d1f7d97f)
+    com.unity.ide.rider@3.0.36 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.ide.rider@4d374c7eb6db)
+    com.unity.ide.visualstudio@2.0.22 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.ide.visualstudio@8140e851d83e)
+    com.unity.ide.vscode@1.2.5 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.ide.vscode@82e68656b7bd)
+    com.unity.timeline@1.8.7 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.timeline@c58b4ee65782)
+    com.unity.localization@1.5.13 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.localization@ef5a0677859d)
+    com.unity.addressables@2.9.1 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.addressables@8460f1c9c927)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.profiling.core@1.0.3 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+    com.unity.scriptablebuildpipeline@2.6.1 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.scriptablebuildpipeline@36e3b5898ee2)
+    com.unity.searcher@4.9.3 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.searcher@1e17ce91558d)
+    com.unity.burst@1.8.30 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.burst@2f3d916873ea)
+    com.unity.mathematics@1.3.2 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.mathematics@8017b507cc74)
+    com.unity.collections@2.6.8 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.collections@84e8eb3fc12e)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.5.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.test-framework.performance@8b56083ec0f0)
+  Built-in packages:
+    com.unity.test-framework@1.6.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.test-framework@082c24152fd4)
+    com.unity.textmeshpro@5.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.textmeshpro@53f43edfd2e0)
+    com.unity.ugui@2.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.ugui@4601c9db1b9b)
+    com.unity.render-pipelines.universal@17.0.4 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.render-pipelines.universal@960febc0b6cb)
+    com.unity.modules.audio@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.physics@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.ui@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.imgui@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.imageconversion@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.jsonserialize@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.render-pipelines.core@17.0.4 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.render-pipelines.core@8e828b9223c8)
+    com.unity.shadergraph@17.0.4 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.shadergraph@14250cfec0ec)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.render-pipelines.universal-config@dd206bf35d04)
+    com.unity.modules.director@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.director)
+    com.unity.modules.animation@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.particlesystem@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.particlesystem)
+    com.unity.ext.nunit@2.0.5 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.ext.nunit@031a54704bff)
+    com.unity.modules.assetbundle@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.terrain@1.0.0 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.rendering.light-transport@1.0.1 (location: /private/tmp/wobble-fidelity.quohnF/Library/PackageCache/com.unity.rendering.light-transport@9bd588f963c0)
+[Package Manager] com.unity.ide.vscode is deprecated: Visual Studio Code package is not supported anymore. You can continue to use it, but we won't provide any update anymore.
+[Package Manager] com.unity.textmeshpro is deprecated: This package is no longer supported. TextMeshPro functionalities are now included in the com.unity.ugui package. To continue using them, consider adding it to your project dependencies.
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://unix:/tmp/ilpp.sock-c1da4b640aa72d3736b579ac34ee4112
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Content root path: /private/tmp/wobble-fidelity.quohnF/
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 18.0951ms
+Starting: /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/200b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /private/tmp/wobble-fidelity.quohnF
+DisplayProgressbar: Compiling Scripts
+Starting: /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Tools/netcorerun/netcorerun "/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Tools/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/200b0aE.dag.json" "Library/Bee/200b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: /private/tmp/wobble-fidelity.quohnF
+ExitCode: 4 Duration: 0s73ms
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/200b0aE-inputdata.json
+*** Tundra requires additional run (0.06 seconds), 0 items updated, 10 evaluated
+ExitCode: 0 Duration: 0s575ms
+Starting: /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/200b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/200b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: /private/tmp/wobble-fidelity.quohnF
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+[40m[1m[33mwarn[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll" in favor of "/Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@2f3d916873ea/Unity.Burst.CodeGen/Unity.Burst.Cecil.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Mono.Cecil, Version=0.11.5.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff/Mono.Cecil.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 15.0752ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/Wobble.Runtime.dll, with 126 defines and 239 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/Wobble.PlayModeTests.dll, with 126 defines and 233 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 11.3395ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 10.1215ms
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      Processing assembly Library/Bee/artifacts/200b0aE.dag/Assembly-CSharp-Editor.dll, with 124 defines and 306 references
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running Unity.Jobs.CodeGen.JobsILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Collections, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with Library/Bee/artifacts/200b0aE.dag/Unity.Collections.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.CoreModule.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null with /Applications/Unity/Hub/Editor/6000.0.81f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.CoreModule.dll
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
+      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.6.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@2f3d916873ea/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
+[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 162.5520ms
+ExitCode: 0 Duration: 2s279ms
+Finished compiling graph: 704 nodes, 11701 flattened edges (9597 ToBuild, 116 ToUse), maximum node priority 783
+[369/701    0s] WriteText Library/Bee/artifacts/200b0aE.dag/Assembly-CSharp-Editor.rsp
+[544/701    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[689/701    1s] Csc Library/Bee/artifacts/200b0aE.dag/Wobble.Runtime.dll (+2 others)
+Assets/Scripts/Core/GameManager.cs(22,30): warning CS0108: 'GameManager.audio' hides inherited member 'Component.audio'. Use the new keyword if hiding was intended.
+[691/701    0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/Wobble.Runtime.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/Wobble.Runtime.dll, with 126 defines and 239 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[692/701    0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/Wobble.PlayModeTests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/Wobble.PlayModeTests.dll, with 126 defines and 233 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[695/701    0s] CopyFiles Library/ScriptAssemblies/Wobble.Runtime.dll
+[696/701    0s] CopyFiles Library/ScriptAssemblies/Wobble.Runtime.pdb
+[697/701    0s] Csc Library/Bee/artifacts/200b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+Assets/Editor/ProjectBuilder.cs(28,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets/Editor/ProjectBuilder.cs(29,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+[698/701    0s] ILPostProcess Library/Bee/artifacts/200b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/200b0aE.dag/Assembly-CSharp-Editor.dll, with 124 defines and 306 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[699/701    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[700/701    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (2.27 seconds), 11 items updated, 701 evaluated
+Assets/Scripts/Core/GameManager.cs(22,30): warning CS0108: 'GameManager.audio' hides inherited member 'Component.audio'. Use the new keyword if hiding was intended.
+Assets/Editor/ProjectBuilder.cs(28,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+Assets/Editor/ProjectBuilder.cs(29,13): warning CS0618: 'PlayerSettings.SetApplicationIdentifier(BuildTargetGroup, string)' is obsolete: 'Use SetApplicationIdentifier(NamedBuildTarget buildTarget, string identifier) instead'
+AssetDatabase: script compilation time: 3.274532s
+Begin MonoManager ReloadAssembly
+Total cache size 103075304
+Total cache size after purge 103075304, took 00:00:00.0554068
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.373 seconds
+Start importing Assets/AudioAuthoring using Guid(95acf4f2abc3d42dcb9cea181350fed1) (DefaultImporter) -> (artifact id: '94b8f29b234104f6ae13cc5ec3f6bbd0') in 0.011241292 seconds
+Refreshing native plugins compatible for Editor in 1.48 ms, found 2 plugins.
+Native extension for OSXStandalone target not found
+Refreshing native plugins compatible for Editor in 0.29 ms, found 2 plugins.
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.499 seconds
+Domain Reload Profiling: 1872ms
+	BeginReloadAssembly (101ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (43ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (14ms)
+	RebuildCommonClasses (17ms)
+	RebuildNativeTypeToScriptingClass (6ms)
+	initialDomainReloadingComplete (11ms)
+	LoadAllAssembliesAndSetupDomain (238ms)
+		LoadAssemblies (166ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (98ms)
+			TypeCache.Refresh (77ms)
+				TypeCache.ScanAssembly (67ms)
+			BuildScriptInfoCaches (15ms)
+			ResolveRequiredComponents (4ms)
+	FinalizeReload (1499ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (1361ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (4ms)
+			SetLoadedEditorAssemblies (1ms)
+			BeforeProcessingInitializeOnLoad (62ms)
+			ProcessInitializeOnLoadAttributes (1271ms)
+			ProcessInitializeOnLoadMethodAttributes (22ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (2ms)
+Start importing Assets/AudioAuthoring/30012.mp3 using Guid(42583a1e7aec0414c91c1ca20ce1c4ae) (AudioImporter) -> (artifact id: 'ad91095461864e28b14a5985dec0d5ca') in 0.081153666 seconds
+Start importing Assets/AudioAuthoring/30008.mp3 using Guid(975dda423e94f4603a22e36e0e038ecb) (AudioImporter) -> (artifact id: '0cb2aceeb20206f9f99db377b860e996') in 0.038196708 seconds
+Start importing Assets/AudioAuthoring/30010.mp3 using Guid(78e7d6ab412e44ec2851501c6a6b0a6e) (AudioImporter) -> (artifact id: 'db6303ce4c2b61cdc9f7c988d94ab976') in 0.041634333 seconds
+Start importing Assets/AudioAuthoring/30009.mp3 using Guid(ad7132ce7c32940e18c111212efd7c65) (AudioImporter) -> (artifact id: 'f1bfb910e132edc022a8f8e98076bfcd') in 0.031229166 seconds
+Start importing Assets/AudioAuthoring/30011.mp3 using Guid(fd8e9f6be2ee2400eba57da897388710) (AudioImporter) -> (artifact id: 'dd5ae4e25bd8cd5e5d44e229f36aa601') in 0.027824542 seconds
+Refreshing native plugins compatible for Editor in 0.29 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=76cea563782454844846096fca586d54): Total: 6.025 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=1 (actual=1, local cache=0, cache server=0)
+		Asset DB Process Time: managed=2 ms, native=2106 ms
+		Asset DB Callback time: managed=225 ms, native=5 ms
+		Scripting: domain reloads=1, domain reload time=373 ms, compile time=3294 ms, other=17 ms
+		Project Asset Count: scripts=1083, non-scripts=2168
+		Asset File Changes: new=7, changed=10, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokeCustomDependenciesCallbacks: 0.000ms
+	InvokePackagesCallback: 4.306ms
+	ApplyChangesToAssetFolders: 0.157ms
+	Scan: 207.521ms
+	OnSourceAssetsModified: 0.369ms
+	CategorizeAssetsWithTransientArtifact: 25.794ms
+	ProcessAssetsWithTransientArtifactChanges: 22.847ms
+	CategorizeAssets: 32.556ms
+	ImportOutOfDateAssets: 1744.630ms (-1787.703ms without children)
+		ImportManagerImport: 236.511ms (2.119ms without children)
+			ImportInProcess: 234.381ms
+			UpdateCategorizedAssets: 0.011ms
+		CompileScripts: 3293.987ms
+		ReloadNativeAssets: 0.065ms
+		UnloadImportedAssets: 1.092ms
+		ReloadImportedAssets: 0.000ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.428ms
+		InitializingProgressBar: 0.003ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.000ms
+		OnDemandSchedulerStart: 0.247ms
+	PostProcessAllAssets: 225.311ms
+	Hotreload: 1.569ms
+	UnloadStreamsBegin: 0.157ms
+	PersistCurrentRevisions: 0.109ms
+	UnloadStreamsEnd: 0.000ms
+	GenerateScriptTypeHashes: 1.225ms
+	Untracked: 3759.562ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 0.027ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-WOBBLE
+2026-10-12 15:05:40.224 Unity[27741:1840292] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0xcb68ca800 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
+Unloading 61 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 5058 unused Assets / (6.9 MB). Loaded Objects now: 5707.
+Memory consumption went from 199.7 MB to 192.8 MB.
+Total: 6.149375 ms (FindLiveObjects: 0.251875 ms CreateObjectMapping: 0.111375 ms MarkObjects: 3.158541 ms  DeleteObjects: 2.627334 ms)
+
+2026-10-12 15:05:40.265 Unity[27741:1840292] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0xcb68c33e0 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
+Start importing Assets/AudioAuthoring/30008.mp3 using Guid(975dda423e94f4603a22e36e0e038ecb) (AudioImporter) -> (artifact id: '58f72165f9290fe7f82be83d5f4a4089') in 0.0205595 seconds
+Refreshing native plugins compatible for Editor in 0.27 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=952dab98154a74aa2a18bce4dd4c8456): Total: 0.066 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Recorded stone 30008: source onset 0.0319s, source peak 1.0000, output peak .70, duration .28s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Wobble.Editor.StoneFoleyBuilder:Build () (at Assets/Editor/StoneFoleyBuilder.cs:52)
+
+(Filename: Assets/Editor/StoneFoleyBuilder.cs Line: 52)
+
+Start importing Assets/AudioAuthoring/30009.mp3 using Guid(ad7132ce7c32940e18c111212efd7c65) (AudioImporter) -> (artifact id: '2f867eee97acefbb8069a085384e26a0') in 0.065303458 seconds
+Refreshing native plugins compatible for Editor in 0.28 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d1346d6308e1645748b73c17bb715f60): Total: 0.087 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Recorded stone 30009: source onset 0.0332s, source peak 1.0000, output peak .70, duration .28s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Wobble.Editor.StoneFoleyBuilder:Build () (at Assets/Editor/StoneFoleyBuilder.cs:52)
+
+(Filename: Assets/Editor/StoneFoleyBuilder.cs Line: 52)
+
+Start importing Assets/AudioAuthoring/30010.mp3 using Guid(78e7d6ab412e44ec2851501c6a6b0a6e) (AudioImporter) -> (artifact id: '9d88b629552a33e6267b9be937610b99') in 0.022257042 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=38860f17ad512432f8b4ac0cd7b14165): Total: 0.043 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Recorded stone 30010: source onset 0.1177s, source peak 0.9944, output peak .70, duration .28s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Wobble.Editor.StoneFoleyBuilder:Build () (at Assets/Editor/StoneFoleyBuilder.cs:52)
+
+(Filename: Assets/Editor/StoneFoleyBuilder.cs Line: 52)
+
+Start importing Assets/AudioAuthoring/30011.mp3 using Guid(fd8e9f6be2ee2400eba57da897388710) (AudioImporter) -> (artifact id: '90bd469b2c2fbd9f77c671c7a53a8bde') in 0.018370333 seconds
+Refreshing native plugins compatible for Editor in 0.26 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=8599a0062120441baa69a52ad5c63c9e): Total: 0.038 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Recorded stone 30011: source onset 0.0320s, source peak 0.9864, output peak .70, duration .28s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Wobble.Editor.StoneFoleyBuilder:Build () (at Assets/Editor/StoneFoleyBuilder.cs:52)
+
+(Filename: Assets/Editor/StoneFoleyBuilder.cs Line: 52)
+
+Start importing Assets/AudioAuthoring/30012.mp3 using Guid(42583a1e7aec0414c91c1ca20ce1c4ae) (AudioImporter) -> (artifact id: '015a18747d961446fa62ad8aac761b7c') in 0.065718583 seconds
+Refreshing native plugins compatible for Editor in 0.37 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=7de0b92471abe41aca67f701c5f2c1a9): Total: 0.085 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Recorded stone 30012: source onset 0.0562s, source peak 0.9716, output peak .70, duration .28s
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:35)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+Wobble.Editor.StoneFoleyBuilder:Build () (at Assets/Editor/StoneFoleyBuilder.cs:52)
+
+(Filename: Assets/Editor/StoneFoleyBuilder.cs Line: 52)
+
+Start importing Assets/Resources/Audio/MarbleImpact_04.wav using Guid(504d714544aab4b0ebaa9fefe15ea7c0) (AudioImporter) -> (artifact id: '3ec2694393e38903eb264b2eb2cbcfa1') in 0.016693291 seconds
+Start importing Assets/Resources/Audio/MarbleImpact_01.wav using Guid(b0bbd0770e33e423a890d2ac3232e04b) (AudioImporter) -> (artifact id: '4be821dc6c8e21a8be4e6e010c5cfe13') in 0.015907417 seconds
+Start importing Assets/Resources/Audio/MarbleImpact_02.wav using Guid(d2c0869883b76434c9710f249d27f959) (AudioImporter) -> (artifact id: '8b9f8d2370fa0466449c3eff374d0d05') in 0.015898791 seconds
+Start importing Assets/Resources/Audio/MarbleImpact_05.wav using Guid(8983c6e00422a41f7b3e1a1eb0bd047e) (AudioImporter) -> (artifact id: 'e3ed6772205e91f089ef224e3b5f555e') in 0.015459625 seconds
+Start importing Assets/Resources/Audio/MarbleImpact_03.wav using Guid(9de5409b206274fa7a40399ad1f4029f) (AudioImporter) -> (artifact id: 'd0448cc89cfb96586cc30c2feb29466e') in 0.014477333 seconds
+Refreshing native plugins compatible for Editor in 0.27 ms, found 2 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=9521f53eedd77487b9ecb67b24a04389): Total: 0.134 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Batchmode quit successfully invoked - shutting down!
+Thread 0x32b913000 may have been prematurely finalized
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+[Licensing::IpcConnector] LicenseClient-efekangokce-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-efekangokce channel disconnected successfully.
+Thread 0x16caeb000 may have been prematurely finalized
+Thread 0x16cb77000 may have been prematurely finalized
+Thread 0x16cc8f000 may have been prematurely finalized
+Thread 0x16cd1b000 may have been prematurely finalized
+Thread 0x16cc03000 may have been prematurely finalized
+Thread 0x16ce33000 may have been prematurely finalized
+Thread 0x16cda7000 may have been prematurely finalized
+AcceleratorClientConnectionCallback - disconnected - :0
+[40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
+Cleanup mono
+[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      ALC ILPP context 1 is unloading
+debugger-agent: Unable to listen on 35
+Exiting batchmode successfully now!
+[Package Manager] Server process was shutdown

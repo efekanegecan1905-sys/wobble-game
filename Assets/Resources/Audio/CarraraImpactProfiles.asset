@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a85b1d214fe89457daa4d2d7a462c28f, type: 3}
+  m_Name: CarraraImpactProfiles
+  m_EditorClassIdentifier: 
+  Normal:
+    intensity: 0.9
+    pitchVariation: 0
+    volumeVariation: 0.015
+    baseMarble:
+      clip: {fileID: 0}
+      volume: 0.46
+      pitch: 1
+      duration: 0.28
+      fadeOut: 0.035
+      pan: 0
+    comboBody:
+      clip: {fileID: 8300000, guid: 891af57642f374fb2a25d249b2eef6cb, type: 3}
+      volume: 0.04
+      pitch: 1
+      duration: 0.095
+      fadeOut: 0.025
+      pan: 0
+    resonance:
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 1
+      duration: 0.13
+      fadeOut: 0.06
+      pan: 0
+    ambience:
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 1
+      duration: 0
+      fadeOut: 0.04
+      pan: 0
+  Combo2:
+    intensity: 0.9
+    pitchVariation: 0
+    volumeVariation: 0.015
+    baseMarble:
+      clip: {fileID: 0}
+      volume: 0.46
+      pitch: 1.025
+      duration: 0.28
+      fadeOut: 0.035
+      pan: 0
+    comboBody:
+      clip: {fileID: 8300000, guid: 891af57642f374fb2a25d249b2eef6cb, type: 3}
+      volume: 0.06272727
+      pitch: 1.025
+      duration: 0.095
+      fadeOut: 0.025
+      pan: 0
+    resonance:
+      clip: {fileID: 8300000, guid: df05f8731837747bfa8911e6bc2037ab, type: 3}
+      volume: 0
+      pitch: 1.025
+      duration: 0.13
+      fadeOut: 0.06
+      pan: 0
+    ambience:
+      clip: {fileID: 8300000, guid: d04d7031bfbb742c5882f46e3bda8737, type: 3}
+      volume: 0
+      pitch: 1
+      duration: 0
+      fadeOut: 0.04
+      pan: 0
+  Combo3:
+    intensity: 0.9
+    pitchVariation: 0
+    volumeVariation: 0.015
+    baseMarble:
+      clip: {fileID: 0}
+      volume: 0.46
+      pitch: 1.05
+      duration: 0.28
+      fadeOut: 0.035
+      pan: 0
+    comboBody:
+      clip: {fileID: 8300000, guid: 891af57642f374fb2a25d249b2eef6cb, type: 3}
+      volume: 0.087619044
+      pitch: 1.05
+      duration: 0.095
+      fadeOut: 0.025
+      pan: 0
+    resonance:
+      clip: {fileID: 8300000, guid: df05f8731837747bfa8911e6bc2037ab, type: 3}
+      volume: 0
+      pitch: 1.05
+      duration: 0.13
+      fadeOut: 0.06
+      pan: 0
+    ambience:
+      clip: {fileID: 8300000, guid: d04d7031bfbb742c5882f46e3bda8737, type: 3}
+      volume: 0
+      pitch: 1
+      duration: 0
+      fadeOut: 0.04
+      pan: 0
+  Combo4:
+    intensity: 0.9
+    pitchVariation: 0
+    volumeVariation: 0.015
+    baseMarble:
+      clip: {fileID: 0}
+      volume: 0.48
+      pitch: 1.075
+      duration: 0.28
+      fadeOut: 0.035
+      pan: 0
+    comboBody:
+      clip: {fileID: 8300000, guid: 891af57642f374fb2a25d249b2eef6cb, type: 3}
+      volume: 0.12
+      pitch: 1.075
+      duration: 0.095
+      fadeOut: 0.025
+      pan: 0
+    resonance:
+      clip: {fileID: 8300000, guid: df05f8731837747bfa8911e6bc2037ab, type: 3}
+      volume: 0.008
+      pitch: 1.075
+      duration: 0.13
+      fadeOut: 0.06
+      pan: 0
+    ambience:
+      clip: {fileID: 8300000, guid: d04d7031bfbb742c5882f46e3bda8737, type: 3}
+      volume: 0
+      pitch: 1
+      duration: 0
+      fadeOut: 0.04
+      pan: 0
+  Combo5Plus:
+    intensity: 0.9
+    pitchVariation: 0
+    volumeVariation: 0.015
+    baseMarble:
+      clip: {fileID: 0}
+      volume: 0.5
+      pitch: 1.1
+      duration: 0.28
+      fadeOut: 0.035
+      pan: 0
+    comboBody:
+      clip: {fileID: 8300000, guid: 891af57642f374fb2a25d249b2eef6cb, type: 3}
+      volume: 0.14102563
+      pitch: 1.1
+      duration: 0.095
+      fadeOut: 0.025
+      pan: 0
+    resonance:
+      clip: {fileID: 8300000, guid: df05f8731837747bfa8911e6bc2037ab, type: 3}
+      volume: 0.015
+      pitch: 1.1
+      duration: 0.13
+      fadeOut: 0.06
+      pan: 0
+    ambience:
+      clip: {fileID: 8300000, guid: d04d7031bfbb742c5882f46e3bda8737, type: 3}
+      volume: 0
+      pitch: 1
+      duration: 0
+      fadeOut: 0.04
+      pan: 0

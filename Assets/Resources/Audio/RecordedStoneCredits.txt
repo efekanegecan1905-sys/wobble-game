@@ -1,0 +1,23 @@
+Recorded stone impacts
+stone_on_stone_impact_loud1-5.aif
+by thanvannispen (Than van Nispen tot Pannerden)
+
+CC BY 4.0 - https://creativecommons.org/licenses/by/4.0/
+https://freesound.org/s/30008/
+https://freesound.org/s/30009/
+https://freesound.org/s/30010/
+https://freesound.org/s/30011/
+https://freesound.org/s/30012/
+
+Modified for WOBBLE: mono, trimmed, fixed .82 speed,
+filtered, weighted low-mid body, fades, peak-normalized.
+Source: public HQ MP3 versions, not original AIFF masters.
+Real stone recordings; marble/Carrara material not verified.
+No endorsement by the original creator is implied.
+
+Arcade accent: Plocks Five by Jerimee
+https://freesound.org/people/Jerimee/sounds/723897/
+CC0 - https://creativecommons.org/publicdomain/zero/1.0/
+First plock extracted from public HQ MP3 preview,
+shortened to 95 ms, filtered, faded and normalized.
+Not the original lossless master. No endorsement implied.

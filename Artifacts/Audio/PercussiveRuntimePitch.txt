@@ -1,0 +1,11 @@
+step=0 perfect=False comboIndex=0 actualPitch=1.0000 clip=PercussivePlacement_04
+step=1 perfect=True comboIndex=1 actualPitch=1.0668 clip=PercussivePlacement_02
+step=2 perfect=True comboIndex=2 actualPitch=1.1394 clip=PercussivePlacement_01
+step=3 perfect=True comboIndex=3 actualPitch=1.2083 clip=PercussivePlacement_05
+step=4 perfect=True comboIndex=4 actualPitch=1.2762 clip=PercussivePlacement_02
+step=5 perfect=True comboIndex=5 actualPitch=1.3494 clip=PercussivePlacement_05
+step=6 perfect=True comboIndex=6 actualPitch=1.4196 clip=PercussivePlacement_03
+step=7 perfect=True comboIndex=7 actualPitch=1.4855 clip=PercussivePlacement_01
+step=8 perfect=False comboIndex=0 actualPitch=1.0000 clip=PercussivePlacement_05
+step=9 perfect=False comboIndex=0 actualPitch=1.0000 clip=PercussivePlacement_01
+step=10 perfect=True comboIndex=1 actualPitch=1.0701 clip=PercussivePlacement_03

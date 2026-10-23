@@ -1,0 +1,320 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Wobble Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Wobble
+  m_TableCollectionNameGuidString: 71e528480c5ba4a5fb256643dcd9cf2f
+  m_Entries:
+  - m_Id: 1247724691456
+    m_Key: app.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247741468672
+    m_Key: home.collection
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247741468673
+    m_Key: home.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247741468674
+    m_Key: home.best
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662976
+    m_Key: nav.themes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662977
+    m_Key: nav.shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662978
+    m_Key: nav.daily
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662979
+    m_Key: nav.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662980
+    m_Key: common.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662981
+    m_Key: common.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662982
+    m_Key: common.on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662983
+    m_Key: common.off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662984
+    m_Key: common.soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662985
+    m_Key: settings.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662986
+    m_Key: settings.sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662987
+    m_Key: settings.music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662988
+    m_Key: settings.haptics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662989
+    m_Key: settings.quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662990
+    m_Key: settings.language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662991
+    m_Key: settings.music_note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662992
+    m_Key: language.tr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662993
+    m_Key: language.en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662994
+    m_Key: quality.high
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662995
+    m_Key: quality.medium
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662996
+    m_Key: quality.low
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662997
+    m_Key: themes.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662998
+    m_Key: themes.selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745662999
+    m_Key: themes.locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663000
+    m_Key: themes.coming
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663001
+    m_Key: theme.carrara
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663002
+    m_Key: theme.obsidian
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663003
+    m_Key: theme.ancient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663004
+    m_Key: theme.neon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663005
+    m_Key: theme.space
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663006
+    m_Key: shop.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663007
+    m_Key: shop.lives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663008
+    m_Key: shop.gems
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663009
+    m_Key: shop.special
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663010
+    m_Key: shop.lives10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663011
+    m_Key: shop.lives50
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663012
+    m_Key: shop.gems250
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663013
+    m_Key: shop.gems750
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663014
+    m_Key: shop.gems2000
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663015
+    m_Key: shop.starter_pack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663016
+    m_Key: shop.remove_ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663017
+    m_Key: shop.remove_ads_detail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663018
+    m_Key: shop.placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663019
+    m_Key: shop.unavailable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663020
+    m_Key: shop.skin_hook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663021
+    m_Key: daily.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663022
+    m_Key: daily.claim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663023
+    m_Key: daily.claimed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247745663024
+    m_Key: daily.day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857280
+    m_Key: daily.description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857281
+    m_Key: daily.local_time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857282
+    m_Key: reward.gems
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857283
+    m_Key: reward.lives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857284
+    m_Key: reward.both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857285
+    m_Key: gameover.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857286
+    m_Key: gameover.retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857287
+    m_Key: gameover.home
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857288
+    m_Key: gameover.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857289
+    m_Key: gameover.summary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857290
+    m_Key: currency.gems
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857291
+    m_Key: currency.lives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857292
+    m_Key: hud.score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857293
+    m_Key: hud.level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857294
+    m_Key: hud.best
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857295
+    m_Key: hud.perfect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857296
+    m_Key: hud.combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1247749857297
+    m_Key: hud.tap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 449887991750656
+    m_Key: themes.requirement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 721464960475136
+    m_Key: settings.credits
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5129602412732743704
+  references:
+    version: 2
+    RefIds:
+    - rid: 5129602412732743704
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1791634811718
