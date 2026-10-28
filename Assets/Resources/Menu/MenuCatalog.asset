@@ -79,7 +79,7 @@ MonoBehaviour:
   - id: Obsidian
     nameKey: theme.obsidian
     previewMaterial: {fileID: 0}
-    previewTint: {r: 0.15, g: 0.16, b: 0.18, a: 1}
+    previewTint: {r: 0.3, g: 0.27, b: 0.28, a: 1}
     gemPrice: 250
     available: 0
   - id: AncientStone
@@ -91,13 +91,13 @@ MonoBehaviour:
   - id: Neon
     nameKey: theme.neon
     previewMaterial: {fileID: 0}
-    previewTint: {r: 0.25, g: 0.42, b: 0.42, a: 1}
+    previewTint: {r: 0.34, g: 0.5, b: 0.54, a: 1}
     gemPrice: 750
     available: 0
   - id: Space
     nameKey: theme.space
     previewMaterial: {fileID: 0}
-    previewTint: {r: 0.25, g: 0.28, b: 0.38, a: 1}
+    previewTint: {r: 0.36, g: 0.38, b: 0.58, a: 1}
     gemPrice: 1000
     available: 0
   dailyRewards:

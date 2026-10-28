@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 1
   displayName: Obsidian
   environment:
-    skyTop: {r: 0.15686, g: 0.21569, b: 0.30980, a: 1}
-    skyBottom: {r: 0.53725, g: 0.61961, b: 0.71373, a: 1}
-    fogNear: {r: 0.42353, g: 0.50588, b: 0.60392, a: 1}
-    fogFar: {r: 0.61176, g: 0.68235, b: 0.76471, a: 1}
-    ambientTint: {r: 0.54118, g: 0.61176, b: 0.68627, a: 1}
-    keyLightTint: {r: 0.84706, g: 0.91765, b: 1.00000, a: 1}
-    distantStructureTint: {r: 0.39216, g: 0.46275, b: 0.54510, a: 1}
-    accentTint: {r: 0.56863, g: 0.74510, b: 0.83922, a: 1}
-    optionalParticleTint: {r: 0.76471, g: 0.85098, b: 0.91765, a: 1}
-    accentStrength: 0.035
-  blockTop: {r: 0.07, g: 0.075, b: 0.09, a: 1}
-  blockSide: {r: 0.025, g: 0.027, b: 0.034, a: 1}
+    skyTop: {r: 0.04706, g: 0.02353, b: 0.07843, a: 1}
+    skyBottom: {r: 0.08627, g: 0.02353, b: 0.06275, a: 1}
+    fogNear: {r: 0.08627, g: 0.04314, b: 0.04706, a: 1}
+    fogFar: {r: 0.01961, g: 0.01176, b: 0.01569, a: 1}
+    ambientTint: {r: 0.43320, g: 0.32549, b: 0.35686, a: 1}
+    keyLightTint: {r: 1.00000, g: 0.69020, b: 0.54118, a: 1}
+    distantStructureTint: {r: 0.18824, g: 0.11765, b: 0.14510, a: 1}
+    accentTint: {r: 1.00000, g: 0.41961, b: 0.17255, a: 1}
+    optionalParticleTint: {r: 1.00000, g: 0.69804, b: 0.47843, a: 1}
+    accentStrength: 0.09
+  blockTop: {r: 0.17, g: 0.16, b: 0.175, a: 1}
+  blockSide: {r: 0.075, g: 0.065, b: 0.075, a: 1}
   veinColor: {r: 0.32, g: 0.35, b: 0.39, a: 1}
   background: {r: 0.005, g: 0.008, b: 0.014, a: 1}
   fog: {r: 0.064399995, g: 0.06704, b: 0.07232, a: 1}

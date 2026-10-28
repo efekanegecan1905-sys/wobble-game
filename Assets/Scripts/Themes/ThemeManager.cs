@@ -8,8 +8,14 @@ namespace Wobble.Themes
         public Material BlockMaterial { get; private set; }
         public Material TopMaterial { get; private set; }
         public EnvironmentColors Environment { get; private set; }
+        // Richer, art-directed layer used by sky, props, clouds and celebration light.
+        public ThemeVisuals Visuals { get; private set; }
+        public Color Accent => Visuals.accent;
+        public Color AccentSecondary => Visuals.accentSecondary;
+        public float LevelPhase => atmospherePhase;
         private Material atmosphere;
         private EnvironmentColors fromEnvironment;
+        private ThemeVisuals fromVisuals, targetVisuals;
         private Color fromTint, targetTint;
         private float transitionTime = 1f;
         private float atmosphereFrom, atmosphereTarget, atmospherePhase;
@@ -39,6 +45,7 @@ namespace Wobble.Themes
             TopMaterial.mainTexture = BlockMaterial.mainTexture = Resources.Load<Texture2D>("Rendering/CarraraNatural");
             atmosphere = new Material(Resources.Load<Shader>("Shaders/Atmosphere"));
             RenderSettings.skybox = atmosphere;
+            Visuals = fromVisuals = targetVisuals = ThemeVisuals.Get(Current.id);
             SelectTheme("Carrara", true);
         }
 
@@ -59,6 +66,8 @@ namespace Wobble.Themes
             atmosphereFrom = atmospherePhase;
             atmosphereTarget = Mathf.Clamp01((level - 1) / 3f);
             fromEnvironment = Environment;
+            fromVisuals = Visuals;
+            targetVisuals = ThemeVisuals.Get(Current.id);
             fromTint = TopMaterial.color;
             targetTint = demoTint ?? Current.blockTop;
             transitionTime = immediate ? 1f : 0f;
@@ -73,7 +82,9 @@ namespace Wobble.Themes
             transitionTime = Mathf.Min(1f, transitionTime + dt / 2.4f);
             var t = Mathf.SmoothStep(0, 1, transitionTime);
             Environment = EnvironmentColors.Blend(fromEnvironment, Current.environment, t);
+            Visuals = ThemeVisuals.Lerp(fromVisuals, targetVisuals, t);
             var p = Environment;
+            var v = Visuals;
             atmospherePhase = Mathf.Lerp(atmosphereFrom, atmosphereTarget, t);
             RenderSettings.fogColor = Color.Lerp(p.fogNear, p.fogFar, atmospherePhase);
             RenderSettings.ambientSkyColor = p.ambientTint;
@@ -81,14 +92,25 @@ namespace Wobble.Themes
             RenderSettings.ambientGroundColor = p.ambientTint * .45f;
             TopMaterial.color = Color.Lerp(fromTint, targetTint, t);
             BlockMaterial.color = TopMaterial.color * .97f;
-            RenderSettings.fogStartDistance = Mathf.Lerp(48, 42, atmospherePhase);
-            RenderSettings.fogEndDistance = Mathf.Lerp(110, 95, atmospherePhase);
-            var breath = (.5f + .5f * Mathf.Sin(Time.time * .32f)) * p.accentStrength;
-            atmosphere.SetColor("_Top", Color.Lerp(p.skyTop, p.accentTint, breath * .35f));
-            atmosphere.SetColor("_Horizon", Color.Lerp(p.skyBottom, p.fogFar, atmospherePhase * .16f));
-            atmosphere.SetColor("_Bottom", Color.Lerp(p.fogNear, p.accentTint, breath));
-            atmosphere.SetColor("_Accent", p.accentTint);
-            atmosphere.SetFloat("_AccentStrength", p.accentStrength);
+            // A shared Fresnel rim keeps the dark destinations readable without extra lights.
+            BlockMaterial.SetColor("_RimColor", Color.Lerp(v.edgeColor, v.accent, .25f));
+            TopMaterial.SetColor("_RimColor", Color.Lerp(v.edgeColor, v.accent, .25f));
+            BlockMaterial.SetFloat("_RimStrength", v.edgeGlow * .40f);
+            TopMaterial.SetFloat("_RimStrength", v.edgeGlow * .24f);
+            RenderSettings.fogStartDistance = Mathf.Lerp(v.fogNear + 4f, v.fogNear, atmospherePhase);
+            RenderSettings.fogEndDistance = Mathf.Lerp(v.fogFar + 8f, v.fogFar, atmospherePhase);
+            var breath = (.5f + .5f * Mathf.Sin(Time.time * .32f)) * Mathf.Clamp01(p.accentStrength * 1.8f + .035f);
+            atmosphere.SetColor("_Top", Color.Lerp(v.skyTop, v.accent, breath * .22f));
+            atmosphere.SetColor("_Horizon", Color.Lerp(v.skyHorizon, p.fogFar, atmospherePhase * .12f));
+            atmosphere.SetColor("_Bottom", Color.Lerp(v.skyBottom, v.accent, breath * .35f));
+            atmosphere.SetColor("_Accent", v.accent);
+            atmosphere.SetFloat("_AccentStrength", Mathf.Clamp(p.accentStrength * 1.8f + .035f, .03f, .16f));
+            atmosphere.SetColor("_SunColor", v.sunColor);
+            atmosphere.SetVector("_SunDir", v.sunDirection);
+            atmosphere.SetFloat("_SunIntensity", v.sunIntensity);
+            atmosphere.SetColor("_CloudTint", v.cloudTint);
+            atmosphere.SetFloat("_CloudStrength", v.cloudStrength);
+            atmosphere.SetFloat("_Stars", v.starStrength);
         }
 
         public void Dispose()

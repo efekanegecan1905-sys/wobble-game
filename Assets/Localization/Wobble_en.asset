@@ -615,6 +615,43 @@ MonoBehaviour:
     m_Localized: Audio Credits
     m_Metadata:
       m_Items: []
+  - m_Id: 4769864840372224
+    m_Localized: "Tap \xB7 Stack \xB7 Rise"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955136
+    m_Localized: SHARE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955137
+    m_Localized: COPIED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955138
+    m_Localized: "WOBBLE \xB7 Score {0} \xB7 Best {1} \u2014 try it!"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930434
+  - m_Id: 4769864852955139
+    m_Localized: SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955140
+    m_Localized: BLOCKS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955141
+    m_Localized: PERFECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955142
+    m_Localized: MAX COMBO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955143
+    m_Localized: GEMS
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -640,3 +677,4 @@ MonoBehaviour:
         - id: 1247749857294
         - id: 1247749857296
         - id: 449887991750656
+        - id: 4769864852955138

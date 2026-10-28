@@ -31,6 +31,7 @@ namespace Wobble.Core
         private Material plinthMaterial;
         private Coroutine gameOverRoutine;
         private int inputReadyFrame;
+        private int awardedGems;
 
         private void Awake()
         {
@@ -65,6 +66,7 @@ namespace Wobble.Core
             stack = new StackManager(transform, themes, audio, haptics, this);
             stack.Placed += OnPlaced;
             stack.Missed += OnMissed;
+            stack.SetAccents(themes.Accent, themes.AccentSecondary);
             levels.LevelUp += OnLevelUp;
 
             ui = gameObject.AddComponent<UIManager>();
@@ -125,7 +127,9 @@ namespace Wobble.Core
         private void Update()
         {
             themes.Tick(Time.deltaTime);
+            stack.TickEffects(Time.deltaTime);
             keyLight.color = themes.Environment.keyLightTint;
+            plinthMaterial.color = Color.Lerp(themes.Visuals.propDark, themes.Visuals.propLight, .45f);
             if (stack.Top != null) world.Follow(stack.Top.transform.position.y);
             if (State != GameState.Playing || !stack.CanPlace) return;
             if (Time.frameCount <= inputReadyFrame) return;
@@ -142,10 +146,13 @@ namespace Wobble.Core
             inputReadyFrame = Time.frameCount;
             State = GameState.Playing;
             Score = 0;
+            awardedGems = 0;
             combo.ResetRun();
+            audio.ResetPlacementCombo();
             levels.ResetRun();
             themes.SelectTheme(saves.Data.selectedTheme, true);
             themes.ApplyEnvironment(1, true);
+            stack.SetAccents(themes.Accent, themes.AccentSecondary);
             world.Show(true);
             cameraController.RotateForLevel(1);
             cameraController.FollowHeight(0);
@@ -160,6 +167,9 @@ namespace Wobble.Core
             saves.SubmitScore(Score);
             cameraController.FollowTop(position);
             if (perfect) cameraController.PerfectImpulse();
+            cameraController.ComboImpulse(combo.DisplayMultiplier);
+            stack.Celebrate(perfect, combo.DisplayMultiplier);
+            if (perfect) world.Celebrate(combo.DisplayMultiplier);
             ui.Feedback(perfect, combo.DisplayMultiplier, position);
             levels.RegisterPlacement();
             ui.UpdateHud(Score, saves.Data.bestScore, levels.Level);
@@ -178,6 +188,12 @@ namespace Wobble.Core
         private void OnMissed()
         {
             State = GameState.GameOver;
+            // Death always re-arms the placement bank at Wobble_Normal.
+            audio.ResetPlacementCombo();
+            stack.FailBurst();
+            world.Fail();
+            cameraController.FailImpulse();
+            ui.FailFlash();
             saves.SubmitScore(Score);
             gameOverRoutine = StartCoroutine(ShowResultsAfterFall());
         }
@@ -185,7 +201,12 @@ namespace Wobble.Core
         private IEnumerator ShowResultsAfterFall()
         {
             yield return new WaitForSeconds(.6f);
-            ui.ShowGameOver(Score, saves.Data.bestScore, combo.PerfectCount, combo.MaximumCombo);
+            // Additive run reward: spends no existing currency and changes no price or life rule.
+            var earned = Mathf.Clamp(Score / 10, 0, 99);
+            var grant = Mathf.Max(0, earned - awardedGems);
+            if (grant > 0) economy.GrantReward(grant, 0);
+            awardedGems = earned;
+            ui.ShowGameOver(Score, saves.Data.bestScore, combo.PerfectCount, combo.MaximumCombo, stack.BlockCount, earned);
             gameOverRoutine = null;
         }
 
@@ -203,6 +224,7 @@ namespace Wobble.Core
         {
             if (State != GameState.GameOver || gameOverRoutine != null || !economy.ConsumeLifeForContinue()) return;
             combo.BreakChain();
+            audio.ResetPlacementCombo();
             inputReadyFrame = Time.frameCount;
             State = GameState.Playing;
             stack.ResumeAfterMiss(levels.Speed);

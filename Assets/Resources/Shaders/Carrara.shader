@@ -8,6 +8,8 @@ Shader "WOBBLE/Carrara"
         _Metallic ("Metallic", Range(0,1)) = 0
         _Flash ("Perfect flash", Float) = 0
         _Sweep ("Perfect sweep", Float) = -1
+        _RimColor ("Theme rim", Color) = (0,0,0,1)
+        _RimStrength ("Theme rim strength", Float) = 0
         _StoneOrigin ("Stone coordinates", Vector) = (0,0,0,0)
         _StoneSize ("Metric size", Vector) = (1,1,1,0)
     }
@@ -19,7 +21,8 @@ Shader "WOBBLE/Carrara"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
         CBUFFER_START(UnityPerMaterial)
             float4 _Color, _StoneOrigin, _StoneSize;
-            float _Glossiness, _Metallic, _Flash, _Sweep;
+            float4 _RimColor;
+            float _Glossiness, _Metallic, _Flash, _Sweep, _RimStrength;
         CBUFFER_END
         TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
         struct Attributes { float4 positionOS : POSITION; float3 normalOS : NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
@@ -89,7 +92,10 @@ Shader "WOBBLE/Carrara"
                 surface.alpha = 1;
                 surface.normalTS = half3(0,0,1);
                 float sweep = (1 - smoothstep(.005, .028, abs(i.localTop.x - _Sweep))) * step(0, _Sweep);
-                surface.emission = half3(1,.94,.82) * (sweep * 2.2 + _Flash * .2) * saturate(i.normalOS.y);
+                // One cheap Fresnel term gives dark themes a readable neon edge with no lights.
+                half fresnel = pow(1 - saturate(dot(normalize(i.normalWS), GetWorldSpaceNormalizeViewDir(i.positionWS))), 4);
+                surface.emission = half3(1,.94,.82) * (sweep * 2.2 + _Flash * .2) * saturate(i.normalOS.y)
+                    + _RimColor.rgb * fresnel * _RimStrength;
                 half4 color = UniversalFragmentPBR(data, surface);
                 color.rgb = MixFog(color.rgb, i.fog);
                 return color;

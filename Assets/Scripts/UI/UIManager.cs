@@ -53,6 +53,15 @@ namespace Wobble.UI
         private Rect previousSafeArea;
         private Vector3 feedbackWorld;
         private float feedbackRise;
+        private int lastBlocks, lastGems;
+        private RectTransform resultCardRect;
+        private TextMeshProUGUI resultBest;
+        private TextMeshProUGUI resultBlocks, resultPerfects, resultCombo, resultGems;
+        private TextMeshProUGUI resultScoreCaption, resultBestCaption, resultBlockCaption, resultPerfectCaption, resultComboCaption, resultGemCaption;
+        private TextMeshProUGUI shareLabel;
+        private Image flash;
+        private Coroutine flashRoutine, shareRoutine;
+        private static Sprite verticalFade;
         private static readonly Vector3[] TravelAxes = { Vector3.right, Vector3.left, Vector3.forward, Vector3.back };
 
         public void Build(SaveManager saves, EconomyManager economy, AudioManager audioManager, HapticManager haptics, ThemeManager themes)
@@ -152,6 +161,13 @@ namespace Wobble.UI
         private void BuildHud(Transform canvas)
         {
             hud = Panel("HUD", canvas, Color.clear);
+            var scrim = Panel("HUD top scrim", hud.transform, Color.clear).GetComponent<Image>();
+            scrim.sprite = VerticalFade();
+            scrim.color = new Color(.03f, .07f, .14f, .34f);
+            scrim.raycastTarget = false;
+            var scrimRect = scrim.rectTransform;
+            scrimRect.anchorMin = new Vector2(0, 1); scrimRect.anchorMax = new Vector2(1, 1); scrimRect.pivot = new Vector2(.5f, 1);
+            scrimRect.sizeDelta = new Vector2(0, 270); scrimRect.anchoredPosition = Vector2.zero;
             var brand = Label("app.title", hud.transform, 34, FontStyles.Bold, TextAlignmentOptions.TopLeft, Color.white);
             SetRectTop(brand.rectTransform, 54, 54, 430, 60, false);
             levelText = Label("hud.level", hud.transform, 23, FontStyles.Bold, TextAlignmentOptions.TopLeft, WobblePalette.Surface);
@@ -182,25 +198,50 @@ namespace Wobble.UI
 
         private void BuildGameOver(Transform canvas)
         {
-            gameOver = Panel("Game Over", canvas, WobblePalette.Alpha(WobblePalette.TextPrimary,.22f));
+            gameOver = Panel("Game Over", canvas, WobblePalette.Alpha(WobblePalette.TextPrimary,.42f));
             resultGroup=gameOver.AddComponent<CanvasGroup>();
-            var title = Label("gameover.title", gameOver.transform, 54, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
-            title.characterSpacing=7;
-            SetRect(title.rectTransform, .5f, .76f, 800, 85);
-            var resultCard=Panel("Result card",gameOver.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.84f)); SetRect(resultCard.GetComponent<RectTransform>(),.5f,.55f,790,450); CasualSurface.Style(resultCard.GetComponent<Image>());
-            resultsText = Label("gameover.summary", gameOver.transform, 29, FontStyles.Normal, TextAlignmentOptions.Center, new Color(.94f, .93f, .88f));
-            resultsText.lineSpacing = 22f;
-            SetRect(resultsText.rectTransform, .5f, .55f, 700, 420);
+            var title = Label("gameover.title", gameOver.transform, 44, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
+            title.characterSpacing=8;
+            Center(title.rectTransform, .5f, .845f, 860, 70);
+            var card=Panel("Result card",gameOver.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.90f));
+            resultCardRect=card.GetComponent<RectTransform>(); Center(resultCardRect,.5f,.565f,900,760); CasualSurface.Style(card.GetComponent<Image>());
+            var accentBar=Panel("Result accent",card.transform,WobblePalette.Primary);
+            Region(accentBar.GetComponent<RectTransform>(),.33f,.951f,.67f,.971f);CasualSurface.Style(accentBar.GetComponent<Image>(),false);
+            accentBar.GetComponent<Image>().raycastTarget=false;
+            resultScoreCaption=Caption("result.score",card.transform,20,WobblePalette.Alpha(WobblePalette.Surface,.62f));
+            Center(resultScoreCaption.rectTransform,.5f,.88f,420,40);
+            resultsText = Label("result.value", card.transform, 122, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
+            Center(resultsText.rectTransform,.5f,.742f,820,235);
+            resultBest = Label("hud.best", card.transform, 25, FontStyles.Normal, TextAlignmentOptions.Center, WobblePalette.Accent);
+            Center(resultBest.rectTransform,.5f,.626f,520,58);
+            var divider=Panel("Result divider",card.transform,WobblePalette.Alpha(WobblePalette.Surface,.22f));
+            Region(divider.GetComponent<RectTransform>(),.10f,.552f,.90f,.555f);divider.GetComponent<Image>().raycastTarget=false;
+            resultBlocks=StatChip(card.transform,.285f,.445f,"result.blocks",out resultBlockCaption);
+            resultPerfects=StatChip(card.transform,.715f,.445f,"result.perfects",out resultPerfectCaption);
+            resultCombo=StatChip(card.transform,.285f,.235f,"result.combo",out resultComboCaption);
+            resultGems=StatChip(card.transform,.715f,.235f,"result.gems",out resultGemCaption);
             var retry = Button("gameover.retry", gameOver.transform, WobblePalette.Primary, Color.white);
-            SetRect(retry.GetComponent<RectTransform>(), .5f, .30f, 680, 125);
+            Center(retry.GetComponent<RectTransform>(), .5f, .295f, 820, 120);
             retry.gameObject.AddComponent<StoneButtonFeedback>();
             retry.onClick.AddListener(() => EnterRun(true));
             var homeButton = Button("gameover.home", gameOver.transform, WobblePalette.Surface, WobblePalette.TextPrimary);
-            SetRect(homeButton.GetComponent<RectTransform>(), .5f, .21f, 680, 90);
+            Center(homeButton.GetComponent<RectTransform>(), .315f, .19f, 390, 96);
             homeButton.gameObject.AddComponent<StoneButtonFeedback>();
             homeButton.onClick.AddListener(() => {if(!Transitioning){audioManager.MenuTap();StartCoroutine(ReturnHome());}});
+            var share = Button("gameover.share", gameOver.transform, WobblePalette.Surface, WobblePalette.TextPrimary);
+            Center(share.GetComponent<RectTransform>(), .685f, .19f, 390, 96);
+            share.gameObject.AddComponent<StoneButtonFeedback>();
+            shareLabel = share.GetComponentInChildren<TextMeshProUGUI>();
+            share.onClick.AddListener(() =>
+            {
+                if (Transitioning) return;
+                audioManager.MenuTap();
+                GUIUtility.systemCopyBuffer = Localization.Text("gameover.share_text", lastScore, lastBest);
+                if (shareRoutine != null) StopCoroutine(shareRoutine);
+                shareRoutine = StartCoroutine(ShareFeedback());
+            });
             continueButton = Button("gameover.continue", gameOver.transform, WobblePalette.Success, Color.white);
-            SetRect(continueButton.GetComponent<RectTransform>(), .5f, .125f, 680, 90);
+            Center(continueButton.GetComponent<RectTransform>(), .5f, .078f, 780, 96);
             continueButton.gameObject.AddComponent<StoneButtonFeedback>();
             continueLabel = continueButton.GetComponentInChildren<TextMeshProUGUI>();
             continueButton.onClick.AddListener(() =>
@@ -208,6 +249,68 @@ namespace Wobble.UI
                 if (!Transitioning && economy.CanContinueWithLife())
                 { audioManager.MenuTap(); ContinuePressed?.Invoke(); }
             });
+            flash = Panel("Impact flash", canvas, Color.clear).GetComponent<Image>();
+            flash.color = new Color(1, 1, 1, 0);
+            flash.raycastTarget = false;
+        }
+
+        private TextMeshProUGUI Caption(string key, Transform parent, int size, Color color)
+        {
+            var label = Label(key, parent, size, FontStyles.Normal, TextAlignmentOptions.Center, color);
+            label.characterSpacing = 3;
+            localizedLabels.Add(() => label.text = Localization.Text(key));
+            label.text = Localization.Text(key);
+            return label;
+        }
+
+        private TextMeshProUGUI StatChip(Transform parent, float x, float y, string key, out TextMeshProUGUI caption)
+        {
+            var chip = Panel("Stat "+key, parent, WobblePalette.Alpha(WobblePalette.Surface,.075f));
+            Center(chip.GetComponent<RectTransform>(), x, y, 372, 156);
+            var image = chip.GetComponent<Image>();
+            CasualSurface.Style(image, false);
+            image.raycastTarget = false;
+            caption = Caption(key, chip.transform, 18, WobblePalette.Alpha(WobblePalette.Surface,.58f));
+            Center(caption.rectTransform, .5f, .74f, 330, 38);
+            var value = Label("result.value", chip.transform, 42, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
+            Center(value.rectTransform, .5f, .33f, 340, 88);
+            return value;
+        }
+
+        private IEnumerator ShareFeedback()
+        {
+            shareLabel.text = Localization.Text("gameover.copied");
+            yield return new WaitForSecondsRealtime(1.4f);
+            shareLabel.text = Localization.Text("gameover.share");
+            shareRoutine = null;
+        }
+
+        public void FailFlash()
+        {
+            if (flash == null) return;
+            if (flashRoutine != null) StopCoroutine(flashRoutine);
+            flashRoutine = StartCoroutine(FlashRoutine(new Color(.92f, .34f, .30f), .22f));
+        }
+
+        private void PerfectFlash()
+        {
+            if (flash == null) return;
+            if (flashRoutine != null) StopCoroutine(flashRoutine);
+            flashRoutine = StartCoroutine(FlashRoutine(themeManager != null ? themeManager.Accent : WobblePalette.Accent, .10f));
+        }
+
+        private IEnumerator FlashRoutine(Color color, float strength)
+        {
+            const float duration = .34f;
+            for (var t = 0f; t < duration; t += Time.unscaledDeltaTime)
+            {
+                var p = t / duration;
+                var a = strength * Mathf.Sin(p * Mathf.PI);
+                flash.color = new Color(color.r, color.g, color.b, a);
+                yield return null;
+            }
+            flash.color = new Color(color.r, color.g, color.b, 0);
+            flashRoutine = null;
         }
 
         public void ShowHome(int best)
@@ -237,11 +340,14 @@ namespace Wobble.UI
             UpdateHud(0, best, 1);
         }
 
-        public void ShowGameOver(int score, int best, int perfects, int maxCombo)
+        public void ShowGameOver(int score, int best, int perfects, int maxCombo, int blocks = 0, int gems = 0)
         {
             hud.SetActive(false); gameOver.SetActive(true);
             continueButton.gameObject.SetActive(economy.CanContinueWithLife());
             lastScore=score; lastBest=best; lastPerfects=perfects; lastMaximum=maxCombo;
+            lastBlocks=blocks; lastGems=gems;
+            if (shareRoutine != null) { StopCoroutine(shareRoutine); shareRoutine = null; }
+            if (shareLabel != null) shareLabel.text = Localization.Text("gameover.share");
             RefreshLocalization();
             if (resultRoutine != null) StopCoroutine(resultRoutine);
             resultRoutine = StartCoroutine(ResultEntrance());
@@ -256,11 +362,14 @@ namespace Wobble.UI
         private IEnumerator ResultEntrance()
         {
             resultGroup.interactable=resultGroup.blocksRaycasts=false;
-            for(var t=0f;t<.28f;t+=Time.unscaledDeltaTime)
+            for(var t=0f;t<.30f;t+=Time.unscaledDeltaTime)
             {
-                var p=Mathf.SmoothStep(0,1,t/.28f);resultGroup.alpha=p;resultsText.rectTransform.localScale=Vector3.one*Mathf.Lerp(.97f,1,p);yield return null;
+                var p=Mathf.SmoothStep(0,1,t/.30f);
+                resultGroup.alpha=p;
+                resultCardRect.localScale=Vector3.one*Mathf.Lerp(.955f,1f,p);
+                yield return null;
             }
-            resultGroup.alpha=1;resultsText.rectTransform.localScale=Vector3.one;resultGroup.interactable=resultGroup.blocksRaycasts=true;
+            resultGroup.alpha=1;resultCardRect.localScale=Vector3.one;resultGroup.interactable=resultGroup.blocksRaycasts=true;
             resultRoutine=null;
         }
 
@@ -274,6 +383,7 @@ namespace Wobble.UI
         public void Feedback(bool perfect, int combo, Vector3 position)
         {
             if (!perfect) return;
+            PerfectFlash();
             feedbackWorld = position;
             if (feedbackRoutine != null) StopCoroutine(feedbackRoutine);
             feedbackRoutine = StartCoroutine(FeedbackAnimation(combo));
@@ -324,7 +434,8 @@ namespace Wobble.UI
                 var p = themeManager.Environment;
                 var bright = (p.skyTop.grayscale + p.skyBottom.grayscale) * .5f > .6f;
                 foreach (var label in hudLabels) label.color = bright ? WobblePalette.TextPrimary : WobblePalette.Surface;
-                feedbackText.color = bright ? Color.Lerp(WobblePalette.TextPrimary, WobblePalette.Success, .3f) : WobblePalette.Success;
+                feedbackText.color = bright ? Color.Lerp(WobblePalette.TextPrimary, WobblePalette.Success, .3f)
+                    : Color.Lerp(WobblePalette.Surface, themeManager.Accent, .35f);
             }
             if (feedbackText == null || !hud.activeSelf || UnityEngine.Camera.main == null || feedbackText.canvasRenderer.GetAlpha() <= .001f) return;
             // Normalized coordinates work identically for native overlay UI and
@@ -393,12 +504,18 @@ namespace Wobble.UI
         private void RefreshLocalization()
         {
             foreach (var update in localizedLabels) update();
-            if (continueLabel != null) continueLabel.text = Localization.Text("gameover.continue") + "  ♥ 1";
+            if (continueLabel != null) continueLabel.text = Localization.Text("gameover.continue") + "   ♥ 1";
+            if (shareLabel != null && shareRoutine == null) shareLabel.text = Localization.Text("gameover.share");
             if (scoreText == null) return;
             scoreText.text = lastScore.ToString();
             bestText.text = Localization.Text("hud.best", lastBest);
             levelText.text = Localization.Text("hud.level", lastLevel);
-            resultsText.text = Localization.Text("gameover.summary", lastScore, lastBest, lastPerfects, lastMaximum);
+            resultsText.text = lastScore.ToString();
+            resultBest.text = Localization.Text("hud.best", lastBest);
+            resultBlocks.text = lastBlocks.ToString();
+            resultPerfects.text = lastPerfects.ToString();
+            resultCombo.text = "×" + lastMaximum;
+            resultGems.text = "+" + lastGems;
             feedbackText.text = Localization.Text("hud.combo", lastCombo);
             levelFlash.text = Localization.Text("hud.level", lastLevel);
         }
@@ -406,6 +523,27 @@ namespace Wobble.UI
         private void OnDestroy() { if (Localization != null) Localization.Changed -= RefreshLocalization; }
 
         private static void Stretch(RectTransform rect) { rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = Vector2.zero; rect.offsetMax = Vector2.zero; }
+        private static void Center(RectTransform rect, float x, float y, float width, float height) { rect.anchorMin = rect.anchorMax = new Vector2(x, y); rect.pivot = new Vector2(.5f, .5f); rect.sizeDelta = new Vector2(width, height); rect.anchoredPosition = Vector2.zero; }
+        private static void Region(RectTransform rect, float x0, float y0, float x1, float y1) { rect.anchorMin = new Vector2(x0, y0); rect.anchorMax = new Vector2(x1, y1); rect.offsetMin = rect.offsetMax = Vector2.zero; }
+
+        private static Sprite VerticalFade()
+        {
+            if (verticalFade != null) return verticalFade;
+            var texture = new Texture2D(4, 64, TextureFormat.RGBA32, false)
+            {
+                name = "HUD top fade", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear
+            };
+            var pixels = new Color32[4 * 64];
+            for (var y = 0; y < 64; y++)
+            {
+                var a = (byte)(Mathf.SmoothStep(0, 1, y / 63f) * 255f);
+                for (var x = 0; x < 4; x++) pixels[y * 4 + x] = new Color32(255, 255, 255, a);
+            }
+            texture.SetPixels32(pixels);
+            texture.Apply(false, true);
+            verticalFade = Sprite.Create(texture, new Rect(0, 0, 4, 64), new Vector2(.5f, .5f), 100f, 0, SpriteMeshType.FullRect);
+            return verticalFade;
+        }
         private static void SetRect(RectTransform rect, float x, float y, float width, float height) { rect.anchorMin = rect.anchorMax = new Vector2(x, y); rect.sizeDelta = new Vector2(width, height); rect.anchoredPosition = Vector2.zero; }
         private static void SetRectTop(RectTransform rect, float margin, float top, float width, float height, bool right)
         {

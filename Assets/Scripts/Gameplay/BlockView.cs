@@ -13,6 +13,7 @@ namespace Wobble.Gameplay
         private MeshRenderer meshRenderer;
         private MaterialPropertyBlock properties;
         private Coroutine punchRoutine;
+        private Coroutine wobbleRoutine;
 
         private void LateUpdate()
         {
@@ -49,6 +50,33 @@ namespace Wobble.Gameplay
         {
             if (punchRoutine != null) StopCoroutine(punchRoutine);
             punchRoutine = StartCoroutine(PunchAnimation(strength));
+        }
+
+        // A short, damped lean for off-centre cuts. Rotates only the visual child,
+        // so the slab's size, collider and stacking height never change.
+        public void Lean(float strength = 1f)
+        {
+            if (visual == null) return;
+            if (wobbleRoutine != null) StopCoroutine(wobbleRoutine);
+            wobbleRoutine = StartCoroutine(LeanAnimation(strength));
+        }
+
+        private IEnumerator LeanAnimation(float strength)
+        {
+            const float duration = .34f;
+            var axis = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+            if (axis.sqrMagnitude < .01f) axis = Vector3.right;
+            axis.Normalize();
+            var amount = Mathf.Lerp(1.4f, 4.2f, Mathf.Clamp01(strength));
+            for (var elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
+            {
+                var t = elapsed / duration;
+                var angle = Mathf.Sin(t * Mathf.PI * 4f) * amount * (1f - t);
+                visual.localRotation = Quaternion.AngleAxis(angle, axis);
+                yield return null;
+            }
+            visual.localRotation = Quaternion.identity;
+            wobbleRoutine = null;
         }
 
         public void RefreshStoneVariation()

@@ -19,6 +19,19 @@ namespace Wobble.UI
         private Camera homeCamera,gameplayCamera;
         private GameObject stage;
         private Material backdrop,foliage,flowers;
+        private Mesh cypressMesh;
+        private ThemeManager themesRef;
+        private Transform homeBackdrop;
+        private Renderer cloudSea;
+        private Texture2D cloudTexture;
+        private Material cloudMaterial,islandMaterial,capMaterial,archMaterial;
+        private readonly Renderer[] islandRocks=new Renderer[6];
+        private readonly Renderer[] islandCaps=new Renderer[6];
+        private readonly Mesh[] islandGardens=new Mesh[6];
+        private readonly Renderer[] galleryArches=new Renderer[2];
+        private readonly Vector3[] islandBase=new Vector3[6];
+        private readonly float[] islandPhase=new float[6];
+        private Material[] homeMaterials;
         private float section,sectionTarget,entry,clock;
         public Camera Camera=>homeCamera;
         public float IntroProgress {get;private set;}=1;
@@ -26,6 +39,7 @@ namespace Wobble.UI
         {
             highlight=new MaterialPropertyBlock();
             this.gameplayCamera=gameplayCamera;
+            themesRef=themes;
             stage=new GameObject("Carrara gallery");stage.transform.SetParent(transform,false);stage.transform.position=new Vector3(1000,0,1000);
             sculpture=new GameObject("Cantilever Carrara sculpture").transform;sculpture.SetParent(stage.transform,false);
             for(var i=0;i<8;i++)
@@ -76,6 +90,7 @@ namespace Wobble.UI
             cameraObject.AddComponent<FidelityController>();
             foreach(var child in stage.GetComponentsInChildren<Transform>())child.gameObject.layer=30;
             BuildGarden(themes);
+            BuildGalleryWorld(themes);
             foreach(var child in stage.GetComponentsInChildren<Transform>())child.gameObject.layer=30;
             SetIntro(1);
         }
@@ -98,6 +113,41 @@ namespace Wobble.UI
             if(stage==null||!stage.activeSelf)return;
             clock+=Time.unscaledDeltaTime;
             var sky=RenderSettings.skybox;if(sky!=null){backdrop.SetColor("_SkyTop",sky.GetColor("_Top"));backdrop.SetColor("_SkyHorizon",sky.GetColor("_Horizon"));backdrop.SetColor("_SkyBottom",sky.GetColor("_Bottom"));}
+            if(themesRef!=null)
+            {
+                var v=themesRef.Visuals;
+                islandMaterial.color=Color.Lerp(v.propDark,v.propLight,.55f);
+                capMaterial.color=v.foliage;
+                archMaterial.color=Color.Lerp(v.portal,v.accent,.18f);
+                if(sky!=null&&homeMaterials!=null)
+                    foreach(var material in homeMaterials)
+                    {
+                        material.SetColor("_SkyTop",sky.GetColor("_Top"));
+                        material.SetColor("_SkyHorizon",sky.GetColor("_Horizon"));
+                        material.SetColor("_SkyBottom",sky.GetColor("_Bottom"));
+                        material.SetColor("_Accent",sky.GetColor("_Accent"));
+                        material.SetFloat("_AccentStrength",sky.GetFloat("_AccentStrength"));
+                        material.SetColor("_SunColor",sky.GetColor("_SunColor"));
+                        material.SetVector("_SunDir",sky.GetVector("_SunDir"));
+                        material.SetFloat("_SunIntensity",sky.GetFloat("_SunIntensity"));
+                        material.SetColor("_CloudTint",sky.GetColor("_CloudTint"));
+                        material.SetFloat("_CloudStrength",sky.GetFloat("_CloudStrength"));
+                        material.SetFloat("_Stars",sky.GetFloat("_Stars"));
+                        material.SetFloat("_FogNear",26);material.SetFloat("_FogFar",78);material.SetFloat("_Visibility",1);
+                    }
+                cloudMaterial.SetColor("_Color",v.cloudSeaTop);
+                cloudMaterial.SetColor("_DeepColor",v.cloudSeaDeep);
+                cloudMaterial.SetColor("_Accent",v.accent);
+                cloudMaterial.SetVector("_SunDir",v.sunDirection);
+            }
+            for(var i=0;i<islandRocks.Length;i++)
+            {
+                if(islandRocks[i]==null)continue;
+                var root=islandRocks[i].transform.parent;
+                var bob=Mathf.Sin(clock*.21f+islandPhase[i])*.15f;
+                root.localPosition=islandBase[i]+Vector3.up*bob;
+                root.localRotation=Quaternion.Euler(0,i*29f+Mathf.Sin(clock*.07f+islandPhase[i])*3f,0);
+            }
             section=Mathf.Lerp(section,sectionTarget,1-Mathf.Exp(-Time.unscaledDeltaTime*5));
             sculpture.localRotation=Quaternion.Euler(0,Mathf.Sin(clock*.08f)*7+section*12,0);
             var rotation=Quaternion.Euler(24+Mathf.Sin(clock*.12f)*.6f,-132+section*4,0);
@@ -153,14 +203,28 @@ namespace Wobble.UI
                 Stone("Quarry terrace",new Vector3(side*(4.4f+rank%3*2),-3.7f+rank%3*.6f,-4-rank*1.5f),
                     new Vector3(2.8f,2+rank%3,2.6f));
             }
-            foliage=new Material(themes.BlockMaterial){color=new Color(.28f,.48f,.28f)};
-            flowers=new Material(themes.BlockMaterial){color=WobblePalette.Primary};
+            foliage=new Material(themes.BlockMaterial){color=new Color(.30f,.50f,.30f)};
+            flowers=new Material(themes.BlockMaterial){color=new Color(.94f,.46f,.37f)};
+            cypressMesh=CarraraWorld.CypressMesh();
             for(var i=0;i<14;i++)
             {
-                var side=i%2==0?-1:1;var rank=i/2;var tall=i%3==0;var h=tall?2.7f:.35f;
+                var side=i%2==0?-1:1;var rank=i/2;var tall=i%2==0;var h=tall?2.35f:.5f;
                 var terraceTop=-3.7f+rank%3*.6f+(2+rank%3)*.5f;
-                var plant=Stone("Cypress and coral garden",new Vector3(side*(4.4f+rank%3*2),terraceTop+h*.5f,-4-rank*1.5f),new Vector3(tall?.45f:.8f,h,tall?.45f:.8f),PrimitiveType.Sphere);
-                var renderer=plant.GetComponent<Renderer>();renderer.sharedMaterial=i%3==0?foliage:flowers;renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
+                var position=new Vector3(side*(5.1f+rank%3*2),terraceTop,-4.4f-rank*1.5f);
+                if(tall)
+                {
+                    // A cone cypress, not a stretched sphere: reads as a tree at any angle.
+                    var cypress=new GameObject("Cypress");
+                    cypress.transform.SetParent(stage.transform,false);
+                    cypress.transform.localPosition=position;
+                    cypress.transform.localScale=new Vector3(.34f,h,.34f);
+                    cypress.AddComponent<MeshFilter>().sharedMesh=cypressMesh;
+                    var tree=cypress.AddComponent<MeshRenderer>();tree.sharedMaterial=foliage;
+                    tree.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
+                    continue;
+                }
+                var plant=Stone("Coral shrub",position+Vector3.up*h*.5f,new Vector3(.78f,h,.78f),PrimitiveType.Sphere);
+                var renderer=plant.GetComponent<Renderer>();renderer.sharedMaterial=flowers;renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
             }
             var arch=new GameObject("Warm marble arch").transform;arch.SetParent(stage.transform,false);
             arch.localPosition=new Vector3(0,-2,-8);arch.localRotation=Quaternion.Euler(0,38,0);arch.localScale=Vector3.one*.8f;
@@ -177,6 +241,75 @@ namespace Wobble.UI
                 column.transform.SetParent(arch,false);column.transform.localPosition=new Vector3(i%2==0?-3:3,i/2*1.5f,0);
             }
         }
-        private void OnDestroy(){if(gameplayCamera!=null)gameplayCamera.enabled=true;Destroy(backdrop);Destroy(dustMaterial);Destroy(foliage);Destroy(flowers);}
+        // A second, softer layer of floating ruins, arches and a cloud sea behind the
+        // gallery. All presentation: no colliders, no lights, no gameplay references.
+        private void BuildGalleryWorld(ThemeManager themes)
+        {
+            var v=ThemeVisuals.Get(themes.Current.id);
+            homeBackdrop=new GameObject("Floating gallery world").transform;
+            homeBackdrop.SetParent(stage.transform,false);
+            var stone=Resources.Load<Shader>("Shaders/ArchitecturalStone");
+            var grain=Resources.Load<Texture2D>("Rendering/CarraraNatural");
+            islandMaterial=new Material(stone){name="Gallery floating islands",color=Color.Lerp(v.propDark,v.propLight,.55f)};
+            capMaterial=new Material(stone){name="Gallery island gardens",color=v.foliage};
+            archMaterial=new Material(stone){name="Gallery arches",color=Color.Lerp(v.portal,v.accent,.18f)};
+            islandMaterial.mainTexture=grain;archMaterial.mainTexture=grain;
+            homeMaterials=new[]{islandMaterial,capMaterial,archMaterial};
+            cloudTexture=CarraraWorld.CreateCloudTexture(128);
+            cloudMaterial=new Material(Resources.Load<Shader>("Shaders/CloudSea")){name="Gallery cloud sea"};
+            cloudMaterial.SetTexture("_MainTex",cloudTexture);
+            cloudMaterial.SetFloat("_Opacity",.60f);
+            cloudMaterial.SetFloat("_Tiling",3.2f);
+            var sea=GameObject.CreatePrimitive(PrimitiveType.Quad);
+            sea.name="Gallery cloud sea";Destroy(sea.GetComponent<Collider>());
+            sea.transform.SetParent(homeBackdrop,false);
+            sea.transform.localPosition=new Vector3(0,-8.6f,-5f);
+            sea.transform.localRotation=Quaternion.Euler(90,0,0);
+            sea.transform.localScale=new Vector3(140,140,1);
+            cloudSea=sea.GetComponent<Renderer>();cloudSea.sharedMaterial=cloudMaterial;
+            cloudSea.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;cloudSea.receiveShadows=false;
+            var large=Resources.Load<Mesh>("Presentation/QuarryGarden");
+            var column=Resources.Load<Mesh>("Presentation/ColumnGarden");
+            var arch=Resources.Load<Mesh>("Presentation/ArchGarden");
+            for(var i=0;i<islandRocks.Length;i++)
+            {
+                var angle=i*Mathf.PI*2f/islandRocks.Length+.42f;
+                var radius=10.5f+(i%3)*3.6f;
+                var root=new GameObject("Floating gallery island "+i).transform;
+                root.SetParent(homeBackdrop,false);
+                islandBase[i]=new Vector3(Mathf.Cos(angle)*radius,.4f+(i%3)*1.6f,-7.5f-Mathf.Abs(Mathf.Sin(angle))*5f);
+                root.localPosition=islandBase[i];
+                root.localRotation=Quaternion.Euler(0,angle*Mathf.Rad2Deg+i*17f,0);
+                root.localScale=Vector3.one*(1.15f+(i%3)*.28f);
+                islandPhase[i]=i*1.31f;
+                var rock=new GameObject("Island stone");rock.transform.SetParent(root,false);
+                rock.AddComponent<MeshFilter>().sharedMesh=i%2==0?large:column;
+                islandRocks[i]=rock.AddComponent<MeshRenderer>();islandRocks[i].sharedMaterial=islandMaterial;
+                islandRocks[i].shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;islandRocks[i].receiveShadows=false;
+                var cap=new GameObject("Island terrace");cap.transform.SetParent(root,false);
+                cap.transform.localPosition=new Vector3(0,.62f,0);
+                cap.transform.localScale=new Vector3(1.30f,.16f,1.24f);
+                cap.AddComponent<MeshFilter>().sharedMesh=large;
+                islandCaps[i]=cap.AddComponent<MeshRenderer>();islandCaps[i].sharedMaterial=islandMaterial;
+                islandCaps[i].shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;islandCaps[i].receiveShadows=false;
+                var garden=new GameObject("Cypress garden");garden.transform.SetParent(root,false);
+                garden.transform.localPosition=new Vector3(0,.66f,0);
+                islandGardens[i]=CarraraWorld.CreateGardenMesh(.95f,i);
+                garden.AddComponent<MeshFilter>().sharedMesh=islandGardens[i];
+                var gardenRenderer=garden.AddComponent<MeshRenderer>();gardenRenderer.sharedMaterial=capMaterial;
+                gardenRenderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;gardenRenderer.receiveShadows=false;
+            }
+            for(var i=0;i<galleryArches.Length;i++)
+            {
+                var go=new GameObject("Gallery arch "+i);go.transform.SetParent(homeBackdrop,false);
+                go.transform.localPosition=new Vector3(i==0?-8.5f:8.5f,2.4f,-15f-i*2.2f);
+                go.transform.localRotation=Quaternion.Euler(0,i==0?36f:-36f,0);
+                go.transform.localScale=Vector3.one*(1.9f+i*.2f);
+                go.AddComponent<MeshFilter>().sharedMesh=arch;
+                galleryArches[i]=go.AddComponent<MeshRenderer>();galleryArches[i].sharedMaterial=archMaterial;
+                galleryArches[i].shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;galleryArches[i].receiveShadows=false;
+            }
+        }
+        private void OnDestroy(){if(gameplayCamera!=null)gameplayCamera.enabled=true;Destroy(backdrop);Destroy(dustMaterial);Destroy(foliage);Destroy(flowers);if(cypressMesh!=null)Destroy(cypressMesh);if(homeMaterials!=null)foreach(var material in homeMaterials)Destroy(material);Destroy(cloudMaterial);Destroy(cloudTexture);if(islandGardens!=null)foreach(var mesh in islandGardens)if(mesh!=null)Destroy(mesh);}
     }
 }

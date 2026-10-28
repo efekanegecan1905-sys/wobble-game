@@ -624,6 +624,43 @@ MonoBehaviour:
     m_Localized: "Ses Kaynaklar\u0131"
     m_Metadata:
       m_Items: []
+  - m_Id: 4769864840372224
+    m_Localized: "Dokun \xB7 \u0130stifle \xB7 Y\xFCksel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955136
+    m_Localized: "PAYLA\u015E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955137
+    m_Localized: KOPYALANDI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955138
+    m_Localized: "WOBBLE \xB7 Skor {0} \xB7 En iyi {1} \u2014 sen de dene!"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
+  - m_Id: 4769864852955139
+    m_Localized: SKOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955140
+    m_Localized: BLOK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955141
+    m_Localized: "M\xDCKEMMEL"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955142
+    m_Localized: MAKS KOMBO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955143
+    m_Localized: ELMAS
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -649,3 +686,4 @@ MonoBehaviour:
         - id: 1247749857294
         - id: 1247749857296
         - id: 449887991750656
+        - id: 4769864852955138

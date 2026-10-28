@@ -15,16 +15,16 @@ MonoBehaviour:
   id: 2
   displayName: Ancient Stone
   environment:
-    skyTop: {r: 0.73725, g: 0.59608, b: 0.45882, a: 1}
-    skyBottom: {r: 0.93725, g: 0.85882, b: 0.75294, a: 1}
-    fogNear: {r: 0.84706, g: 0.74118, b: 0.61569, a: 1}
-    fogFar: {r: 0.94510, g: 0.87451, b: 0.78039, a: 1}
-    ambientTint: {r: 0.76078, g: 0.67059, b: 0.54902, a: 1}
-    keyLightTint: {r: 1.00000, g: 0.89412, b: 0.72941, a: 1}
-    distantStructureTint: {r: 0.78431, g: 0.64314, b: 0.46667, a: 1}
-    accentTint: {r: 0.92941, g: 0.73333, b: 0.45490, a: 1}
-    optionalParticleTint: {r: 0.94510, g: 0.81569, b: 0.62745, a: 1}
-    accentStrength: 0.04
+    skyTop: {r: 0.78824, g: 0.47843, b: 0.23529, a: 1}
+    skyBottom: {r: 0.95686, g: 0.82353, b: 0.59608, a: 1}
+    fogNear: {r: 0.87843, g: 0.72157, b: 0.50588, a: 1}
+    fogFar: {r: 0.92941, g: 0.82745, b: 0.64706, a: 1}
+    ambientTint: {r: 0.85098, g: 0.72549, b: 0.54118, a: 1}
+    keyLightTint: {r: 1.00000, g: 0.89412, b: 0.69020, a: 1}
+    distantStructureTint: {r: 0.64314, g: 0.47843, b: 0.29020, a: 1}
+    accentTint: {r: 1.00000, g: 0.76471, b: 0.36078, a: 1}
+    optionalParticleTint: {r: 1.00000, g: 0.87843, b: 0.65882, a: 1}
+    accentStrength: 0.06
   blockTop: {r: 0.53, g: 0.48, b: 0.39, a: 1}
   blockSide: {r: 0.31, g: 0.28, b: 0.23, a: 1}
   veinColor: {r: 0.32, g: 0.35, b: 0.39, a: 1}

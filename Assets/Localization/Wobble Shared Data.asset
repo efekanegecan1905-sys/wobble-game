@@ -307,6 +307,42 @@ MonoBehaviour:
     m_Key: settings.credits
     m_Metadata:
       m_Items: []
+  - m_Id: 4769864840372224
+    m_Key: home.tagline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955136
+    m_Key: gameover.share
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955137
+    m_Key: gameover.copied
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955138
+    m_Key: gameover.share_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955139
+    m_Key: result.score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955140
+    m_Key: result.blocks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955141
+    m_Key: result.perfects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955142
+    m_Key: result.combo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4769864852955143
+    m_Key: result.gems
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

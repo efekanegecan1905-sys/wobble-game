@@ -3,6 +3,7 @@ app.title	WOBBLE	WOBBLE
 home.collection	CARRARA	CARRARA
 home.play	OYNA	PLAY
 home.best	EN İYİ	BEST
+home.tagline	Dokun · İstifle · Yüksel	Tap · Stack · Rise
 nav.themes	TEMALAR	THEMES
 nav.shop	MAĞAZA	SHOP
 nav.daily	GÜNLÜK	DAILY
@@ -61,6 +62,14 @@ gameover.title	KULE DEVRİLDİ	TOWER LOST
 gameover.retry	TEKRAR DENE	RETRY
 gameover.home	ANA MENÜ	HOME
 gameover.continue	DEVAM ET	CONTINUE
+gameover.share	PAYLAŞ	SHARE
+gameover.copied	KOPYALANDI	COPIED
+gameover.share_text	WOBBLE · Skor {0} · En iyi {1} — sen de dene!	WOBBLE · Score {0} · Best {1} — try it!
+result.score	SKOR	SCORE
+result.blocks	BLOK	BLOCKS
+result.perfects	MÜKEMMEL	PERFECT
+result.combo	MAKS KOMBO	MAX COMBO
+result.gems	ELMAS	GEMS
 gameover.summary	<size=22>SKOR</size>\n<size=108>{0}</size>\n<size=24>EN İYİ  {1}\nMÜKEMMEL  {2}   ·   MAKS KOMBO  ×{3}</size>	<size=22>SCORE</size>\n<size=108>{0}</size>\n<size=24>BEST  {1}\nPERFECTS  {2}   ·   MAX COMBO  ×{3}</size>
 themes.requirement	KİLİTLİ · {0} ELMAS · YAKINDA	LOCKED · {0} GEMS · COMING SOON
 currency.gems	ELMAS	GEMS

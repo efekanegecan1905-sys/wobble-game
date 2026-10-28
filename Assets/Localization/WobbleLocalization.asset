@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WobbleLocalization
   m_EditorClassIdentifier: 
   m_StartupSelectors:
-  - rid: 5129602417444519936
+  - rid: 5129602829606977536
   m_AvailableLocales:
     rid: 5129602412732743683
   m_AssetDatabase:
@@ -191,7 +191,7 @@ MonoBehaviour:
         - default
         - d
         - 
-    - rid: 5129602417444519936
+    - rid: 5129602829606977536
       type: {class: SpecificLocaleSelector, ns: UnityEngine.Localization.Settings, asm: Unity.Localization}
       data:
         m_LocaleId:

@@ -46,11 +46,12 @@ namespace Wobble.Tests
                 Assert.That(stack.Top.GetComponent<BoxCollider>().size,Is.EqualTo(Vector3.one));
                 Assert.That(game.GetComponentsInChildren<ParticleSystem>(),Is.Not.Empty);
             }
-            var previous=-1;
             for(var i=0;i<50;i++)
             {
-                audio.Impact(true,i+2);Assert.That(audio.LastVariation,Is.Not.EqualTo(previous));previous=audio.LastVariation;
-                Assert.That(audio.LastPitch,Is.EqualTo(1+Mathf.Clamp(i+1,1,7)*.07f).Within(.0051));
+                audio.Impact(true,i+2);
+                Assert.That(audio.LastPitch,Is.EqualTo(1f),"Baked take is never pitch-shifted");
+                Assert.That(audio.LastPlacementClip,Is.EqualTo(audio.PlacementClip(i+2).name));
+                Assert.That(audio.LastPlacementClip,Does.StartWith("Wobble_"));
             }
             Assert.That(game.GetComponents<AudioSource>().Length,Is.EqualTo(AudioManager.MaximumEffectVoices+1));
             audio.SetEnabled(false);var before=audio.ImpactCount;audio.Impact(true,5);Assert.That(audio.ImpactCount,Is.EqualTo(before));

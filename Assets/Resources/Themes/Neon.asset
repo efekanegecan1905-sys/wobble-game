@@ -15,18 +15,18 @@ MonoBehaviour:
   id: 3
   displayName: Neon
   environment:
-    skyTop: {r: 0.13725, g: 0.13725, b: 0.26667, a: 1}
-    skyBottom: {r: 0.40784, g: 0.46275, b: 0.60784, a: 1}
-    fogNear: {r: 0.34902, g: 0.40784, b: 0.54510, a: 1}
-    fogFar: {r: 0.47843, g: 0.44314, b: 0.59216, a: 1}
-    ambientTint: {r: 0.59608, g: 0.71373, b: 0.79216, a: 1}
-    keyLightTint: {r: 0.83529, g: 0.96078, b: 1.00000, a: 1}
-    distantStructureTint: {r: 0.32549, g: 0.37647, b: 0.50196, a: 1}
-    accentTint: {r: 0.85882, g: 0.51373, b: 0.81176, a: 1}
-    optionalParticleTint: {r: 0.45098, g: 0.84706, b: 0.86667, a: 1}
-    accentStrength: 0.09
-  blockTop: {r: 0.08, g: 0.14, b: 0.19, a: 1}
-  blockSide: {r: 0.025, g: 0.05, b: 0.08, a: 1}
+    skyTop: {r: 0.01961, g: 0.01176, b: 0.05882, a: 1}
+    skyBottom: {r: 0.07059, g: 0.03137, b: 0.14902, a: 1}
+    fogNear: {r: 0.16471, g: 0.04706, b: 0.26667, a: 1}
+    fogFar: {r: 0.04314, g: 0.01569, b: 0.09412, a: 1}
+    ambientTint: {r: 0.37647, g: 0.44314, b: 0.82353, a: 1}
+    keyLightTint: {r: 0.35294, g: 0.92157, b: 1.00000, a: 1}
+    distantStructureTint: {r: 0.08627, g: 0.04314, b: 0.19216, a: 1}
+    accentTint: {r: 1.00000, g: 0.30980, b: 0.84706, a: 1}
+    optionalParticleTint: {r: 0.43529, g: 0.90196, b: 1.00000, a: 1}
+    accentStrength: 0.12
+  blockTop: {r: 0.14, g: 0.21, b: 0.27, a: 1}
+  blockSide: {r: 0.05, g: 0.095, b: 0.135, a: 1}
   veinColor: {r: 0.32, g: 0.35, b: 0.39, a: 1}
   background: {r: 0.005, g: 0.01, b: 0.025, a: 1}
   fog: {r: 0.064399995, g: 0.068799995, b: 0.082, a: 1}

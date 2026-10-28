@@ -20,8 +20,11 @@ namespace Wobble.Gameplay
         private readonly List<BlockView> tower = new();
         private MovingBlock moving;
         private int directionIndex;
+        private Vector3 lastPlacement;
+        private Vector3 lastSize = Vector3.one;
 
         public BlockView Top => tower.Count == 0 ? null : tower[^1];
+        public int BlockCount => Mathf.Max(0, tower.Count - 1);
         public bool CanPlace => moving != null && moving.IsMoving;
         public MovingBlock ActiveBlock => moving;
         public event Action<bool, Vector3> Placed;
@@ -109,14 +112,19 @@ namespace Wobble.Gameplay
                 var keptVolume=result.KeptSize.x*result.KeptSize.y*result.KeptSize.z;
                 var cutFraction=cutVolume/(cutVolume+keptVolume);
                 view.Punch(.45f);
+                view.Lean(cutFraction);
                 audio.Cut(cutFraction); haptics.Light();
                 effects.Play(view.transform.position, view.Size, false, result.CutPosition, cutFraction);
             }
+            lastPlacement = view.transform.position;
+            lastSize = view.Size;
             Placed?.Invoke(result.Perfect, view.transform.position);
         }
 
         private void Fail(BlockView view)
         {
+            lastPlacement = view.transform.position;
+            lastSize = view.Size;
             moving = null;
             view.transform.SetParent(null);
             var rigidbody = view.gameObject.AddComponent<Rigidbody>();
@@ -135,6 +143,12 @@ namespace Wobble.Gameplay
             for (var i = towerRoot.childCount - 1; i >= 0; i--)
                 UnityEngine.Object.Destroy(towerRoot.GetChild(i).gameObject);
         }
+
+        // Presentation-only hooks. They never touch scoring, sizing or input.
+        public void SetAccents(Color primary, Color secondary) => effects.SetAccent(primary, secondary);
+        public void TickEffects(float dt) => effects.Tick(dt);
+        public void Celebrate(bool perfect, int combo) => effects.Celebrate(perfect, lastPlacement, lastSize, combo);
+        public void FailBurst() => effects.Fail(lastPlacement, lastSize);
 
         public void Dispose() => effects.Dispose();
     }

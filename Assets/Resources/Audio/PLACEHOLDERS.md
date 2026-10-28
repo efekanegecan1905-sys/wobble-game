@@ -1,7 +1,7 @@
 # Audio provenance and replacement contract
 
-## Current placement identity — percussive only
-Normal and Perfect placements now use only PercussivePlacement_01–05.wav: five related excerpts of Jerimee's CC0 Plocks Five (public HQ MP3), processed into short PCM hits. PercussivePlacementSettings.asset owns the x2–x8 pitch progression and body compensation. No stone or hybrid layer is scheduled by the placement event. The former bank described below remains for approved intro/menu/debris compatibility only. See Docs/PercussivePlacementFix.md for the current routing and tuning contract.
+## Current placement identity — approved WOBBLE combo pack
+Every successful placement plays exactly one clip from the approved pack in `Assets/Resources/Audio/Placement/`: `Wobble_Normal.wav` and `Wobble_Combo_x2.wav` … `Wobble_Combo_x8.wav`. The rising pitch progression is baked into the files and is never shifted at runtime. No stone, marble, ArcadePlock, ComboBody or ComboResonance layer is scheduled by the placement event; the legacy PercussivePlacement_01–05 bank has been removed. See Docs/ComboPlacementAudio.md for routing and reset rules.
 
 ## Current main impact bank
 The five MarbleImpact_01–05 WAVs now derive from real stone-on-stone recordings by thanvannispen, licensed CC BY 4.0. They replace the earlier synthetic bodies. RecordedStoneCredits.txt contains attribution, source links, license and modification notice; the game exposes it under Settings → Audio Credits.

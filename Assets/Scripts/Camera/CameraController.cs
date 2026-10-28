@@ -16,6 +16,9 @@ namespace Wobble.CameraSystem
         private float desiredAngle = 42f;
         private float orbitTime = OrbitDuration;
         private float impulseTime = 1f;
+        private float failTime = 1f;
+        private float comboTime = 1f;
+        private float comboKick;
         private UnityEngine.Camera cam;
         private float followDistance, distanceVelocity;
         public float FollowDistance => followDistance;
@@ -42,6 +45,8 @@ namespace Wobble.CameraSystem
         }
         public void FollowHeight(float y) => FollowTop(new Vector3(0, y, 0));
         public void PerfectImpulse() => impulseTime = 0f;
+        public void ComboImpulse(int combo) { comboTime = 0f; comboKick = Mathf.Clamp01(combo / 8f); }
+        public void FailImpulse() => failTime = 0f;
 
         public void RotateForLevel(int level)
         {
@@ -62,7 +67,7 @@ namespace Wobble.CameraSystem
             // Fixed full-size slabs keep framing stable after cuts; tower height never adds retreat.
             var tanVertical = Mathf.Tan(cam.fieldOfView * .5f * Mathf.Deg2Rad);
             var horizontalTangent = tanVertical * Mathf.Max(.3f, cam.aspect) * .95f;
-            var requiredDistance = 14f;
+            var requiredDistance = 13.2f;
             var inverse = Quaternion.Inverse(rotation);
             foreach (var axis in CorridorAxes)
             for (var x = -1; x <= 1; x += 2)
@@ -76,8 +81,14 @@ namespace Wobble.CameraSystem
             followDistance = followDistance == 0 ? requiredDistance : Mathf.Max(requiredDistance,
                 Mathf.SmoothDamp(followDistance, requiredDistance, ref distanceVelocity, .35f));
             impulseTime += Time.deltaTime;
+            failTime += Time.deltaTime;
+            comboTime += Time.deltaTime;
             var impulse = impulseTime < .18f ? Mathf.Sin(impulseTime / .18f * Mathf.PI * 2f) * .022f * (1f - impulseTime / .18f) : 0f;
-            transform.SetPositionAndRotation(pivot - forward * followDistance + rotation * Vector3.up * impulse, rotation);
+            var combo = comboTime < .26f ? Mathf.Sin(comboTime / .26f * Mathf.PI) * .026f * comboKick : 0f;
+            // A short, heavy settle when the tower is lost; never runs during framing checks.
+            var impact = failTime < .42f ? Mathf.Sin(failTime / .42f * Mathf.PI * 1.5f) * .085f * (1f - failTime / .42f) : 0f;
+            var shake = rotation * new Vector3(impact * .55f, impulse + combo + impact, 0f);
+            transform.SetPositionAndRotation(pivot - forward * followDistance + shake, rotation);
             cam.backgroundColor = RenderSettings.fogColor;
         }
     }

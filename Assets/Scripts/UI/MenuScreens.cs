@@ -86,9 +86,15 @@ namespace Wobble.UI
         }
         private void BuildHome(Transform parent,Action play)
         {
+            var tagline=Text(parent,()=>loc.Text("home.tagline"),24,false);tagline.color=WobblePalette.Alpha(WobblePalette.TextPrimary,.78f);
+            tagline.characterSpacing=5;Center(tagline.rectTransform,.5f,.375f,820,52);
             var button=Button(parent,"home.play",()=>loc.Text("home.play"),play,true);
             Center(button.GetComponent<RectTransform>(),.5f,.29f,820,155);
-            var bestCard=Panel("Best run plaque",parent,WobblePalette.Alpha(WobblePalette.TextPrimary,.56f));
+            var gloss=Panel("Play gloss",button.transform,new Color(1,1,1,.16f));
+            Region(gloss.GetComponent<RectTransform>(),.035f,.56f,.965f,.94f);
+            CasualSurface.Style(gloss.GetComponent<Image>(),false);
+            gloss.GetComponent<Image>().raycastTarget=false;
+            var bestCard=Panel("Best run plaque",parent,WobblePalette.Alpha(WobblePalette.TextPrimary,.76f));
             Center(bestCard.GetComponent<RectTransform>(),.5f,.204f,640,110);CasualSurface.Style(bestCard.GetComponent<Image>());
             var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),22,false);bestLabel.color=WobblePalette.Surface;
             Center(bestLabel.rectTransform,.5f,.73f,600,35);
@@ -140,14 +146,22 @@ namespace Wobble.UI
             {
                 if(i%3==0)row=Row(content,360,false);
                 var theme=catalog.themes[i];
-                var card=Panel("Theme "+theme.id,row,WobblePalette.Surface).GetComponent<RectTransform>();
+                var visuals=ThemeVisuals.Get((ThemeId)i);
+                var card=Panel("Theme "+theme.id,row,Color.Lerp(theme.previewTint,WobblePalette.Surface,.82f)).GetComponent<RectTransform>();
                 Region(card,(i%3)/3f+.008f,0,(i%3+1)/3f-.008f,1);CasualSurface.Style(card.GetComponent<Image>());
+                var strip=Panel("Theme accent",card,WobblePalette.Alpha(visuals.accent,.92f));
+                Region(strip.GetComponent<RectTransform>(),.07f,.953f,.93f,.982f);CasualSurface.Style(strip.GetComponent<Image>(),false);
+                strip.GetComponent<Image>().raycastTarget=false;
+                var stage=Panel("Theme stage",card,Color.Lerp(visuals.skyHorizon,WobblePalette.Surface,.38f));
+                Region(stage.GetComponent<RectTransform>(),.065f,.345f,.935f,.94f);CasualSurface.Style(stage.GetComponent<Image>(),false);
+                stage.GetComponent<Image>().raycastTarget=false;
                 var preview=new GameObject("Material study "+theme.id,typeof(RectTransform),typeof(StonePreview)).GetComponent<StonePreview>();
-                preview.transform.SetParent(card,false);preview.material=Resources.Load<Material>("Menu/MenuUI");preview.stone=theme.previewTint;preview.raycastTarget=false;
-                Region(preview.rectTransform,.08f,.35f,.92f,.94f);
-                var label=Text(card,()=>loc.Text(theme.nameKey),28,true);Region(label.rectTransform,.03f,.22f,.97f,.37f);
+                preview.transform.SetParent(card,false);preview.material=Resources.Load<Material>("Menu/MenuUI");preview.stone=theme.previewTint;preview.accent=visuals.accent;preview.raycastTarget=false;
+                Region(preview.rectTransform,.065f,.345f,.935f,.94f);
+                var label=Text(card,()=>loc.Text(theme.nameKey),28,true);Region(label.rectTransform,.03f,.22f,.97f,.35f);
                 var status=Text(card,()=>economy.DemoMode ? (save.Data.selectedTheme==theme.id ? loc.Text("themes.selected") : save.Data.ownedSkins.Contains(theme.id) ? (loc.LocaleCode=="tr"?"SEÇ":"SELECT") : (loc.LocaleCode=="tr"?"KİLİDİ AÇ · ":"UNLOCK · ")+theme.gemPrice) : theme.available?loc.Text("themes.selected"):loc.Text("themes.requirement",theme.gemPrice),18,false);
-                status.color=theme.available || (economy.DemoMode && save.Data.ownedSkins.Contains(theme.id)) ? WobblePalette.Success : Muted;Region(status.rectTransform,.04f,.025f,.96f,.22f);
+                status.color=theme.available || (economy.DemoMode && save.Data.ownedSkins.Contains(theme.id)) ? WobblePalette.Success : Muted;Region(status.rectTransform,.04f,.025f,.96f,.21f);
+                refresh.Add(()=>card.GetComponent<Image>().color=save.Data.selectedTheme==theme.id?Color.Lerp(WobblePalette.Surface,visuals.accent,.16f):Color.Lerp(theme.previewTint,WobblePalette.Surface,.82f));
                 if(economy.DemoMode)card.gameObject.AddComponent<Button>().onClick.AddListener(()=>{
                     if(unlockingTheme)return;
                     if(save.Data.ownedSkins.Contains(theme.id)){SelectDemoTheme(theme);return;}
