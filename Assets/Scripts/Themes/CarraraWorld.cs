@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Wobble.CameraSystem;
@@ -6,7 +7,8 @@ namespace Wobble.Themes
 {
     // Presentation only: no colliders, scoring, input, movement or scene loads.
     // The foreground theatre (24 quarried monuments) stays contract-identical; the
-    // new backdrop lives in its own root so gameplay depth tests remain untouched.
+    // destination skyline lives in its own ThemeDistrict so gameplay depth tests
+    // remain untouched.
     public sealed class CarraraWorld : MonoBehaviour
     {
         private sealed class Monument
@@ -19,42 +21,23 @@ namespace Wobble.Themes
             public MaterialPropertyBlock properties = new();
         }
 
-        private sealed class Drifter
-        {
-            public Transform transform;
-            public Renderer rock;
-            public Renderer cap;
-            public Renderer garden;
-            public Vector3 origin;
-            public float phase;
-            public float bob;
-            public float sway;
-            public float visibility;
-            public MaterialPropertyBlock rockProperties = new();
-            public MaterialPropertyBlock capProperties = new();
-            public MaterialPropertyBlock gardenProperties = new();
-        }
-
         private readonly Monument[] monuments = new Monument[24];
         private readonly Material[] materials = new Material[2];
         private readonly Mesh[] meshes = new Mesh[3];
-        private readonly Drifter[] islands = new Drifter[8];
-        private readonly Monument[] landmarks = new Monument[4];
-        private readonly Drifter[] debris = new Drifter[7];
         private Camera gameplayCamera;
         private Light key;
         private ParticleSystem dust;
         private Material dustMaterial;
         private Transform content;
-        private Transform backdrop;
-        private Material propMaterial, foliageMaterial, portalMaterial, cloudSeaMaterial;
-        private readonly Material[] backdropMaterials = new Material[3];
+        private Material cloudSeaMaterial;
         private Renderer cloudSea;
         private Texture2D cloudTexture;
-        private readonly System.Collections.Generic.List<Mesh> generatedMeshes = new();
+        private readonly List<Mesh> generatedMeshes = new();
         private float height, progress, targetProgress;
         private bool playing;
         private ThemeManager themes;
+        private ThemeDistrict district;
+        private ThemeId districtTheme = (ThemeId)(-1);
         private float celebrate, failFlash;
         private Color propTint = WobblePalette.StoneLight;
 
@@ -72,27 +55,33 @@ namespace Wobble.Themes
             for (var i = 0; i < 2; i++)
                 materials[i] = new Material(Resources.Load<Shader>("Shaders/ArchitecturalStone"))
                 {
-                    name = i == 0 ? "Weathered midground stone" : "Fog-bound distant stone",
+                    name = i == 0 ? "Weathered horizon stone" : "Fog-bound distant stone",
                     enableInstancing = true
                 };
             materials[0].color = WobblePalette.StoneLight;
             materials[1].color = WobblePalette.StoneMid;
-            foreach (var material in materials) material.mainTexture = Resources.Load<Texture2D>("Rendering/CarraraNatural");
-            meshes[0] = Resources.Load<Mesh>("Presentation/QuarryGarden");
-            meshes[1] = Resources.Load<Mesh>("Presentation/ColumnGarden");
-            meshes[2] = Resources.Load<Mesh>("Presentation/ArchGarden");
+            var grain = Resources.Load<Texture2D>("Rendering/CarraraNatural");
+            foreach (var material in materials) material.mainTexture = grain;
+
+            // Theme-agnostic rock silhouettes: angular ridges that read as a distant
+            // coast for every destination. Identity comes from the district in front.
+            for (var i = 0; i < meshes.Length; i++)
+            {
+                meshes[i] = BuildRidgeMesh(i);
+                generatedMeshes.Add(meshes[i]);
+            }
             for (var i = 0; i < monuments.Length; i++)
             {
-                var distant = i >= 16;
-                var a = i * Mathf.PI * 2 / (distant ? 8 : 16) + (distant ? .3f : 0);
-                var radius = distant ? 66 : 31 + (i % 3) * 5;
-                var origin = new Vector3(Mathf.Cos(a) * radius, -14 - (i % 3) * 2, Mathf.Sin(a) * radius);
-                var go = new GameObject(distant ? "Distant quarry ridge" : i % 3 == 1 ? "Broken monumental column" : i % 3 == 2 ? "Abstract stone portal" : "Quarry terrace");
+                var distant = i >= 14;
+                var a = i * Mathf.PI * 2 / (distant ? 10 : 14) + (distant ? .3f : 0);
+                var radius = distant ? 62 + (i % 3) * 8 : 34 + (i % 3) * 5;
+                var origin = new Vector3(Mathf.Cos(a) * radius, distant ? -24 : -20, Mathf.Sin(a) * radius);
+                var go = new GameObject(distant ? "Fog-bound ridge" : "Quarried horizon monument");
                 go.transform.SetParent(content, false);
                 go.transform.localPosition = origin;
                 go.transform.localRotation = Quaternion.Euler(0, i * 37, 0);
-                go.transform.localScale = distant ? new Vector3(9, 14 + i % 4 * 3, 7) : new Vector3(3 + i % 3, 10 + i % 4 * 3, 3 + i % 2);
-                go.AddComponent<MeshFilter>().sharedMesh = meshes[distant ? 0 : i % 3];
+                go.transform.localScale = distant ? new Vector3(11, 6 + i % 4 * 2, 9) : new Vector3(6 + i % 3, 5 + i % 4 * 2, 5 + i % 2);
+                go.AddComponent<MeshFilter>().sharedMesh = meshes[distant ? 0 : 1 + i % 2];
                 var renderer = go.AddComponent<MeshRenderer>();
                 renderer.sharedMaterial = materials[distant ? 1 : 0];
                 renderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -129,27 +118,16 @@ namespace Wobble.Themes
             renderer.shadowCastingMode = ShadowCastingMode.Off;
         }
 
-        // A second, detached theatre of floating ruins, cloud sea and a framed portal.
-        // Nothing here is ever in front of the tower: depth fading keeps play readable.
         private void BuildBackdrop()
         {
-            backdrop = new GameObject("Floating world — presentation only").transform;
-            backdrop.SetParent(transform, false);
-            var stone = Resources.Load<Shader>("Shaders/ArchitecturalStone");
-            propMaterial = new Material(stone) { name = "Floating marble islands" };
-            propMaterial.mainTexture = Resources.Load<Texture2D>("Rendering/CarraraNatural");
-            foliageMaterial = new Material(stone) { name = "Island foliage" };
-            portalMaterial = new Material(stone) { name = "Distant intention portal" };
-            portalMaterial.mainTexture = Resources.Load<Texture2D>("Rendering/CarraraNatural");
-            backdropMaterials[0] = propMaterial; backdropMaterials[1] = foliageMaterial; backdropMaterials[2] = portalMaterial;
-
+            district = new ThemeDistrict(transform, gameplayCamera);
             cloudTexture = CreateCloudTexture(192);
             cloudSeaMaterial = new Material(Resources.Load<Shader>("Shaders/CloudSea")) { name = "Cloud sea" };
             cloudSeaMaterial.SetTexture("_MainTex", cloudTexture);
             var sea = GameObject.CreatePrimitive(PrimitiveType.Quad);
             sea.name = "Cloud sea";
             Destroy(sea.GetComponent<Collider>());
-            sea.transform.SetParent(backdrop, false);
+            sea.transform.SetParent(transform, false);
             sea.transform.localPosition = new Vector3(0, -16.8f, 0);
             sea.transform.localRotation = Quaternion.Euler(90, 0, 0);
             sea.transform.localScale = new Vector3(230, 230, 1);
@@ -158,90 +136,22 @@ namespace Wobble.Themes
             cloudSeaMaterial.SetFloat("_Tiling", 3.4f);
             cloudSea.shadowCastingMode = ShadowCastingMode.Off;
             cloudSea.receiveShadows = false;
-
-            for (var i = 0; i < landmarks.Length; i++)
-            {
-                var angle = (i * 90f + 45f) * Mathf.Deg2Rad;
-                var go = new GameObject("Distant intention portal " + i);
-                go.transform.SetParent(backdrop, false);
-                go.transform.localPosition = new Vector3(Mathf.Cos(angle) * 52, 5.5f + (i % 2) * 5f, Mathf.Sin(angle) * 52);
-                go.transform.localRotation = Quaternion.Euler(0, -angle * Mathf.Rad2Deg, 0);
-                go.transform.localScale = new Vector3(10.5f, 19f, 6f);
-                go.AddComponent<MeshFilter>().sharedMesh = meshes[2];
-                var renderer = go.AddComponent<MeshRenderer>();
-                renderer.sharedMaterial = portalMaterial;
-                renderer.shadowCastingMode = ShadowCastingMode.Off;
-                renderer.receiveShadows = false;
-                landmarks[i] = new Monument { transform = go.transform, renderer = renderer, origin = go.transform.localPosition, layer = 2 };
-            }
-
-            for (var i = 0; i < islands.Length; i++)
-            {
-                var angle = i * Mathf.PI * 2 / islands.Length + .18f;
-                var radius = 33f + (i % 3) * 7f;
-                var y = 2.5f + (i % 4) * 4.6f - (i % 2) * 3.4f;
-                var scale = 1.5f + (i % 3) * .42f;
-                var root = new GameObject("Floating marble island " + i).transform;
-                root.SetParent(backdrop, false);
-                root.localPosition = new Vector3(Mathf.Cos(angle) * radius, y, Mathf.Sin(angle) * radius);
-                root.localRotation = Quaternion.Euler(0, angle * Mathf.Rad2Deg + i * 19f, 0);
-                var rock = AddMesh(root, "Island quarry", CreateIslandMesh(scale, i), propMaterial, ShadowCastingMode.Off);
-                var cap = AddMesh(root, "Island terrace", meshes[0], propMaterial, ShadowCastingMode.Off, new Vector3(0, scale * .90f, 0),
-                    new Vector3(scale * 1.95f, .22f, scale * 1.85f));
-                var gardenMesh = CreateGardenMesh(scale, i);
-                generatedMeshes.Add(gardenMesh);
-                var garden = AddMesh(root, "Cypress garden", gardenMesh, foliageMaterial, ShadowCastingMode.Off);
-                islands[i] = new Drifter
-                {
-                    transform = root, rock = rock, cap = cap, garden = garden, origin = root.localPosition,
-                    phase = i * 1.37f, bob = .22f + (i % 3) * .09f, sway = .12f
-                };
-            }
-
-            for (var i = 0; i < debris.Length; i++)
-            {
-                var angle = i * Mathf.PI * 2 / debris.Length + .9f;
-                var radius = 22f + (i % 4) * 4.5f;
-                var root = new GameObject("Floating marble shard " + i).transform;
-                root.SetParent(backdrop, false);
-                root.localPosition = new Vector3(Mathf.Cos(angle) * radius, 6f + (i % 5) * 2.2f, Mathf.Sin(angle) * radius);
-                root.localRotation = Quaternion.Euler(i * 23f, i * 51f, i * 17f);
-                var rock = AddMesh(root, "Shard", meshes[i % 2], propMaterial, ShadowCastingMode.Off);
-                root.localScale = Vector3.one * (.22f + (i % 3) * .07f);
-                debris[i] = new Drifter { transform = root, rock = rock, origin = root.localPosition, phase = i * 2.1f, bob = .10f + (i % 2) * .06f, sway = .04f };
-            }
         }
 
-        private Renderer AddMesh(Transform parent, string name, Mesh mesh, Material material, ShadowCastingMode shadows,
-            Vector3? localPosition = null, Vector3? localScale = null)
+        // Three chunky ridge builds from the shared primitive kit. They are far away
+        // enough that silhouette, not detail, does the work.
+        private static Mesh BuildRidgeMesh(int variant)
         {
-            var go = new GameObject(name);
-            go.transform.SetParent(parent, false);
-            if (localPosition.HasValue) go.transform.localPosition = localPosition.Value;
-            if (localScale.HasValue) go.transform.localScale = localScale.Value;
-            go.AddComponent<MeshFilter>().sharedMesh = mesh;
-            var renderer = go.AddComponent<MeshRenderer>();
-            renderer.sharedMaterial = material;
-            renderer.shadowCastingMode = shadows;
-            renderer.receiveShadows = false;
-            return renderer;
-        }
-
-        private Mesh CreateIslandMesh(float s, int variant)
-        {
-            var parts = new CombineInstance[4];
-            var index = 0;
-            void Add(Mesh mesh, Vector3 position, Vector3 scale, float yaw)
-            {
-                parts[index] = new CombineInstance { mesh = mesh, transform = Matrix4x4.TRS(position, Quaternion.Euler(0, yaw, 0), scale) };
-                index++;
-            }
-            Add(meshes[variant % 3], new Vector3(0, 0, 0), new Vector3(s * 1.35f, s * 1.55f, s * 1.30f), variant * 23f);
-            Add(meshes[0], new Vector3(0, -s * .95f, 0), new Vector3(s * .70f, s * .55f, s * .66f), variant * 41f);
-            Add(meshes[1 + variant % 2], new Vector3(s * .18f, s * .95f, -s * .10f), new Vector3(s * .52f, s * .90f, s * .52f), variant * 67f);
-            Add(meshes[2], new Vector3(-s * .62f, s * 1.10f, s * .20f), new Vector3(s * .34f, s * .44f, s * .30f), variant * 29f);
-            var mesh = new Mesh { name = "Floating island " + variant };
-            mesh.CombineMeshes(parts, true, true);
+            var parts = new List<CombineInstance>();
+            void Add(Mesh mesh, Vector3 position, Vector3 scale, Quaternion rotation) =>
+                parts.Add(new CombineInstance { mesh = mesh, transform = Matrix4x4.TRS(position, rotation, scale) });
+            Add(ThemeWorldKit.PrismMesh, Vector3.zero, new Vector3(1.3f, 1.1f, 1.1f), Quaternion.Euler(0, variant * 31, 0));
+            Add(ThemeWorldKit.ConeMesh, new Vector3(.25f, .42f, .12f), new Vector3(.55f, 1.0f, .55f), Quaternion.Euler(0, variant * 47, 7));
+            Add(ThemeWorldKit.ConeMesh, new Vector3(-.35f, .30f, -.15f), new Vector3(.45f, .72f, .45f), Quaternion.Euler(0, variant * 63, -9));
+            Add(ThemeWorldKit.BoxMesh, new Vector3(-.50f, -.34f, .14f), new Vector3(1.0f, .68f, .9f), Quaternion.Euler(0, variant * 23, -8));
+            Add(ThemeWorldKit.BoxMesh, new Vector3(.55f, -.40f, -.20f), new Vector3(.8f, .54f, .7f), Quaternion.Euler(0, variant * 17, 11));
+            var mesh = new Mesh { name = "Horizon ridge " + variant };
+            mesh.CombineMeshes(parts.ToArray(), true, true);
             mesh.RecalculateBounds();
             return mesh;
         }
@@ -294,8 +204,8 @@ namespace Wobble.Themes
 
         private static Mesh ConeMesh(int segments)
         {
-            var vertices = new System.Collections.Generic.List<Vector3>(segments * 3);
-            var triangles = new System.Collections.Generic.List<int>(segments * 3);
+            var vertices = new List<Vector3>(segments * 3);
+            var triangles = new List<int>(segments * 3);
             for (var i = 0; i < segments; i++)
             {
                 var a0 = i / (float)segments * Mathf.PI * 2f;
@@ -317,8 +227,8 @@ namespace Wobble.Themes
         // Unit low-poly sphere, radius 1, used as a clipped Mediterranean shrub.
         private static Mesh SphereMesh(int columns, int rows)
         {
-            var vertices = new System.Collections.Generic.List<Vector3>((columns + 1) * (rows + 1));
-            var triangles = new System.Collections.Generic.List<int>(columns * rows * 6);
+            var vertices = new List<Vector3>((columns + 1) * (rows + 1));
+            var triangles = new List<int>(columns * rows * 6);
             for (var r = 0; r <= rows; r++)
             {
                 var phi = Mathf.PI * r / rows;
@@ -350,8 +260,14 @@ namespace Wobble.Themes
         {
             playing = show;
             if (content != null) content.gameObject.SetActive(show);
-            if (backdrop != null) backdrop.gameObject.SetActive(show);
-            if (show) { height = 0; progress = targetProgress = 0; celebrate = failFlash = 0; if (dust != null) dust.Play(); }
+            if (district != null) district.SetVisible(show);
+            if (cloudSea != null) cloudSea.enabled = show;
+            if (show)
+            {
+                height = progress = targetProgress = 0;
+                celebrate = failFlash = 0;
+                if (dust != null) dust.Play();
+            }
             else
             {
                 if (dust != null) dust.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -383,8 +299,13 @@ namespace Wobble.Themes
             var palette = themes != null ? themes.Environment : default;
             if (themes != null)
             {
-                materials[0].color = Color.Lerp(v.ruinColor, v.accent, .10f);
-                materials[1].color = v.ruinColor * .94f;
+                if (districtTheme != themes.Current.id)
+                {
+                    districtTheme = themes.Current.id;
+                    district.SetTheme(districtTheme);
+                }
+                materials[0].color = Color.Lerp(v.ruinColor, v.propLight, .18f);
+                materials[1].color = Color.Lerp(v.ruinColor, v.propDark, .30f);
                 var main = dust.main;
                 main.startColor = WobblePalette.Alpha(Color.Lerp(palette.optionalParticleTint, v.accent, .25f), .15f);
             }
@@ -423,7 +344,12 @@ namespace Wobble.Themes
                 m.renderer.SetPropertyBlock(m.properties);
                 m.renderer.enabled = m.visibility > .005f;
             }
-            UpdateBackdrop(v, stage);
+            if (district != null)
+            {
+                district.ApplyVisuals(v, celebrate, failFlash);
+                district.Tick(Time.deltaTime, height, stage, celebrate);
+            }
+            UpdateCloudSea(v, stage);
             dust.transform.position = new Vector3(0, height + 1, 0);
             var emission = dust.emission;
             emission.rateOverTime = QualitySettings.GetQualityLevel() == 0 ? .5f : Mathf.Lerp(.7f, 2.4f, stage);
@@ -434,30 +360,9 @@ namespace Wobble.Themes
             key.transform.rotation = Quaternion.Euler(Mathf.Lerp(46, 51, stage), Mathf.Lerp(-32, -22, stage), 0);
         }
 
-        private void UpdateBackdrop(ThemeVisuals v, float stage)
+        private void UpdateCloudSea(ThemeVisuals v, float stage)
         {
             var accentPulse = celebrate * celebrate;
-            propTint = Color.Lerp(v.ruinColor, v.accent, .12f + .05f * Mathf.Sin(Time.time * .18f));
-            propMaterial.color = Color.Lerp(propTint, v.accent, accentPulse * .25f + failFlash * .30f);
-            propMaterial.SetColor("_Accent", v.accent);
-            foliageMaterial.color = Color.Lerp(v.foliage, v.accent, accentPulse * .18f);
-            portalMaterial.color = Color.Lerp(Color.Lerp(v.portal, v.ruinColor, .60f), v.accent, .18f + accentPulse * .22f);
-            foreach (var material in backdropMaterials)
-            {
-                material.SetColor("_SkyTop", v.skyTop);
-                material.SetColor("_SkyHorizon", v.skyHorizon);
-                material.SetColor("_SkyBottom", v.skyBottom);
-                material.SetColor("_Accent", v.accent);
-                material.SetFloat("_AccentStrength", Mathf.Clamp(.05f + accentPulse * .08f, 0, .16f));
-                material.SetColor("_SunColor", v.sunColor);
-                material.SetVector("_SunDir", v.sunDirection);
-                material.SetFloat("_SunIntensity", v.sunIntensity);
-                material.SetColor("_CloudTint", v.cloudTint);
-                material.SetFloat("_CloudStrength", v.cloudStrength);
-                material.SetFloat("_Stars", v.starStrength);
-                material.SetFloat("_FogNear", RenderSettings.fogStartDistance);
-                material.SetFloat("_FogFar", RenderSettings.fogEndDistance);
-            }
             cloudSeaMaterial.SetColor("_Color", v.cloudSeaTop);
             cloudSeaMaterial.SetColor("_DeepColor", v.cloudSeaDeep);
             cloudSeaMaterial.SetColor("_Accent", v.accent);
@@ -469,48 +374,6 @@ namespace Wobble.Themes
                 var sea = cloudSea.transform;
                 sea.localPosition = new Vector3(0, -16.8f - stage * 1.4f, 0);
             }
-            for (var i = 0; i < landmarks.Length; i++)
-            {
-                var m = landmarks[i];
-                var bob = Mathf.Sin(Time.time * .16f + i * 1.7f) * .35f;
-                m.transform.localPosition = m.origin + Vector3.up * bob;
-                var visibility = Mathf.SmoothStep(0, 1, (Mathf.Max(Mathf.Abs(m.origin.x), Mathf.Abs(m.origin.z)) - 18f) / 12f) * .88f;
-                m.properties.SetFloat("_Visibility", visibility);
-                m.properties.SetColor("_Color", Color.Lerp(Color.Lerp(v.portal, v.ruinColor, .60f), v.accent, accentPulse * .22f));
-                m.renderer.SetPropertyBlock(m.properties);
-                m.renderer.enabled = visibility > .01f;
-            }
-            for (var i = 0; i < islands.Length; i++) UpdateDrifter(islands[i], i, v, 1.6f);
-            for (var i = 0; i < debris.Length; i++) UpdateDrifter(debris[i], i + 11, v, 1.0f);
-            // Keep the cloud sea visible but never in front of the play plane.
-            if (cloudSea != null) cloudSea.enabled = true;
-        }
-
-        private void UpdateDrifter(Drifter d, int index, ThemeVisuals v, float tint)
-        {
-            if (d == null) return;
-            var t = Time.time;
-            var bob = Mathf.Sin(t * .21f + d.phase) * d.bob;
-            var sway = Mathf.Cos(t * .13f + d.phase * 1.3f) * d.sway;
-            d.transform.localPosition = d.origin + new Vector3(sway, bob, sway * .55f);
-            d.transform.localRotation = Quaternion.Euler(0, (index * 19f) + Mathf.Sin(t * .07f + d.phase) * 3f, 0);
-            var visibility = Mathf.SmoothStep(0, 1, (Mathf.Max(Mathf.Abs(d.origin.x), Mathf.Abs(d.origin.z)) - 16f) / 10f) * .96f;
-            d.visibility = visibility;
-            var tintColor = Color.Lerp(v.propDark, v.propLight, tint * .55f);
-            d.rockProperties.SetFloat("_Visibility", visibility);
-            d.rockProperties.SetColor("_Color", tintColor);
-            d.rock.SetPropertyBlock(d.rockProperties);
-            d.rock.enabled = visibility > .01f;
-            if (d.cap == null) return;
-            d.capProperties.SetFloat("_Visibility", visibility);
-            d.capProperties.SetColor("_Color", tintColor);
-            d.cap.SetPropertyBlock(d.capProperties);
-            d.cap.enabled = visibility > .01f;
-            if (d.garden == null) return;
-            d.gardenProperties.SetFloat("_Visibility", visibility);
-            d.gardenProperties.SetColor("_Color", v.foliage);
-            d.garden.SetPropertyBlock(d.gardenProperties);
-            d.garden.enabled = visibility > .01f;
         }
 
         // Same depth contract as the monuments: nothing may enter the active travel plane.
@@ -586,14 +449,12 @@ namespace Wobble.Themes
 
         private void OnDestroy()
         {
-            foreach (var material in materials) Destroy(material);
+            foreach (var material in materials) if (material != null) Destroy(material);
             Destroy(dustMaterial);
-            Destroy(propMaterial);
-            Destroy(foliageMaterial);
-            Destroy(portalMaterial);
+            if (district != null) district.Dispose();
             Destroy(cloudSeaMaterial);
             Destroy(cloudTexture);
-            foreach (var mesh in generatedMeshes) Destroy(mesh);
+            foreach (var mesh in generatedMeshes) if (mesh != null) Destroy(mesh);
         }
     }
 }

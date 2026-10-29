@@ -14,7 +14,7 @@ namespace Wobble.UI
     {
         private static readonly Color White = WobblePalette.TextPrimary;
         private static readonly Color Muted = WobblePalette.TextSecondary;
-        private static readonly Color Charcoal = WobblePalette.Alpha(WobblePalette.SkyBottom,.40f);
+        private static readonly Color Charcoal = new(.04f,.07f,.11f,.72f);
         private SaveManager save;
         private EconomyManager economy;
         private AudioManager audioManager;
@@ -33,6 +33,7 @@ namespace Wobble.UI
         public event Action<MenuScreen> SectionChanged;
         public event Action<ThemeDefinition> DemoThemeSelected;
         private bool unlockingTheme;
+        private readonly List<RectTransform> themeCards=new();
 
         public void Build(Transform parent, SaveManager save, EconomyManager economy, AudioManager audioManager,
             HapticManager haptics, MenuLocalization loc, Action play)
@@ -69,11 +70,14 @@ namespace Wobble.UI
         }
         private void BuildHeader()
         {
-            var title=Text(root.transform,()=>loc.Text("app.title"),94,true,TextAlignmentOptions.TopLeft);
-            Top(title.rectTransform,54,60,670,115);title.characterSpacing=3;title.color=WobblePalette.Surface;
-            var shadow=title.gameObject.AddComponent<Shadow>();shadow.effectDistance=new Vector2(0,-5);shadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.35f);
-            var subtitle=Text(root.transform,()=>loc.Text("home.collection"),23,false,TextAlignmentOptions.TopLeft);
-            subtitle.color=WobblePalette.Surface;subtitle.characterSpacing=9;Top(subtitle.rectTransform,65,178,560,42);
+            var shade=Scrim("Header scrim",root.transform,new Color(.04f,.06f,.09f,0f),new Color(.04f,.06f,.09f,.46f));
+            Region(shade.rectTransform,0,.86f,1,1);
+            var title=Text(root.transform,()=>loc.Text("app.title"),92,true,TextAlignmentOptions.TopLeft);
+            Top(title.rectTransform,54,56,700,118);title.characterSpacing=3;title.color=WobblePalette.Surface;
+            var shadow=title.gameObject.AddComponent<Shadow>();shadow.effectDistance=new Vector2(0,-5);shadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.42f);
+            var subtitle=Text(root.transform,()=>SelectedThemeName(),27,true,TextAlignmentOptions.TopLeft);
+            subtitle.color=WobblePalette.Accent;subtitle.characterSpacing=8;Top(subtitle.rectTransform,58,176,600,46);
+            var subShadow=subtitle.gameObject.AddComponent<Shadow>();subShadow.effectDistance=new Vector2(0,-3);subShadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.30f);
             refresh.Add(()=>{title.gameObject.SetActive(Navigation.Current==MenuScreen.Home);subtitle.gameObject.SetActive(Navigation.Current==MenuScreen.Home);});
             for(var i=0;i<2;i++)
             {
@@ -84,22 +88,78 @@ namespace Wobble.UI
                 count.color=WobblePalette.Surface;Region(count.rectTransform,.34f,0,.94f,1);
             }
         }
+        private string SelectedThemeName()
+        {
+            foreach(var theme in catalog.themes)if(theme.id==save.Data.selectedTheme)return loc.Text(theme.nameKey);
+            return loc.Text("home.collection");
+        }
         private void BuildHome(Transform parent,Action play)
         {
-            var tagline=Text(parent,()=>loc.Text("home.tagline"),24,false);tagline.color=WobblePalette.Alpha(WobblePalette.TextPrimary,.78f);
-            tagline.characterSpacing=5;Center(tagline.rectTransform,.5f,.375f,820,52);
+            // Two soft scrims keep the cream type legible over a bright animated world
+            // without dimming the tower itself.
+            var bottom=Scrim("Home bottom scrim",parent,new Color(.03f,.05f,.08f,.66f),new Color(.03f,.05f,.08f,0f));
+            bottom.hold=.55f;
+            Region(bottom.rectTransform,0,0,1,.60f);
+            var top=Scrim("Home top scrim",parent,new Color(.03f,.05f,.08f,0f),new Color(.03f,.05f,.08f,.34f));
+            top.hold=0f;
+            Region(top.rectTransform,0,.80f,1,1);
+
+            // A small charcoal plate behind the motto keeps gold-on-marble legible
+            // without another full-width scrim.
+            var tagPlate=Panel("Tagline plate",parent,new Color(.05f,.07f,.10f,.34f));
+            var tagPlateRect=tagPlate.GetComponent<RectTransform>();
+            Center(tagPlateRect,.5f,.396f,660,58);
+            CasualSurface.Style(tagPlate.GetComponent<Image>(),false);
+            tagPlate.GetComponent<Image>().raycastTarget=false;
+            var tagline=Text(parent,()=>loc.Text("home.tagline"),23,false);
+            tagline.color=WobblePalette.Accent;
+            tagline.outlineColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.9f);
+            tagline.outlineWidth=.20f;
+            tagline.characterSpacing=5;Center(tagline.rectTransform,.5f,.396f,860,52);
+            var tagShadow=tagline.gameObject.AddComponent<Shadow>();tagShadow.effectDistance=new Vector2(0,-2);tagShadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.5f);
+
             var button=Button(parent,"home.play",()=>loc.Text("home.play"),play,true);
-            Center(button.GetComponent<RectTransform>(),.5f,.29f,820,155);
-            var gloss=Panel("Play gloss",button.transform,new Color(1,1,1,.16f));
-            Region(gloss.GetComponent<RectTransform>(),.035f,.56f,.965f,.94f);
+            var buttonRect=button.GetComponent<RectTransform>();
+            Center(buttonRect,.5f,.320f,760,148);
+            button.gameObject.AddComponent<RectMask2D>();
+            var sheen=Panel("Play sheen",button.transform,new Color(1,1,1,.10f));
+            Center(sheen.GetComponent<RectTransform>(),.5f,.5f,92,300);
+            sheen.GetComponent<RectTransform>().localRotation=Quaternion.Euler(0,0,-19);
+            sheen.GetComponent<Image>().raycastTarget=false;
+            sheen.transform.SetSiblingIndex(0);
+            var gloss=Panel("Play gloss",button.transform,new Color(1,1,1,.13f));
+            Region(gloss.GetComponent<RectTransform>(),.03f,.79f,.97f,.94f);
             CasualSurface.Style(gloss.GetComponent<Image>(),false);
             gloss.GetComponent<Image>().raycastTarget=false;
-            var bestCard=Panel("Best run plaque",parent,WobblePalette.Alpha(WobblePalette.TextPrimary,.76f));
-            Center(bestCard.GetComponent<RectTransform>(),.5f,.204f,640,110);CasualSurface.Style(bestCard.GetComponent<Image>());
-            var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),22,false);bestLabel.color=WobblePalette.Surface;
-            Center(bestLabel.rectTransform,.5f,.73f,600,35);
-            var best=Text(bestCard.transform,()=>save.Data.bestScore.ToString(),38,true);best.color=WobblePalette.Surface;
-            Center(best.rectTransform,.5f,.32f,600,48);
+            gloss.transform.SetSiblingIndex(1);
+            var pulse=button.gameObject.AddComponent<HeroPlayPulse>();
+            pulse.face=button.GetComponent<Image>();
+            pulse.sheen=sheen.GetComponent<RectTransform>();
+            var playIcon=Icon(button.transform,MenuIcon.Shape.Play);
+            Center(playIcon.rectTransform,.105f,.5f,46,46);playIcon.color=WobblePalette.Surface;
+            var label=button.transform.Find("Text");
+            if(label!=null)
+            {
+                var text=label.GetComponent<TextMeshProUGUI>();
+                text.characterSpacing=3;
+                Region(text.rectTransform,.20f,.03f,.965f,.97f);
+                label.SetAsLastSibling();
+            }
+
+            var bestCard=Panel("Best run plaque",parent,WobblePalette.Surface);
+            var bestRect=bestCard.GetComponent<RectTransform>();
+            Center(bestRect,.5f,.234f,600,104);CasualSurface.Style(bestCard.GetComponent<Image>());
+            var iconPlate=Panel("Best icon plate",bestCard.transform,WobblePalette.Alpha(WobblePalette.Accent,.46f));
+            Center(iconPlate.GetComponent<RectTransform>(),.10f,.5f,64,64);
+            CasualSurface.Style(iconPlate.GetComponent<Image>(),false);
+            var trophy=Icon(iconPlate.transform,MenuIcon.Shape.Trophy);
+            Center(trophy.rectTransform,.5f,.5f,42,42);trophy.color=WobblePalette.PrimaryPressed;
+            var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),17,true,TextAlignmentOptions.MidlineLeft);
+            bestLabel.color=WobblePalette.TextSecondary;bestLabel.characterSpacing=4;
+            Region(bestLabel.rectTransform,.185f,.50f,.60f,.94f);
+            var best=Text(bestCard.transform,()=>save.Data.bestScore.ToString(),40,true,TextAlignmentOptions.MidlineRight);
+            best.color=WobblePalette.TextPrimary;best.enableAutoSizing=true;best.fontSizeMin=24;best.fontSizeMax=41;
+            Region(best.rectTransform,.60f,.06f,.945f,.94f);
         }
         private void BuildNavigation()
         {
@@ -142,35 +202,146 @@ namespace Wobble.UI
         private void BuildThemes(Transform content)
         {
             RectTransform row=null;
+            themeCards.Clear();
             for(var i=0;i<catalog.themes.Length;i++)
             {
-                if(i%3==0)row=Row(content,360,false);
+                if(i%3==0)row=Row(content,372,false);
                 var theme=catalog.themes[i];
+                var indexNumber=i+1;
                 var visuals=ThemeVisuals.Get((ThemeId)i);
-                var card=Panel("Theme "+theme.id,row,Color.Lerp(theme.previewTint,WobblePalette.Surface,.82f)).GetComponent<RectTransform>();
-                Region(card,(i%3)/3f+.008f,0,(i%3+1)/3f-.008f,1);CasualSurface.Style(card.GetComponent<Image>());
-                var strip=Panel("Theme accent",card,WobblePalette.Alpha(visuals.accent,.92f));
-                Region(strip.GetComponent<RectTransform>(),.07f,.953f,.93f,.982f);CasualSurface.Style(strip.GetComponent<Image>(),false);
-                strip.GetComponent<Image>().raycastTarget=false;
-                var stage=Panel("Theme stage",card,Color.Lerp(visuals.skyHorizon,WobblePalette.Surface,.38f));
-                Region(stage.GetComponent<RectTransform>(),.065f,.345f,.935f,.94f);CasualSurface.Style(stage.GetComponent<Image>(),false);
-                stage.GetComponent<Image>().raycastTarget=false;
-                var preview=new GameObject("Material study "+theme.id,typeof(RectTransform),typeof(StonePreview)).GetComponent<StonePreview>();
-                preview.transform.SetParent(card,false);preview.material=Resources.Load<Material>("Menu/MenuUI");preview.stone=theme.previewTint;preview.accent=visuals.accent;preview.raycastTarget=false;
-                Region(preview.rectTransform,.065f,.345f,.935f,.94f);
-                var label=Text(card,()=>loc.Text(theme.nameKey),28,true);Region(label.rectTransform,.03f,.22f,.97f,.35f);
-                var status=Text(card,()=>economy.DemoMode ? (save.Data.selectedTheme==theme.id ? loc.Text("themes.selected") : save.Data.ownedSkins.Contains(theme.id) ? (loc.LocaleCode=="tr"?"SEÇ":"SELECT") : (loc.LocaleCode=="tr"?"KİLİDİ AÇ · ":"UNLOCK · ")+theme.gemPrice) : theme.available?loc.Text("themes.selected"):loc.Text("themes.requirement",theme.gemPrice),18,false);
-                status.color=theme.available || (economy.DemoMode && save.Data.ownedSkins.Contains(theme.id)) ? WobblePalette.Success : Muted;Region(status.rectTransform,.04f,.025f,.96f,.21f);
-                refresh.Add(()=>card.GetComponent<Image>().color=save.Data.selectedTheme==theme.id?Color.Lerp(WobblePalette.Surface,visuals.accent,.16f):Color.Lerp(theme.previewTint,WobblePalette.Surface,.82f));
-                if(economy.DemoMode)card.gameObject.AddComponent<Button>().onClick.AddListener(()=>{
+                var card=Panel("Theme "+theme.id,row,WobblePalette.Surface).GetComponent<RectTransform>();
+                Region(card,(i%3)/3f+.008f,0,((i%3)+1)/3f-.008f,1);CasualSurface.Style(card.GetComponent<Image>());
+                themeCards.Add(card);
+
+                // Selected state reads as a framed print: accent outline, accent top
+                // rule and a tinted surface, without moving anything else.
+                var rule=Panel("Theme rule",card,WobblePalette.Alpha(visuals.accent,.95f));
+                Region(rule.GetComponent<RectTransform>(),.055f,.955f,.945f,.982f);
+                CasualSurface.Style(rule.GetComponent<Image>(),false);rule.GetComponent<Image>().raycastTarget=false;
+
+                var frame=Panel("Theme frame",card,Color.Lerp(visuals.propDark,WobblePalette.Surface,.25f));
+                Region(frame.GetComponent<RectTransform>(),.048f,.352f,.952f,.945f);
+                CasualSurface.Style(frame.GetComponent<Image>(),false);frame.GetComponent<Image>().raycastTarget=false;
+
+                var poster=new GameObject("Poster "+theme.id,typeof(RectTransform),typeof(ThemePoster)).GetComponent<ThemePoster>();
+                poster.transform.SetParent(card,false);
+                poster.material=Resources.Load<Material>("Menu/MenuUI");
+                poster.raycastTarget=false;
+                poster.theme=(ThemeId)i;
+                Region(poster.rectTransform,.058f,.362f,.942f,.938f);
+
+                var indexPlate=Panel("Theme index",card,WobblePalette.Alpha(WobblePalette.TextPrimary,.62f));
+                Center(indexPlate.GetComponent<RectTransform>(),.145f,.885f,58,40);
+                CasualSurface.Style(indexPlate.GetComponent<Image>(),false);indexPlate.GetComponent<Image>().raycastTarget=false;
+                var index=Text(indexPlate.transform,()=>indexNumber.ToString("00"),19,true);index.color=WobblePalette.Surface;
+                Region(index.rectTransform,0,0,1,1);index.characterSpacing=4;
+
+                var label=Text(card,()=>loc.Text(theme.nameKey),29,true,TextAlignmentOptions.MidlineLeft);
+                Region(label.rectTransform,.052f,.232f,.95f,.328f);label.characterSpacing=2;
+                label.enableAutoSizing=true;label.fontSizeMin=19;label.fontSizeMax=29;
+                var subtitle=Text(card,()=>ThemeSubtitle(theme.id),15,false,TextAlignmentOptions.MidlineLeft);
+                subtitle.color=Muted;Region(subtitle.rectTransform,.052f,.152f,.95f,.232f);
+                subtitle.enableAutoSizing=true;subtitle.fontSizeMin=11;subtitle.fontSizeMax=15;subtitle.characterSpacing=6;
+
+                var statusPlate=Panel("Theme status",card,WobblePalette.Alpha(WobblePalette.TextPrimary,.07f));
+                Region(statusPlate.GetComponent<RectTransform>(),.052f,.028f,.948f,.132f);
+                CasualSurface.Style(statusPlate.GetComponent<Image>(),false);statusPlate.GetComponent<Image>().raycastTarget=false;
+                var status=Text(statusPlate.transform,()=>ThemeStatus(theme),16,true,TextAlignmentOptions.MidlineLeft);
+                Region(status.rectTransform,.055f,0,.60f,1);status.characterSpacing=3;
+                status.enableAutoSizing=true;status.fontSizeMin=9;status.fontSizeMax=16;
+                var pricePlate=Panel("Theme price",statusPlate.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.10f));
+                Region(pricePlate.GetComponent<RectTransform>(),.60f,.16f,.97f,.84f);
+                CasualSurface.Style(pricePlate.GetComponent<Image>(),false);pricePlate.GetComponent<Image>().raycastTarget=false;
+                var gem=Icon(pricePlate.transform,MenuIcon.Shape.Gem);Center(gem.rectTransform,.17f,.5f,28,28);
+                var price=Text(pricePlate.transform,()=>theme.gemPrice.ToString(),16,true,TextAlignmentOptions.MidlineLeft);
+                Region(price.rectTransform,.36f,0,.96f,1);price.characterSpacing=1;
+
+                refresh.Add(()=>PaintThemeCard(theme,visuals,card,statusPlate,status,subtitle,pricePlate,gem));
+
+                var button=card.gameObject.AddComponent<Button>();
+                button.targetGraphic=card.GetComponent<Image>();
+                card.gameObject.AddComponent<StoneButtonFeedback>();
+                if(economy.DemoMode)button.onClick.AddListener(()=>{
                     if(unlockingTheme)return;
+                    audioManager.MenuTap();
                     if(save.Data.ownedSkins.Contains(theme.id)){SelectDemoTheme(theme);return;}
                     if(economy.TrySpendGems(theme.gemPrice))StartCoroutine(UnlockTheme(theme,card));
                 });
-                else if(theme.available)card.gameObject.AddComponent<Button>().onClick.AddListener(()=>{save.Data.selectedTheme=theme.id;save.Save();});
+                else button.onClick.AddListener(()=>{
+                    audioManager.MenuTap();
+                    if(theme.available){save.Data.selectedTheme=theme.id;save.Save();}
+                });
             }
             if(economy.DemoMode){var note=Text(content,()=>loc.LocaleCode=="tr"?"DEMO · Tüm temalar açık · İlerleme kaydedilmez":"DEMO · All themes unlocked · Progress is not saved",22,false);note.gameObject.AddComponent<LayoutElement>().preferredHeight=70;}
             else Note(content,"themes.coming");
+        }
+
+        // A short bilingual destination line under each world name. Kept in code so
+        // the localisation tables stay untouched; the same pattern already used by
+        // the demo banner and shop placeholders.
+        private string ThemeSubtitle(string id)
+        {
+            var tr=loc.LocaleCode=="tr";
+            switch(id)
+            {
+                case "Carrara": return tr?"Mermer sarayının bahçeleri":"Gardens of the marble palace";
+                case "Obsidian": return tr?"Kor ateş kalesi":"Fortress of embers";
+                case "AncientStone": return tr?"Çölün unutulmuş tapınağı":"Forgotten temple of the sands";
+                case "Neon": return tr?"Sonsuz gecenin şehri":"City of endless night";
+                default: return tr?"Yıldızların ötesindeki kule":"Tower beyond the stars";
+            }
+        }
+
+        private string ThemeStatus(ThemeDefinition theme)
+        {
+            var owned=save.Data.ownedSkins.Contains(theme.id);
+            var selected=save.Data.selectedTheme==theme.id;
+            if(selected)return loc.Text("themes.selected");
+            if(owned)return loc.LocaleCode=="tr"?"SEÇ":"SELECT";
+            return loc.LocaleCode=="tr"?"KİLİTLİ":"LOCKED";
+        }
+
+        private void PaintThemeCard(ThemeDefinition theme,ThemeVisuals visuals,RectTransform card,GameObject statusPlate,TextMeshProUGUI status,TextMeshProUGUI subtitle,GameObject pricePlate,MenuIcon gem)
+        {
+            var owned=save.Data.ownedSkins.Contains(theme.id);
+            var selected=save.Data.selectedTheme==theme.id;
+            var unlocked=owned||theme.available;
+            card.GetComponent<Image>().color=selected?Color.Lerp(WobblePalette.Surface,visuals.accent,.20f):WobblePalette.Surface;
+            var outline=card.GetComponent<Outline>();
+            if(outline!=null)
+            {
+                outline.effectColor=selected?visuals.accent:WobblePalette.Alpha(WobblePalette.Surface,.65f);
+                outline.effectDistance=selected?new Vector2(4,-4):new Vector2(2,-2);
+            }
+            statusPlate.GetComponent<Image>().color=selected?visuals.accent:unlocked?WobblePalette.SurfaceAlt:WobblePalette.Alpha(WobblePalette.TextPrimary,.07f);
+            status.color=selected?Color.white:unlocked?WobblePalette.PrimaryPressed:WobblePalette.TextSecondary;
+            subtitle.color=selected?WobblePalette.PrimaryPressed:Muted;
+            pricePlate.SetActive(!owned);
+            gem.gameObject.SetActive(!owned);
+        }
+
+        private void RevealThemeCards()
+        {
+            if(!isActiveAndEnabled)return;
+            for(var i=0;i<themeCards.Count;i++)StartCoroutine(RevealThemeCard(themeCards[i],i*.022f));
+        }
+
+        private System.Collections.IEnumerator RevealThemeCard(RectTransform card,float delay)
+        {
+            var group=card.GetComponent<CanvasGroup>();
+            if(group==null)group=card.gameObject.AddComponent<CanvasGroup>();
+            var home=card.anchoredPosition;
+            group.alpha=0;
+            card.anchoredPosition=home+new Vector2(0,-26);
+            for(var t=0f;t<delay;t+=Time.unscaledDeltaTime)yield return null;
+            for(var t=0f;t<.16f;t+=Time.unscaledDeltaTime)
+            {
+                var ease=Mathf.SmoothStep(0,1,t/.16f);
+                group.alpha=ease;
+                card.anchoredPosition=home+new Vector2(0,Mathf.Lerp(-26,0,ease));
+                yield return null;
+            }
+            group.alpha=1;card.anchoredPosition=home;
         }
         private void SelectDemoTheme(ThemeDefinition theme)
         {
@@ -192,7 +363,7 @@ namespace Wobble.UI
                 }
                 save.Data.ownedSkins.Add(theme.id);SelectDemoTheme(theme);
             }
-            finally{card.localScale=Vector3.one;image.color=original;unlockingTheme=false;}
+            finally{card.localScale=Vector3.one;image.color=original;unlockingTheme=false;Refresh();}
         }
         private void BuildShop(Transform content)
         {
@@ -263,7 +434,7 @@ namespace Wobble.UI
             var credits=Text(body,()=>Resources.Load<TextAsset>("Audio/RecordedStoneCredits").text,20,false,TextAlignmentOptions.TopLeft,popupText:true);
             Region(credits.rectTransform,.07f,.12f,.93f,.77f);
         }
-        public void Open(MenuScreen screen) { ClosePopup();Navigation.Show(screen);SectionChanged?.Invoke(screen);audioManager.MenuSlide();Refresh(); }
+        public void Open(MenuScreen screen) { ClosePopup();Navigation.Show(screen);SectionChanged?.Invoke(screen);audioManager.MenuSlide();Refresh();if(screen==MenuScreen.Themes)RevealThemeCards(); }
         public void Back() { if(popup!=null)ClosePopup();else Open(MenuScreen.Home); }
         public void ShowHome() { root.SetActive(true);ClosePopup();Navigation.Show(MenuScreen.Home,true);SectionChanged?.Invoke(MenuScreen.Home);Refresh(); }
         public void Hide() { ClosePopup();root.SetActive(false); }
@@ -336,11 +507,11 @@ namespace Wobble.UI
         }
         private void Section(Transform content,string key)
         {
-            var row=Row(content,64,false);var label=Text(row,()=>loc.Text(key),21,true,TextAlignmentOptions.MidlineLeft);label.color=Muted;Region(label.rectTransform,.02f,0,1,1);
+            var row=Row(content,64,false);var label=Text(row,()=>loc.Text(key),21,true,TextAlignmentOptions.MidlineLeft);label.color=WobblePalette.Alpha(WobblePalette.Accent,.90f);Region(label.rectTransform,.02f,0,1,1);
         }
         private void Note(Transform content,string key)
         {
-            var row=Row(content,100,false);var label=Text(row,()=>loc.Text(key),21,false,TextAlignmentOptions.MidlineLeft);label.color=Muted;Region(label.rectTransform,.02f,.05f,.98f,.95f);
+            var row=Row(content,100,false);var label=Text(row,()=>loc.Text(key),21,false,TextAlignmentOptions.MidlineLeft);label.color=WobblePalette.Alpha(WobblePalette.Surface,.82f);Region(label.rectTransform,.02f,.05f,.98f,.95f);
         }
         private RectTransform Row(Transform content,float height,bool separator=true)
         {
@@ -372,6 +543,15 @@ namespace Wobble.UI
         {
             var icon=new GameObject(shape.ToString(),typeof(RectTransform),typeof(MenuIcon)).GetComponent<MenuIcon>();
             icon.transform.SetParent(parent,false);icon.material=Resources.Load<Material>("Menu/MenuUI");icon.shape=shape;icon.color=shape==MenuIcon.Shape.Gem?WobblePalette.GemColor:shape==MenuIcon.Shape.Heart?WobblePalette.LifeColor:White;icon.raycastTarget=false;return icon;
+        }
+        private static MenuScrim Scrim(string name,Transform parent,Color bottom,Color top)
+        {
+            var go=new GameObject(name,typeof(RectTransform),typeof(MenuScrim));
+            go.transform.SetParent(parent,false);
+            var scrim=go.GetComponent<MenuScrim>();
+            scrim.material=Resources.Load<Material>("Menu/MenuUI");
+            scrim.raycastTarget=false;scrim.bottomColor=bottom;scrim.topColor=top;
+            return scrim;
         }
         private static GameObject Panel(string name,Transform parent,Color color)
         {

@@ -71,13 +71,13 @@ namespace Wobble.Themes
         // The gameplay camera looks down, so skyBottom/horizon carry the visible colour.
         public static readonly ThemeVisuals Carrara = new()
         {
-            skyTop = H(0x0F6FC8), skyHorizon = H(0x9FD4F4), skyBottom = H(0x53ACE6),
+            skyTop = H(0x0F6FC8), skyHorizon = H(0x93D0F2), skyBottom = H(0x3E9BDF),
             sunColor = H(0xFFEFC0), sunDirection = new Vector3(-0.55f, 0.58f, 0.42f).normalized,
             sunIntensity = 1.18f, cloudTint = H(0xFFFDF6), cloudStrength = .58f, starStrength = 0f,
             accent = H(0xFFAE3D), accentSecondary = H(0xFF6F61),
             propLight = H(0xF7EDDD), propDark = H(0xCBB89F), foliage = H(0x3F8A55), flower = H(0xFF7E6B),
-            portal = H(0xF4DCBB), ruinColor = H(0x8A98A4), cloudSeaTop = H(0xFDFEFF), cloudSeaDeep = H(0x7FAAD4),
-            edgeColor = H(0xFFD98A), edgeGlow = 0.10f, keyBoost = 1f, cloudSeaAlpha = .74f,
+            portal = H(0xF4DCBB), ruinColor = H(0x8A98A4), cloudSeaTop = H(0xFFF4E2), cloudSeaDeep = H(0x4E8FC9),
+            edgeColor = H(0xFFD98A), edgeGlow = 0.10f, keyBoost = 1f, cloudSeaAlpha = .70f,
             fogNear = 46f, fogFar = 118f
         };
 

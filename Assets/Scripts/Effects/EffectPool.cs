@@ -157,14 +157,20 @@ namespace Wobble.Effects
         public void Celebrate(bool perfect, Vector3 position, Vector3 size, int combo)
         {
             var top = position + Vector3.up * (size.y * .5f + .015f);
+            // x5 and x8 are the escalation beats: more sparks, a wider shockwave and a
+            // brighter aura, without adding a second effect system or a second draw call
+            // for the common case.
+            var tier = combo >= 8 ? 2 : combo >= 5 ? 1 : 0;
             var high = combo >= 4;
             var primary = high ? accentSecondary : accent;
             var secondary = high ? accent : accentSecondary;
-            SpawnSparks(top, size, perfect ? 12 + Mathf.Min(18, combo * 2) : 6, perfect ? primary : secondary, perfect ? 1f : .55f);
+            SpawnSparks(top, size, (perfect ? 12 + Mathf.Min(18, combo * 2) : 6) + tier * 8,
+                perfect ? primary : secondary, perfect ? 1f + tier * .18f : .55f);
             if (!perfect) return;
-            EmitRing(top, .62f, 2.6f + Mathf.Min(1.4f, combo * .12f), 1.15f, primary);
+            EmitRing(top, .62f, 2.6f + Mathf.Min(1.4f, combo * .12f) + tier * .85f, 1.15f + tier * .22f, primary);
             ShowAura(top, size, combo, secondary);
-            if (combo >= 4) SpawnSparks(top, size, 8, secondary, 1.1f);
+            if (high) SpawnSparks(top, size, 8 + tier * 7, secondary, 1.1f + tier * .12f);
+            if (tier >= 2) SpawnSparks(top, size, 10, Color.Lerp(primary, Color.white, .45f), 1.35f);
         }
 
         public void Fail(Vector3 position, Vector3 size)
@@ -217,12 +223,13 @@ namespace Wobble.Effects
         private void ShowAura(Vector3 position, Vector3 size, int combo, Color color)
         {
             if (aura == null) return;
+            var tier = combo >= 8 ? 2 : combo >= 5 ? 1 : 0;
             aura.transform.position = position;
-            auraBase = Mathf.Max(1.05f, Mathf.Max(size.x, size.z) * (.90f + Mathf.Min(.35f, combo * .035f)));
+            auraBase = Mathf.Max(1.05f, Mathf.Max(size.x, size.z) * (.90f + Mathf.Min(.35f, combo * .035f) + tier * .14f));
             aura.transform.localScale = Vector3.one * auraBase;
             auraMaterial.SetColor("_Color", color);
             auraMaterial.SetFloat("_Intensity", .55f);
-            auraStrength = .55f + Mathf.Min(.55f, combo * .055f);
+            auraStrength = .55f + Mathf.Min(.55f, combo * .055f) + tier * .16f;
             auraTime = 0;
             aura.SetActive(true);
         }

@@ -8,7 +8,7 @@ namespace Wobble.UI
     public sealed class MenuIcon : MaskableGraphic
     {
         public MenuIcon() { useLegacyMeshGeneration = false; }
-        public enum Shape { Gem, Heart, Layers, Shop, Calendar, Settings }
+        public enum Shape { Gem, Heart, Layers, Shop, Calendar, Settings, Play, Trophy }
         public Shape shape;
         protected override void OnPopulateMesh(VertexHelper vh)
         {
@@ -39,6 +39,22 @@ namespace Wobble.UI
             {
                 var points=new[]{P(0,-.9f),P(-.95f,.1f),P(-.95f,.6f),P(-.5f,.9f),P(0,.5f),P(.5f,.9f),P(.95f,.6f),P(.95f,.1f)};
                 for(var i=0;i<points.Length;i++)Facet(P(0,0),points[i],points[(i+1)%points.Length],i<4?.18f:0);
+                return;
+            }
+            if(shape==Shape.Play)
+            {
+                Facet(P(-.55f,.86f),P(-.55f,-.86f),P(.82f,0),.06f);
+                Facet(P(-.55f,.86f),P(.82f,0),P(-.1f,.28f),.22f);
+                return;
+            }
+            if(shape==Shape.Trophy)
+            {
+                Facet(P(-.58f,.92f),P(.58f,.92f),P(.38f,.16f),.30f);
+                Facet(P(-.58f,.92f),P(-.38f,.16f),P(.38f,.16f),.05f);
+                Facet(P(-.38f,.16f),P(.38f,.16f),P(0,-.10f),.18f);
+                Path(P(-.20f,-.10f),P(-.20f,-.58f),P(-.46f,-.90f),P(.46f,-.90f),P(.20f,-.58f),P(.20f,-.10f));
+                Path(P(-.58f,.92f),P(-.92f,.74f),P(-.92f,.36f),P(-.54f,.18f));
+                Path(P(.58f,.92f),P(.92f,.74f),P(.92f,.36f),P(.54f,.18f));
                 return;
             }
             if (shape == Shape.Gem) { Path(P(-1,.35f),P(-.55f,.9f),P(.55f,.9f),P(1,.35f),P(0,-1),P(-1,.35f),P(1,.35f)); Path(P(-.55f,.9f),P(0,-1),P(.55f,.9f)); }

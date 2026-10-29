@@ -55,6 +55,8 @@ namespace Wobble.UI
         private float feedbackRise;
         private int lastBlocks, lastGems;
         private RectTransform resultCardRect;
+        private readonly RectTransform[] resultChips=new RectTransform[4];
+        private bool countingResult;
         private TextMeshProUGUI resultBest;
         private TextMeshProUGUI resultBlocks, resultPerfects, resultCombo, resultGems;
         private TextMeshProUGUI resultScoreCaption, resultBestCaption, resultBlockCaption, resultPerfectCaption, resultComboCaption, resultGemCaption;
@@ -146,7 +148,7 @@ namespace Wobble.UI
         {
             Transitioning=true;audioManager.PlayTransition();
             var group=retry?resultGroup:menuGroup;
-            group.interactable=group.blocksRaycasts=false;
+            group.blocksRaycasts=false;
             var duration=retry?.32f:.58f;
             for(var t=0f;t<duration;t+=Time.unscaledDeltaTime)
             {
@@ -163,11 +165,11 @@ namespace Wobble.UI
             hud = Panel("HUD", canvas, Color.clear);
             var scrim = Panel("HUD top scrim", hud.transform, Color.clear).GetComponent<Image>();
             scrim.sprite = VerticalFade();
-            scrim.color = new Color(.03f, .07f, .14f, .34f);
+            scrim.color = new Color(.02f, .045f, .085f, .58f);
             scrim.raycastTarget = false;
             var scrimRect = scrim.rectTransform;
             scrimRect.anchorMin = new Vector2(0, 1); scrimRect.anchorMax = new Vector2(1, 1); scrimRect.pivot = new Vector2(.5f, 1);
-            scrimRect.sizeDelta = new Vector2(0, 270); scrimRect.anchoredPosition = Vector2.zero;
+            scrimRect.sizeDelta = new Vector2(0, 330); scrimRect.anchoredPosition = Vector2.zero;
             var brand = Label("app.title", hud.transform, 34, FontStyles.Bold, TextAlignmentOptions.TopLeft, Color.white);
             SetRectTop(brand.rectTransform, 54, 54, 430, 60, false);
             levelText = Label("hud.level", hud.transform, 23, FontStyles.Bold, TextAlignmentOptions.TopLeft, WobblePalette.Surface);
@@ -176,8 +178,9 @@ namespace Wobble.UI
             SetRectTop(scoreText.rectTransform, 54, 48, 400, 80, true);
             bestText = Label("hud.best", hud.transform, 22, FontStyles.Normal, TextAlignmentOptions.TopRight, WobblePalette.TextPrimary);
             SetRectTop(bestText.rectTransform, 54, 120, 400, 50, true);
-            feedbackText = Label("hud.perfect", hud.transform, 36, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Success);
-            SetRect(feedbackText.rectTransform, .5f, .60f, 520, 115);
+            feedbackText = Label("hud.perfect", hud.transform, 40, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Success);
+            SetRect(feedbackText.rectTransform, .5f, .60f, 560, 140);
+            feedbackText.lineSpacing = -18f;
             feedbackText.canvasRenderer.SetAlpha(0);
             levelFlash = Label("hud.level", hud.transform, 32, FontStyles.Bold, TextAlignmentOptions.Center, new Color(.88f, .85f, .77f));
             SetRect(levelFlash.rectTransform, .5f, .76f, 500, 80);
@@ -188,8 +191,8 @@ namespace Wobble.UI
             hudLabels = new[] { brand, levelText, scoreText, bestText, feedbackText, levelFlash, tapHint };
             foreach (var label in hudLabels)
             {
-                label.outlineColor = new Color(.08f, .10f, .16f, .8f);
-                label.outlineWidth = .14f;
+                label.outlineColor = new Color(.06f, .08f, .13f, .95f);
+                label.outlineWidth = .20f;
                 var shadow = label.gameObject.AddComponent<Shadow>();
                 shadow.effectColor = new Color(.08f, .10f, .16f, .65f);
                 shadow.effectDistance = new Vector2(1, -2);
@@ -198,28 +201,36 @@ namespace Wobble.UI
 
         private void BuildGameOver(Transform canvas)
         {
-            gameOver = Panel("Game Over", canvas, WobblePalette.Alpha(WobblePalette.TextPrimary,.42f));
+            gameOver = Panel("Game Over", canvas, WobblePalette.Alpha(WobblePalette.TextPrimary,.58f));
             resultGroup=gameOver.AddComponent<CanvasGroup>();
-            var title = Label("gameover.title", gameOver.transform, 44, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
+            var title = Label("gameover.title", gameOver.transform, 46, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
             title.characterSpacing=8;
-            Center(title.rectTransform, .5f, .845f, 860, 70);
-            var card=Panel("Result card",gameOver.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.90f));
-            resultCardRect=card.GetComponent<RectTransform>(); Center(resultCardRect,.5f,.565f,900,760); CasualSurface.Style(card.GetComponent<Image>());
+            Center(title.rectTransform, .5f, .862f, 880, 76);
+            var kicker = Panel("Result accent rule", gameOver.transform, WobblePalette.Alpha(WobblePalette.Primary,.95f));
+            Center(kicker.GetComponent<RectTransform>(), .5f, .822f, 150, 9);
+            CasualSurface.Style(kicker.GetComponent<Image>(), false);
+            kicker.GetComponent<Image>().raycastTarget = false;
+            var card=Panel("Result card",gameOver.transform,WobblePalette.Surface);
+            resultCardRect=card.GetComponent<RectTransform>(); Center(resultCardRect,.5f,.556f,920,780); CasualSurface.Style(card.GetComponent<Image>());
             var accentBar=Panel("Result accent",card.transform,WobblePalette.Primary);
-            Region(accentBar.GetComponent<RectTransform>(),.33f,.951f,.67f,.971f);CasualSurface.Style(accentBar.GetComponent<Image>(),false);
+            Region(accentBar.GetComponent<RectTransform>(),.35f,.958f,.65f,.976f);CasualSurface.Style(accentBar.GetComponent<Image>(),false);
             accentBar.GetComponent<Image>().raycastTarget=false;
-            resultScoreCaption=Caption("result.score",card.transform,20,WobblePalette.Alpha(WobblePalette.Surface,.62f));
-            Center(resultScoreCaption.rectTransform,.5f,.88f,420,40);
-            resultsText = Label("result.value", card.transform, 122, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
-            Center(resultsText.rectTransform,.5f,.742f,820,235);
-            resultBest = Label("hud.best", card.transform, 25, FontStyles.Normal, TextAlignmentOptions.Center, WobblePalette.Accent);
-            Center(resultBest.rectTransform,.5f,.626f,520,58);
-            var divider=Panel("Result divider",card.transform,WobblePalette.Alpha(WobblePalette.Surface,.22f));
+            resultScoreCaption=Caption("result.score",card.transform,20,WobblePalette.TextSecondary);
+            Center(resultScoreCaption.rectTransform,.5f,.885f,420,40);
+            resultsText = Label("result.value", card.transform, 126, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.TextPrimary);
+            Center(resultsText.rectTransform,.5f,.742f,840,246);
+            resultBest = Label("hud.best", card.transform, 25, FontStyles.Normal, TextAlignmentOptions.Center, WobblePalette.PrimaryPressed);
+            Center(resultBest.rectTransform,.5f,.621f,540,58);
+            var divider=Panel("Result divider",card.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.14f));
             Region(divider.GetComponent<RectTransform>(),.10f,.552f,.90f,.555f);divider.GetComponent<Image>().raycastTarget=false;
             resultBlocks=StatChip(card.transform,.285f,.445f,"result.blocks",out resultBlockCaption);
             resultPerfects=StatChip(card.transform,.715f,.445f,"result.perfects",out resultPerfectCaption);
             resultCombo=StatChip(card.transform,.285f,.235f,"result.combo",out resultComboCaption);
             resultGems=StatChip(card.transform,.715f,.235f,"result.gems",out resultGemCaption);
+            resultChips[0]=(RectTransform)resultBlocks.transform.parent;
+            resultChips[1]=(RectTransform)resultPerfects.transform.parent;
+            resultChips[2]=(RectTransform)resultCombo.transform.parent;
+            resultChips[3]=(RectTransform)resultGems.transform.parent;
             var retry = Button("gameover.retry", gameOver.transform, WobblePalette.Primary, Color.white);
             Center(retry.GetComponent<RectTransform>(), .5f, .295f, 820, 120);
             retry.gameObject.AddComponent<StoneButtonFeedback>();
@@ -265,14 +276,14 @@ namespace Wobble.UI
 
         private TextMeshProUGUI StatChip(Transform parent, float x, float y, string key, out TextMeshProUGUI caption)
         {
-            var chip = Panel("Stat "+key, parent, WobblePalette.Alpha(WobblePalette.Surface,.075f));
+            var chip = Panel("Stat "+key, parent, WobblePalette.Alpha(WobblePalette.TextPrimary,.055f));
             Center(chip.GetComponent<RectTransform>(), x, y, 372, 156);
             var image = chip.GetComponent<Image>();
             CasualSurface.Style(image, false);
             image.raycastTarget = false;
-            caption = Caption(key, chip.transform, 18, WobblePalette.Alpha(WobblePalette.Surface,.58f));
+            caption = Caption(key, chip.transform, 18, WobblePalette.TextSecondary);
             Center(caption.rectTransform, .5f, .74f, 330, 38);
-            var value = Label("result.value", chip.transform, 42, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
+            var value = Label("result.value", chip.transform, 42, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.TextPrimary);
             Center(value.rectTransform, .5f, .33f, 340, 88);
             return value;
         }
@@ -323,7 +334,7 @@ namespace Wobble.UI
 
         private IEnumerator ReturnHome()
         {
-            Transitioning=true;resultGroup.interactable=resultGroup.blocksRaycasts=false;
+            Transitioning=true;resultGroup.blocksRaycasts=false;
             for(var t=0f;t<.24f;t+=Time.unscaledDeltaTime){resultGroup.alpha=1-Mathf.SmoothStep(0,1,t/.24f);yield return null;}
             Transitioning=false;HomePressed?.Invoke();
         }
@@ -361,15 +372,42 @@ namespace Wobble.UI
         }
         private IEnumerator ResultEntrance()
         {
-            resultGroup.interactable=resultGroup.blocksRaycasts=false;
-            for(var t=0f;t<.30f;t+=Time.unscaledDeltaTime)
+            // Alpha + raycast gating only: toggling CanvasGroup.interactable makes
+            // Selectables paint their disabled tint, which leaves the result buttons
+            // washed out until the next pointer event.
+            resultGroup.interactable=true;
+            resultGroup.blocksRaycasts=false;
+            countingResult=true;
+            resultGroup.alpha=0f;
+            resultCardRect.localScale=Vector3.one*.90f;
+            resultCardRect.anchoredPosition=new Vector2(0,64);
+            for(var i=0;i<resultChips.Length;i++) if(resultChips[i]!=null) resultChips[i].localScale=Vector3.zero;
+            var shown=-1;
+            const float duration=.64f;
+            for(var t=0f;t<duration;t+=Time.unscaledDeltaTime)
             {
-                var p=Mathf.SmoothStep(0,1,t/.30f);
-                resultGroup.alpha=p;
-                resultCardRect.localScale=Vector3.one*Mathf.Lerp(.955f,1f,p);
+                var p=Mathf.Clamp01(t/duration);
+                resultGroup.alpha=Mathf.Clamp01(p*3.4f);
+                // The card lands with a small overshoot, then the four stat tiles pop
+                // in sequence. The score rolls up so the run's total feels earned.
+                var card=Mathf.Clamp01(t/.42f);
+                resultCardRect.localScale=Vector3.one*Mathf.Lerp(.90f,1f,EaseOutBack(card));
+                resultCardRect.anchoredPosition=new Vector2(0,Mathf.Lerp(64,0,Mathf.SmoothStep(0,1,card)));
+                for(var i=0;i<resultChips.Length;i++)
+                {
+                    if(resultChips[i]==null)continue;
+                    var cp=Mathf.Clamp01((t-.28f-i*.055f)/.32f);
+                    resultChips[i].localScale=Vector3.one*Mathf.Lerp(.80f,1f,EaseOutBack(cp));
+                }
+                var target=Mathf.RoundToInt(lastScore*Mathf.SmoothStep(0,1,Mathf.Clamp01((t-.10f)/.46f)));
+                if(target!=shown){shown=target;resultsText.text=shown.ToString();}
                 yield return null;
             }
-            resultGroup.alpha=1;resultCardRect.localScale=Vector3.one;resultGroup.interactable=resultGroup.blocksRaycasts=true;
+            resultGroup.alpha=1f;resultCardRect.localScale=Vector3.one;resultCardRect.anchoredPosition=Vector2.zero;
+            for(var i=0;i<resultChips.Length;i++) if(resultChips[i]!=null) resultChips[i].localScale=Vector3.one;
+            resultsText.text=lastScore.ToString();
+            countingResult=false;
+            resultGroup.interactable=resultGroup.blocksRaycasts=true;
             resultRoutine=null;
         }
 
@@ -399,7 +437,8 @@ namespace Wobble.UI
         {
             lastCombo = Mathf.Max(2, combo);
             feedbackText.text = Localization.Text("hud.combo", lastCombo);
-            yield return AnimateFeedback(.58f);
+            // Milestones hold the badge a little longer so x5 and x8 read as events.
+            yield return AnimateFeedback(lastCombo >= 8 ? .84f : lastCombo >= 5 ? .70f : .58f, lastCombo);
         }
 
         private IEnumerator LevelAnimation(int level)
@@ -413,13 +452,17 @@ namespace Wobble.UI
             levelFlash.canvasRenderer.SetAlpha(0);
         }
 
-        private IEnumerator AnimateFeedback(float hold)
+        private IEnumerator AnimateFeedback(float hold, int combo = 0)
         {
+            var punch = combo >= 8 ? .30f : combo >= 5 ? .17f : .07f;
             for (var elapsed = 0f; elapsed < hold; elapsed += Time.unscaledDeltaTime)
             {
                 var t = elapsed / hold;
                 feedbackRise = t * 38f;
-                feedbackText.rectTransform.localScale = Vector3.one * Mathf.Lerp(.86f, 1f, Mathf.Clamp01(t * 6f));
+                // Overshoot in, settle out: the label snaps up past its final size for
+                // higher combos, which gives each milestone a new physical weight.
+                var pop = EaseOutBack(Mathf.Clamp01(t * 4.4f));
+                feedbackText.rectTransform.localScale = Vector3.one * Mathf.Lerp(.82f, 1f + punch, pop);
                 feedbackText.canvasRenderer.SetAlpha(Mathf.Clamp01(Mathf.Min(t * 9f, (1f - t) * 3f)));
                 yield return null;
             }
@@ -431,11 +474,13 @@ namespace Wobble.UI
             if (previousSafeArea != Screen.safeArea) ApplySafeArea();
             if (hudLabels != null && themeManager != null)
             {
-                var p = themeManager.Environment;
-                var bright = (p.skyTop.grayscale + p.skyBottom.grayscale) * .5f > .6f;
-                foreach (var label in hudLabels) label.color = bright ? WobblePalette.TextPrimary : WobblePalette.Surface;
-                feedbackText.color = bright ? Color.Lerp(WobblePalette.TextPrimary, WobblePalette.Success, .3f)
-                    : Color.Lerp(WobblePalette.Surface, themeManager.Accent, .35f);
+                var accent = themeManager.Accent;
+                // Keep the badge mostly cream: on gold/sand destinations an accent-tinted
+                // label would sink into the sky. Escalation lives in size and glow.
+                var heat = lastCombo >= 8 ? .30f : lastCombo >= 5 ? .22f : .14f;
+                feedbackText.color = Color.Lerp(WobblePalette.Surface, accent, heat);
+                feedbackText.outlineWidth = lastCombo >= 5 ? .26f : .20f;
+                levelFlash.color = Color.Lerp(WobblePalette.Surface, accent, .16f);
             }
             if (feedbackText == null || !hud.activeSelf || UnityEngine.Camera.main == null || feedbackText.canvasRenderer.GetAlpha() <= .001f) return;
             // Normalized coordinates work identically for native overlay UI and
@@ -510,7 +555,7 @@ namespace Wobble.UI
             scoreText.text = lastScore.ToString();
             bestText.text = Localization.Text("hud.best", lastBest);
             levelText.text = Localization.Text("hud.level", lastLevel);
-            resultsText.text = lastScore.ToString();
+            resultsText.text = countingResult ? resultsText.text : lastScore.ToString();
             resultBest.text = Localization.Text("hud.best", lastBest);
             resultBlocks.text = lastBlocks.ToString();
             resultPerfects.text = lastPerfects.ToString();
@@ -524,6 +569,13 @@ namespace Wobble.UI
 
         private static void Stretch(RectTransform rect) { rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = Vector2.zero; rect.offsetMax = Vector2.zero; }
         private static void Center(RectTransform rect, float x, float y, float width, float height) { rect.anchorMin = rect.anchorMax = new Vector2(x, y); rect.pivot = new Vector2(.5f, .5f); rect.sizeDelta = new Vector2(width, height); rect.anchoredPosition = Vector2.zero; }
+        private static float EaseOutBack(float t)
+        {
+            const float c1 = 1.70158f;
+            const float c3 = c1 + 1f;
+            t -= 1f;
+            return 1f + c3 * t * t * t + c1 * t * t;
+        }
         private static void Region(RectTransform rect, float x0, float y0, float x1, float y1) { rect.anchorMin = new Vector2(x0, y0); rect.anchorMax = new Vector2(x1, y1); rect.offsetMin = rect.offsetMax = Vector2.zero; }
 
         private static Sprite VerticalFade()
