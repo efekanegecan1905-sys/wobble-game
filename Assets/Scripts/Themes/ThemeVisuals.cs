@@ -88,10 +88,10 @@ namespace Wobble.Themes
             sunColor = H(0xFF7A3C), sunDirection = new Vector3(-0.62f, 0.16f, 0.55f).normalized,
             sunIntensity = 1.35f, cloudTint = H(0x4A1826), cloudStrength = .40f, starStrength = 0.22f,
             accent = H(0xFF6B2C), accentSecondary = H(0xFFC15E),
-            propLight = H(0x4A2B37), propDark = H(0x22121D), foliage = H(0x5A2433), flower = H(0xFF5A2A),
-            portal = H(0x8A3A34), ruinColor = H(0x5C4A52), cloudSeaTop = H(0x5A6678), cloudSeaDeep = H(0x232B3A),
+            propLight = H(0x4A2B37), propDark = H(0x1C0F18), foliage = H(0x5A2433), flower = H(0xFF5A2A),
+            portal = H(0x8A3A34), ruinColor = H(0x6E5560), cloudSeaTop = H(0x3A3038), cloudSeaDeep = H(0x120F16),
             edgeColor = H(0xFF6A22), edgeGlow = 2.0f, keyBoost = 2.2f, cloudSeaAlpha = .92f,
-            fogNear = 36f, fogFar = 100f
+            fogNear = 40f, fogFar = 118f
         };
 
         // Ancient Monument: sun-baked sandstone, gold dust, timeless ruins.
@@ -101,10 +101,10 @@ namespace Wobble.Themes
             sunColor = H(0xFFE8B0), sunDirection = new Vector3(-0.50f, 0.48f, 0.44f).normalized,
             sunIntensity = 1.15f, cloudTint = H(0xF7E4C0), cloudStrength = .46f, starStrength = 0f,
             accent = H(0xFFC35C), accentSecondary = H(0xE07A4A),
-            propLight = H(0xE8C793), propDark = H(0xB07F45), foliage = H(0x6E8440), flower = H(0xE08A4D),
-            portal = H(0xD9A869), ruinColor = H(0xB6925F), cloudSeaTop = H(0xFBE7C2), cloudSeaDeep = H(0xC79A5E),
+            propLight = H(0xEBCB96), propDark = H(0x96682F), foliage = H(0x6E8440), flower = H(0xE08A4D),
+            portal = H(0xD9A869), ruinColor = H(0x7C5527), cloudSeaTop = H(0xF8E4BE), cloudSeaDeep = H(0xB08249),
             edgeColor = H(0xFFD37A), edgeGlow = 0.12f, keyBoost = 1f, cloudSeaAlpha = .74f,
-            fogNear = 44f, fogFar = 116f
+            fogNear = 50f, fogFar = 132f
         };
 
         // Neon City: near-black plum night, magenta neon, cyan secondary light.
@@ -115,10 +115,10 @@ namespace Wobble.Themes
             sunColor = H(0xFF57C8), sunDirection = new Vector3(-0.34f, 0.34f, 0.58f).normalized,
             sunIntensity = 1.55f, cloudTint = H(0x7A2078), cloudStrength = .26f, starStrength = 0.55f,
             accent = H(0xFF3FCB), accentSecondary = H(0x3BF5FF),
-            propLight = H(0x4A2380), propDark = H(0x0E0722), foliage = H(0x5A1E9C), flower = H(0xFF3FCB),
-            portal = H(0x9B34FF), ruinColor = H(0x4E2C86), cloudSeaTop = H(0x2C0F55), cloudSeaDeep = H(0x08020F),
+            propLight = H(0x4A2380), propDark = H(0x0B0520), foliage = H(0x5A1E9C), flower = H(0xFF3FCB),
+            portal = H(0x9B34FF), ruinColor = H(0x6A3AA8), cloudSeaTop = H(0x2C0F55), cloudSeaDeep = H(0x05010C),
             edgeColor = H(0x3BF5FF), edgeGlow = 1.45f, keyBoost = 1.70f, cloudSeaAlpha = .62f,
-            fogNear = 34f, fogFar = 98f
+            fogNear = 38f, fogFar = 122f
         };
 
         // Space Tower: cosmic indigo, violet nebulae, starlight.
@@ -128,10 +128,10 @@ namespace Wobble.Themes
             sunColor = H(0xD8CDFF), sunDirection = new Vector3(-0.45f, 0.40f, 0.52f).normalized,
             sunIntensity = 1.20f, cloudTint = H(0x3A2478), cloudStrength = .22f, starStrength = 2.40f,
             accent = H(0xB58CFF), accentSecondary = H(0x6FE6FF),
-            propLight = H(0x3B2A70), propDark = H(0x100A24), foliage = H(0x3E2C7C), flower = H(0x9A7BFF),
-            portal = H(0x7A5AF0), ruinColor = H(0x53419E), cloudSeaTop = H(0x1C1250), cloudSeaDeep = H(0x05030E),
+            propLight = H(0x453180), propDark = H(0x0C0720), foliage = H(0x3E2C7C), flower = H(0x9A7BFF),
+            portal = H(0x7A5AF0), ruinColor = H(0x6B58C4), cloudSeaTop = H(0x1B1148), cloudSeaDeep = H(0x04020C),
             edgeColor = H(0x6FE6FF), edgeGlow = 1.50f, keyBoost = 1.75f, cloudSeaAlpha = .55f,
-            fogNear = 38f, fogFar = 108f
+            fogNear = 42f, fogFar = 128f
         };
     }
 }

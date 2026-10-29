@@ -189,14 +189,20 @@ namespace Wobble.UI
             var scrimRect = scrim.rectTransform;
             scrimRect.anchorMin = new Vector2(0, 1); scrimRect.anchorMax = new Vector2(1, 1); scrimRect.pivot = new Vector2(.5f, 1);
             scrimRect.sizeDelta = new Vector2(0, 330); scrimRect.anchoredPosition = Vector2.zero;
-            var brand = Label("app.title", hud.transform, 34, FontStyles.Bold, TextAlignmentOptions.TopLeft, Color.white);
-            SetRectTop(brand.rectTransform, 54, 54, 430, 60, false);
-            levelText = Label("hud.level", hud.transform, 23, FontStyles.Bold, TextAlignmentOptions.TopLeft, WobblePalette.Surface);
-            SetRectTop(levelText.rectTransform, 54, 112, 350, 50, false);
-            scoreText = Label("hud.score", hud.transform, 58, FontStyles.Bold, TextAlignmentOptions.TopRight, Color.white);
-            SetRectTop(scoreText.rectTransform, 54, 48, 400, 80, true);
-            bestText = Label("hud.best", hud.transform, 22, FontStyles.Normal, TextAlignmentOptions.TopRight, WobblePalette.TextPrimary);
-            SetRectTop(bestText.rectTransform, 54, 120, 400, 50, true);
+            var brand = Label("app.title", hud.transform, 36, FontStyles.Bold, TextAlignmentOptions.TopLeft, Color.white);
+            SetRectTop(brand.rectTransform, 54, 52, 430, 64, false);
+            levelText = Label("hud.level", hud.transform, 24, FontStyles.Bold, TextAlignmentOptions.TopLeft, WobblePalette.Surface);
+            SetRectTop(levelText.rectTransform, 54, 114, 350, 50, false);
+            // A soft plate under the score keeps the biggest number on screen legible
+            // against both a bright palace sky and a neon night.
+            var scorePlate = Panel("Score plate", hud.transform, new Color(.03f,.05f,.09f,.30f));
+            SetRectTop(scorePlate.GetComponent<RectTransform>(), 40, 34, 392, 126, true);
+            CasualSurface.Style(scorePlate.GetComponent<Image>(), false);
+            scorePlate.GetComponent<Image>().raycastTarget = false;
+            scoreText = Label("hud.score", hud.transform, 66, FontStyles.Bold, TextAlignmentOptions.TopRight, Color.white);
+            SetRectTop(scoreText.rectTransform, 66, 40, 360, 84, true);
+            bestText = Label("hud.best", hud.transform, 24, FontStyles.Normal, TextAlignmentOptions.TopRight, WobblePalette.TextPrimary);
+            SetRectTop(bestText.rectTransform, 66, 116, 360, 46, true);
             feedbackText = Label("hud.perfect", hud.transform, 40, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Success);
             SetRect(feedbackText.rectTransform, .5f, .60f, 560, 140);
             feedbackText.lineSpacing = -18f;
@@ -230,7 +236,7 @@ namespace Wobble.UI
             CasualSurface.Style(kicker.GetComponent<Image>(), false);
             kicker.GetComponent<Image>().raycastTarget = false;
             var card=Panel("Result card",gameOver.transform,WobblePalette.Surface);
-            resultCardRect=card.GetComponent<RectTransform>(); Center(resultCardRect,.5f,.556f,920,780); CasualSurface.Style(card.GetComponent<Image>());
+            resultCardRect=card.GetComponent<RectTransform>(); Center(resultCardRect,.5f,.556f,920,724); CasualSurface.Style(card.GetComponent<Image>());
             var accentBar=Panel("Result accent",card.transform,WobblePalette.Primary);
             Region(accentBar.GetComponent<RectTransform>(),.35f,.958f,.65f,.976f);CasualSurface.Style(accentBar.GetComponent<Image>(),false);
             accentBar.GetComponent<Image>().raycastTarget=false;
@@ -241,11 +247,11 @@ namespace Wobble.UI
             resultBest = Label("hud.best", card.transform, 25, FontStyles.Normal, TextAlignmentOptions.Center, WobblePalette.PrimaryPressed);
             Center(resultBest.rectTransform,.5f,.621f,540,58);
             var divider=Panel("Result divider",card.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.14f));
-            Region(divider.GetComponent<RectTransform>(),.10f,.552f,.90f,.555f);divider.GetComponent<Image>().raycastTarget=false;
-            resultBlocks=StatChip(card.transform,.285f,.445f,"result.blocks",out resultBlockCaption);
-            resultPerfects=StatChip(card.transform,.715f,.445f,"result.perfects",out resultPerfectCaption);
-            resultCombo=StatChip(card.transform,.285f,.235f,"result.combo",out resultComboCaption);
-            resultGems=StatChip(card.transform,.715f,.235f,"result.gems",out resultGemCaption);
+            Region(divider.GetComponent<RectTransform>(),.10f,.576f,.90f,.579f);divider.GetComponent<Image>().raycastTarget=false;
+            resultBlocks=StatChip(card.transform,.285f,.455f,"result.blocks",out resultBlockCaption);
+            resultPerfects=StatChip(card.transform,.715f,.455f,"result.perfects",out resultPerfectCaption);
+            resultCombo=StatChip(card.transform,.285f,.255f,"result.combo",out resultComboCaption);
+            resultGems=StatChip(card.transform,.715f,.255f,"result.gems",out resultGemCaption);
             resultChips[0]=(RectTransform)resultBlocks.transform.parent;
             resultChips[1]=(RectTransform)resultPerfects.transform.parent;
             resultChips[2]=(RectTransform)resultCombo.transform.parent;
@@ -571,7 +577,7 @@ namespace Wobble.UI
         {
             var go = new GameObject(text.Length > 20 ? "Label" : text, typeof(RectTransform), typeof(TextMeshProUGUI));
             go.transform.SetParent(parent, false);
-            var label = go.GetComponent<TextMeshProUGUI>(); label.font = style==FontStyles.Bold ? (Resources.Load<TMP_FontAsset>("Menu/WobbleDisplay") ?? font) : font; label.text = string.Empty; label.fontSize = size; label.fontStyle = style; label.alignment = anchor; label.color = color;
+            var label = go.GetComponent<TextMeshProUGUI>(); label.font = style==FontStyles.Bold ? (Resources.Load<TMP_FontAsset>("Menu/WobbleDisplay") ?? font) : font; label.text = string.Empty; label.fontSize = size; label.fontStyle = FontStyles.Normal; label.alignment = anchor; label.color = color;
             label.raycastTarget = false;
             if (text == "app.title" || text == "hud.tap" || text.StartsWith("gameover.") && text != "gameover.summary")
                 localizedLabels.Add(() => label.text = Localization.Text(text));

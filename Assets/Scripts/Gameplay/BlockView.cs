@@ -134,8 +134,8 @@ namespace Wobble.Gameplay
                 var caps = new List<int>();
                 // Shave only the rendered faces by 2%; collider and stack spacing
                 // retain their approved dimensions. The fine seam catches contact AO.
-                var ringHeights = new[] { -.49f, -.445f, .445f, .49f };
-                var ringWidths = new[] { .492f, .5f, .5f, .492f };
+                var ringHeights = new[] { -.49f, -.4375f, .4375f, .49f };
+                var ringWidths = new[] { .478f, .5f, .5f, .478f };
                 var corners = new[] { new Vector2(-1,-1), new Vector2(1,-1), new Vector2(1,1), new Vector2(-1,1) };
                 Vector3 Ring(int ring, int corner) => new Vector3(corners[corner].x * ringWidths[ring], ringHeights[ring], corners[corner].y * ringWidths[ring]);
                 void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, List<int> indices)

@@ -150,3 +150,43 @@ Doğrulama: iPhone 17 Pro (iOS 26) üzerinde kuruldu ve açıldı; cüzdan `9999
 Güvenli alan şeritleri cihaz ekran görüntüleriyle ölçüldü. Temalar ekranında üst şerit, şerit eklenmeden önce ham gökyüzü rengini (`0.51 / 0.76 / 0.87`) gösteriyordu; şeritten sonra ekran gövdesiyle aynı tona (`0.29 / 0.43 / 0.49`) indi. Alt şeritte de aynı düşüş var (`0.35 / 0.63 / 0.84` → `0.18 / 0.36 / 0.47`). Ana Menü'de şeritler şeffaf kaldığı için gökyüzü kesilmiyor.
 
 
+
+## 14. İkinci geçiş: tipografi, dünya seçimi ve blok malzemesi
+
+Bu geçiş oynanışı değiştirmedi; sunum, tipografi ve yüzey okunabilirliğine odaklandı. Blok çarpışma boyutları, kesme matematiği, hareket sınırları ve mükemmel toleransı **hiç** değişmedi; yalnızca görünen mesh ve shader güncellendi.
+
+### Tipografi sistemi
+
+| Konu | Önce | Şimdi |
+| --- | --- | --- |
+| Başlık / logo / CTA | Lilita One (dar, oyuncak-harfli) | **Nunito Black** (`Assets/Fonts/Nunito-Black.ttf`) |
+| Gövde / etiket / istatistik | Noto Sans + Lilita karışımı | **Inter SemiBold** (`Assets/Fonts/Inter-SemiBold.ttf`) |
+| Yedek zinciri | Display → Liberation (Türkçe dışı glif riski) | Display → Inter → Liberation, üçünde de aynı karakter seti |
+| Atlas | 2048² statik, 96 px örnekleme | 2048² statik, tek atlas; çalışma anında atlas üretimi yok |
+
+- Karakter seti, yerelleştirme tablosundaki tüm metin + Latin-1 + Türkçe bloğu (`ÇĞİÖŞÜçğıöşü`) + kullanılan noktalama ve para birimlerini birlikte pişiriyor. Dil değişiminde ekranların yarısı başka bir fonta düşmüyor.
+- Yeni `Wobble.Editor.WobbleFontBuilder.Build()` iki aileyi ve yedek fontu tek komutla yeniden üretiyor; atlaslar `Assets/Resources/Menu/` altındaki aynı yollara yazıldığı için mevcut referanslar korunuyor.
+- Nunito Black zaten siyah olduğu için TMP'nin sahte kalınlaştırması (`FontStyles.Bold`) kaldırıldı; harfler şişmiyor, ince kenarlar net kalıyor.
+
+### Ekran bazlı değişiklikler
+
+- **Ana Menü:** logo 98 px + otomatik sığdırma, seçili dünya adı artık altın bir **chip** içinde (açık gökyüzünde altın yazı okunmuyordu), tagline kendi koyu plakasında, `OYNA` butonu büyütüldü (780×158) ve ikon/etiket hiyerarşisi ayrıldı, en iyi skor plakası yeniden ölçeklendi, alt menü etiketleri gövde fontuna geçti.
+- **Temalar:** kart ızgarası 3 sütundan **2 sütuna** çıktı; kartlar 492 px yüksekliğinde, poster alanı büyüdü. Tek kalan kart ortalanıyor. Seçili kart accent çerçeve + üst kural + renkli zemin; kilitli kartın posteri karartılıyor ama kimliği korunuyor; fiyat ve durum aynı pill içinde.
+- **HUD:** skor için yuvarlatılmış koyu plaka eklendi (hem açık saray göğü hem neon gece üzerinde okunur), skor 66 px'e çıktı, marka/seviye hizalandı.
+- **Sonuç ekranı:** kart 780 → 724 px, istatistik çipleri yeni yüksekliğe göre konumlandı, ayırıcı hattı çakışmayacak şekilde taşındı; tüm rakamlar yeni fontla.
+- **Bölüm başlıkları** (Mağaza/Günlük): altın yerine krem metin + accent şerit işareti.
+
+### Bloklar (yalnızca görsel)
+
+- `BlockView` mesh'indeki pah (chamfer) 0.8% → 2.2% içe, 4.5% → 5.25% yüksekliğe çıkarıldı. BoxCollider `Vector3.one` olarak kaldı; `Resize` aynı boyutu kullanıyor, yani çarpışma ve kesme aynı.
+- `Carrara.shader` içinde: üst yüz daha parlak, yanlar biraz daha zengin; yan yüzlerde dikeyde ince bir parlaklık gradyanı; 45° pah halkasına düşen dar bir **kenar ışığı** (`_EdgeLight`, varsayılan 0.16) — ekstra geometri veya ışık yok.
+
+### Dünya ayrımı
+
+- Obsidian, Ancient Stone, Neon ve Space için sis mesafesi ve orta plan renkleri ayrıştırıldı: siluetler gökyüzünden ayrılıyor, alt ufuk daha koyu, harabe tonları daha okunur. Onaylı blok tonları (`previewTint`) ve geometri sayısı (`GeometryCount == 24`) korundu.
+
+### Doğrulama
+
+- Play Mode **27/28** (1 demo-only skip), Edit Mode **19/19**.
+- `Artifacts/Menu/Previews` 30 ekran görüntüsü (5 ekran × 2 dil × 3 çözünürlük) yeniden üretildi; test her metin için taşma ve "No translation found" kontrolünü geçti.
+- `Artifacts/ThemeEnvironment` beş dünya için yeniden üretildi; `Artifacts/Product/Previews` sonuç ekranı güncellendi.

@@ -75,13 +75,24 @@ namespace Wobble.UI
         {
             var shade=Scrim("Header scrim",root.transform,new Color(.04f,.06f,.09f,0f),new Color(.04f,.06f,.09f,.46f));
             Region(shade.rectTransform,0,.86f,1,1);
-            var title=Text(root.transform,()=>loc.Text("app.title"),92,true,TextAlignmentOptions.TopLeft);
-            Top(title.rectTransform,54,56,700,118);title.characterSpacing=3;title.color=WobblePalette.Surface;
-            var shadow=title.gameObject.AddComponent<Shadow>();shadow.effectDistance=new Vector2(0,-5);shadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.42f);
-            var subtitle=Text(root.transform,()=>SelectedThemeName(),27,true,TextAlignmentOptions.TopLeft);
-            subtitle.color=WobblePalette.Accent;subtitle.characterSpacing=8;Top(subtitle.rectTransform,58,176,600,46);
-            var subShadow=subtitle.gameObject.AddComponent<Shadow>();subShadow.effectDistance=new Vector2(0,-3);subShadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.30f);
-            refresh.Add(()=>{title.gameObject.SetActive(Navigation.Current==MenuScreen.Home);subtitle.gameObject.SetActive(Navigation.Current==MenuScreen.Home);});
+            var title=Text(root.transform,()=>loc.Text("app.title"),98,true,TextAlignmentOptions.TopLeft);
+            Top(title.rectTransform,54,48,752,126);title.characterSpacing=1;title.color=WobblePalette.Surface;
+            title.enableAutoSizing=true;title.fontSizeMin=70;title.fontSizeMax=98;
+            var shadow=title.gameObject.AddComponent<Shadow>();shadow.effectDistance=new Vector2(0,-6);shadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.42f);
+            // The active world name rides on a small plate: gold on bright sky was the
+            // weakest line on the screen, and a chip also reads as a selected destination.
+            var subtitlePlate=Panel("Theme chip",root.transform,new Color(.04f,.07f,.11f,.38f));
+            Top(subtitlePlate.GetComponent<RectTransform>(),54,176,352,48);
+            CasualSurface.Style(subtitlePlate.GetComponent<Image>(),false);
+            subtitlePlate.GetComponent<Image>().raycastTarget=false;
+            var chipMark=Panel("Theme chip mark",subtitlePlate.transform,WobblePalette.Accent);
+            Region(chipMark.GetComponent<RectTransform>(),.045f,.24f,.055f,.76f);
+            chipMark.GetComponent<Image>().raycastTarget=false;CasualSurface.Style(chipMark.GetComponent<Image>(),false);
+            var subtitle=Text(subtitlePlate.transform,()=>SelectedThemeName(),25,false,TextAlignmentOptions.MidlineLeft);
+            subtitle.color=WobblePalette.Accent;subtitle.characterSpacing=5;Region(subtitle.rectTransform,.10f,0,.96f,1);
+            subtitle.enableAutoSizing=true;subtitle.fontSizeMin=19;subtitle.fontSizeMax=25;
+            var subShadow=subtitle.gameObject.AddComponent<Shadow>();subShadow.effectDistance=new Vector2(0,-2);subShadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.45f);
+            refresh.Add(()=>{title.gameObject.SetActive(Navigation.Current==MenuScreen.Home);subtitlePlate.SetActive(Navigation.Current==MenuScreen.Home);});
             for(var i=0;i<2;i++)
             {
                 var chip=Panel(i==0?"Gem wallet":"Life wallet",root.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.45f));
@@ -112,21 +123,21 @@ namespace Wobble.UI
 
             // A small charcoal plate behind the motto keeps gold-on-marble legible
             // without another full-width scrim.
-            var tagPlate=Panel("Tagline plate",parent,new Color(.05f,.07f,.10f,.34f));
+            var tagPlate=Panel("Tagline plate",parent,new Color(.05f,.07f,.10f,.44f));
             var tagPlateRect=tagPlate.GetComponent<RectTransform>();
-            Center(tagPlateRect,.5f,.396f,660,58);
+            Center(tagPlateRect,.5f,.396f,540,56);
             CasualSurface.Style(tagPlate.GetComponent<Image>(),false);
             tagPlate.GetComponent<Image>().raycastTarget=false;
-            var tagline=Text(parent,()=>loc.Text("home.tagline"),23,false);
-            tagline.color=WobblePalette.Accent;
-            tagline.outlineColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.9f);
-            tagline.outlineWidth=.20f;
-            tagline.characterSpacing=5;Center(tagline.rectTransform,.5f,.396f,860,52);
-            var tagShadow=tagline.gameObject.AddComponent<Shadow>();tagShadow.effectDistance=new Vector2(0,-2);tagShadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.5f);
+            var tagline=Text(parent,()=>loc.Text("home.tagline"),25,false);
+            tagline.color=WobblePalette.Surface;
+            tagline.outlineColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.62f);
+            tagline.outlineWidth=.19f;
+            tagline.characterSpacing=3;Center(tagline.rectTransform,.5f,.396f,620,54);
+            var tagShadow=tagline.gameObject.AddComponent<Shadow>();tagShadow.effectDistance=new Vector2(0,-3);tagShadow.effectColor=WobblePalette.Alpha(WobblePalette.TextPrimary,.55f);
 
             var button=Button(parent,"home.play",()=>loc.Text("home.play"),play,true);
             var buttonRect=button.GetComponent<RectTransform>();
-            Center(buttonRect,.5f,.320f,760,148);
+            Center(buttonRect,.5f,.306f,780,158);
             button.gameObject.AddComponent<RectMask2D>();
             var sheen=Panel("Play sheen",button.transform,new Color(1,1,1,.10f));
             Center(sheen.GetComponent<RectTransform>(),.5f,.5f,92,300);
@@ -142,29 +153,29 @@ namespace Wobble.UI
             pulse.face=button.GetComponent<Image>();
             pulse.sheen=sheen.GetComponent<RectTransform>();
             var playIcon=Icon(button.transform,MenuIcon.Shape.Play);
-            Center(playIcon.rectTransform,.105f,.5f,46,46);playIcon.color=WobblePalette.Surface;
+            Center(playIcon.rectTransform,.105f,.5f,52,52);playIcon.color=WobblePalette.Surface;
             var label=button.transform.Find("Text");
             if(label!=null)
             {
                 var text=label.GetComponent<TextMeshProUGUI>();
-                text.characterSpacing=3;
+                text.characterSpacing=2;
                 Region(text.rectTransform,.20f,.03f,.965f,.97f);
                 label.SetAsLastSibling();
             }
 
             var bestCard=Panel("Best run plaque",parent,WobblePalette.Surface);
             var bestRect=bestCard.GetComponent<RectTransform>();
-            Center(bestRect,.5f,.234f,600,104);CasualSurface.Style(bestCard.GetComponent<Image>());
+            Center(bestRect,.5f,.222f,620,108);CasualSurface.Style(bestCard.GetComponent<Image>());
             var iconPlate=Panel("Best icon plate",bestCard.transform,WobblePalette.Alpha(WobblePalette.Accent,.46f));
-            Center(iconPlate.GetComponent<RectTransform>(),.10f,.5f,64,64);
+            Center(iconPlate.GetComponent<RectTransform>(),.10f,.5f,68,68);
             CasualSurface.Style(iconPlate.GetComponent<Image>(),false);
             var trophy=Icon(iconPlate.transform,MenuIcon.Shape.Trophy);
-            Center(trophy.rectTransform,.5f,.5f,42,42);trophy.color=WobblePalette.PrimaryPressed;
-            var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),17,true,TextAlignmentOptions.MidlineLeft);
+            Center(trophy.rectTransform,.5f,.5f,44,44);trophy.color=WobblePalette.PrimaryPressed;
+            var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),18,false,TextAlignmentOptions.MidlineLeft);
             bestLabel.color=WobblePalette.TextSecondary;bestLabel.characterSpacing=4;
             Region(bestLabel.rectTransform,.185f,.50f,.60f,.94f);
-            var best=Text(bestCard.transform,()=>save.Data.bestScore.ToString(),40,true,TextAlignmentOptions.MidlineRight);
-            best.color=WobblePalette.TextPrimary;best.enableAutoSizing=true;best.fontSizeMin=24;best.fontSizeMax=41;
+            var best=Text(bestCard.transform,()=>save.Data.bestScore.ToString(),44,true,TextAlignmentOptions.MidlineRight);
+            best.color=WobblePalette.TextPrimary;best.enableAutoSizing=true;best.fontSizeMin=26;best.fontSizeMax=45;
             Region(best.rectTransform,.60f,.06f,.945f,.94f);
         }
         private void BuildNavigation()
@@ -179,8 +190,9 @@ namespace Wobble.UI
                 var rect=button.GetComponent<RectTransform>();
                 rect.anchorMin=new Vector2(.045f+i*.235f,0); rect.anchorMax=new Vector2(.25f+i*.235f,0);
                 rect.pivot=new Vector2(.5f,0); rect.offsetMin=new Vector2(0,54); rect.offsetMax=new Vector2(0,240);
-                var icon=Icon(button.transform,icons[i]); Center(icon.rectTransform,.5f,.66f,66,66);
-                var label=Text(button.transform,()=>loc.Text(key),21,true); Center(label.rectTransform,.5f,.23f,200,40);
+                var icon=Icon(button.transform,icons[i]); Center(icon.rectTransform,.5f,.655f,62,62);
+                var label=Text(button.transform,()=>loc.Text(key),19,false); Center(label.rectTransform,.5f,.225f,210,40);
+                label.characterSpacing=1;
                 refresh.Add(()=>button.gameObject.SetActive(Navigation.Current==MenuScreen.Home));
             }
         }
@@ -188,8 +200,8 @@ namespace Wobble.UI
         {
             var back=Button(screen.transform,"back",()=>loc.Text("common.back"),Back,false);
             Top(back.GetComponent<RectTransform>(),40,63,140,70);
-            var title=Text(screen.transform,()=>loc.Text(titleKey),40,true,TextAlignmentOptions.TopLeft);
-            Top(title.rectTransform,195,68,575,90);title.color=WobblePalette.Surface;
+            var title=Text(screen.transform,()=>loc.Text(titleKey),45,true,TextAlignmentOptions.TopLeft);
+            Top(title.rectTransform,195,64,600,94);title.color=WobblePalette.Surface;title.characterSpacing=1;
             var viewport=Panel("Scroll viewport",screen.transform,Color.clear).GetComponent<RectTransform>();
             viewport.anchorMin=new Vector2(0,.035f); viewport.anchorMax=new Vector2(1,1);
             viewport.offsetMin=new Vector2(54,0); viewport.offsetMax=new Vector2(-54,-235);
@@ -211,22 +223,24 @@ namespace Wobble.UI
             themeCards.Clear();
             for(var i=0;i<catalog.themes.Length;i++)
             {
-                if(i%3==0)row=Row(content,372,false);
+                if(i%2==0)row=Row(content,492,false);
                 var theme=catalog.themes[i];
                 var indexNumber=i+1;
                 var visuals=ThemeVisuals.Get((ThemeId)i);
                 var card=Panel("Theme "+theme.id,row,WobblePalette.Surface).GetComponent<RectTransform>();
-                Region(card,(i%3)/3f+.008f,0,((i%3)+1)/3f-.008f,1);CasualSurface.Style(card.GetComponent<Image>());
+                var alone=i==catalog.themes.Length-1&&catalog.themes.Length%2==1;
+                if(alone)Region(card,.26f,0,.74f,1);else Region(card,(i%2)/2f+.012f,0,((i%2)+1)/2f-.012f,1);
+                CasualSurface.Style(card.GetComponent<Image>());
                 themeCards.Add(card);
 
-                // Selected state reads as a framed print: accent outline, accent top
-                // rule and a tinted surface, without moving anything else.
+                // Selected reads as a framed destination print: accent rule above the
+                // artwork, accent outline around the card, tinted surface underneath.
                 var rule=Panel("Theme rule",card,WobblePalette.Alpha(visuals.accent,.95f));
-                Region(rule.GetComponent<RectTransform>(),.055f,.955f,.945f,.982f);
+                Region(rule.GetComponent<RectTransform>(),.05f,.958f,.95f,.987f);
                 CasualSurface.Style(rule.GetComponent<Image>(),false);rule.GetComponent<Image>().raycastTarget=false;
 
-                var frame=Panel("Theme frame",card,Color.Lerp(visuals.propDark,WobblePalette.Surface,.25f));
-                Region(frame.GetComponent<RectTransform>(),.048f,.352f,.952f,.945f);
+                var frame=Panel("Theme frame",card,Color.Lerp(visuals.propDark,WobblePalette.Surface,.30f));
+                Region(frame.GetComponent<RectTransform>(),.045f,.452f,.955f,.948f);
                 CasualSurface.Style(frame.GetComponent<Image>(),false);frame.GetComponent<Image>().raycastTarget=false;
 
                 var poster=new GameObject("Poster "+theme.id,typeof(RectTransform),typeof(ThemePoster)).GetComponent<ThemePoster>();
@@ -234,33 +248,33 @@ namespace Wobble.UI
                 poster.material=Resources.Load<Material>("Menu/MenuUI");
                 poster.raycastTarget=false;
                 poster.theme=(ThemeId)i;
-                Region(poster.rectTransform,.058f,.362f,.942f,.938f);
+                Region(poster.rectTransform,.052f,.459f,.948f,.941f);
 
-                var indexPlate=Panel("Theme index",card,WobblePalette.Alpha(WobblePalette.TextPrimary,.62f));
-                Center(indexPlate.GetComponent<RectTransform>(),.145f,.885f,58,40);
+                var indexPlate=Panel("Theme index",card,WobblePalette.Alpha(WobblePalette.TextPrimary,.58f));
+                Center(indexPlate.GetComponent<RectTransform>(),.145f,.893f,62,40);
                 CasualSurface.Style(indexPlate.GetComponent<Image>(),false);indexPlate.GetComponent<Image>().raycastTarget=false;
-                var index=Text(indexPlate.transform,()=>indexNumber.ToString("00"),19,true);index.color=WobblePalette.Surface;
-                Region(index.rectTransform,0,0,1,1);index.characterSpacing=4;
+                var index=Text(indexPlate.transform,()=>indexNumber.ToString("00"),20,true);index.color=WobblePalette.Surface;
+                Region(index.rectTransform,0,0,1,1);index.characterSpacing=3;
 
-                var label=Text(card,()=>loc.Text(theme.nameKey),29,true,TextAlignmentOptions.MidlineLeft);
-                Region(label.rectTransform,.052f,.232f,.95f,.328f);label.characterSpacing=2;
-                label.enableAutoSizing=true;label.fontSizeMin=19;label.fontSizeMax=29;
-                var subtitle=Text(card,()=>ThemeSubtitle(theme.id),15,false,TextAlignmentOptions.MidlineLeft);
-                subtitle.color=Muted;Region(subtitle.rectTransform,.052f,.152f,.95f,.232f);
-                subtitle.enableAutoSizing=true;subtitle.fontSizeMin=11;subtitle.fontSizeMax=15;subtitle.characterSpacing=6;
+                var label=Text(card,()=>loc.Text(theme.nameKey),34,true,TextAlignmentOptions.MidlineLeft);
+                Region(label.rectTransform,.05f,.318f,.95f,.44f);label.characterSpacing=.5f;
+                label.enableAutoSizing=true;label.fontSizeMin=22;label.fontSizeMax=34;
+                var subtitle=Text(card,()=>ThemeSubtitle(theme.id),16,false,TextAlignmentOptions.MidlineLeft);
+                subtitle.color=Muted;Region(subtitle.rectTransform,.05f,.228f,.95f,.316f);
+                subtitle.enableAutoSizing=true;subtitle.fontSizeMin=11;subtitle.fontSizeMax=16;subtitle.characterSpacing=3;
 
                 var statusPlate=Panel("Theme status",card,WobblePalette.Alpha(WobblePalette.TextPrimary,.07f));
-                Region(statusPlate.GetComponent<RectTransform>(),.052f,.028f,.948f,.132f);
+                Region(statusPlate.GetComponent<RectTransform>(),.05f,.038f,.95f,.19f);
                 CasualSurface.Style(statusPlate.GetComponent<Image>(),false);statusPlate.GetComponent<Image>().raycastTarget=false;
-                var status=Text(statusPlate.transform,()=>ThemeStatus(theme),16,true,TextAlignmentOptions.MidlineLeft);
-                Region(status.rectTransform,.055f,0,.60f,1);status.characterSpacing=3;
-                status.enableAutoSizing=true;status.fontSizeMin=9;status.fontSizeMax=16;
+                var status=Text(statusPlate.transform,()=>ThemeStatus(theme),20,true,TextAlignmentOptions.MidlineLeft);
+                Region(status.rectTransform,.045f,0,.62f,1);status.characterSpacing=3;
+                status.enableAutoSizing=true;status.fontSizeMin=12;status.fontSizeMax=20;
                 var pricePlate=Panel("Theme price",statusPlate.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.10f));
-                Region(pricePlate.GetComponent<RectTransform>(),.60f,.16f,.97f,.84f);
+                Region(pricePlate.GetComponent<RectTransform>(),.62f,.16f,.965f,.84f);
                 CasualSurface.Style(pricePlate.GetComponent<Image>(),false);pricePlate.GetComponent<Image>().raycastTarget=false;
-                var gem=Icon(pricePlate.transform,MenuIcon.Shape.Gem);Center(gem.rectTransform,.17f,.5f,28,28);
-                var price=Text(pricePlate.transform,()=>theme.gemPrice.ToString(),16,true,TextAlignmentOptions.MidlineLeft);
-                Region(price.rectTransform,.36f,0,.96f,1);price.characterSpacing=1;
+                var gem=Icon(pricePlate.transform,MenuIcon.Shape.Gem);Center(gem.rectTransform,.16f,.5f,27,27);
+                var price=Text(pricePlate.transform,()=>theme.gemPrice.ToString(),18,true,TextAlignmentOptions.MidlineLeft);
+                Region(price.rectTransform,.34f,0,.96f,1);price.characterSpacing=1;
 
                 refresh.Add(()=>PaintThemeCard(theme,visuals,card,statusPlate,status,subtitle,pricePlate,gem));
 
@@ -312,13 +326,17 @@ namespace Wobble.UI
             var owned=save.Data.ownedSkins.Contains(theme.id);
             var selected=save.Data.selectedTheme==theme.id;
             var unlocked=owned||theme.available;
-            card.GetComponent<Image>().color=selected?Color.Lerp(WobblePalette.Surface,visuals.accent,.20f):WobblePalette.Surface;
+            card.GetComponent<Image>().color=selected?Color.Lerp(WobblePalette.Surface,visuals.accent,.22f):WobblePalette.Surface;
             var outline=card.GetComponent<Outline>();
             if(outline!=null)
             {
                 outline.effectColor=selected?visuals.accent:WobblePalette.Alpha(WobblePalette.Surface,.65f);
-                outline.effectDistance=selected?new Vector2(4,-4):new Vector2(2,-2);
+                outline.effectDistance=selected?new Vector2(5,-5):new Vector2(2,-2);
             }
+            // Locked artwork keeps its identity but steps back; the status plate carries
+            // the actionable state, so the card never reads as a flat grey box.
+            var poster=card.GetComponentInChildren<ThemePoster>();
+            if(poster!=null&&poster.locked==unlocked){poster.locked=!unlocked;poster.SetVerticesDirty();}
             statusPlate.GetComponent<Image>().color=selected?visuals.accent:unlocked?WobblePalette.SurfaceAlt:WobblePalette.Alpha(WobblePalette.TextPrimary,.07f);
             status.color=selected?Color.white:unlocked?WobblePalette.PrimaryPressed:WobblePalette.TextSecondary;
             subtitle.color=selected?WobblePalette.PrimaryPressed:Muted;
@@ -513,7 +531,12 @@ namespace Wobble.UI
         }
         private void Section(Transform content,string key)
         {
-            var row=Row(content,64,false);var label=Text(row,()=>loc.Text(key),21,true,TextAlignmentOptions.MidlineLeft);label.color=WobblePalette.Alpha(WobblePalette.Accent,.90f);Region(label.rectTransform,.02f,0,1,1);
+            var row=Row(content,64,false);
+            var mark=Panel("Section mark",row,WobblePalette.Accent);
+            Region(mark.GetComponent<RectTransform>(),.02f,.34f,.038f,.66f);
+            mark.GetComponent<Image>().raycastTarget=false;CasualSurface.Style(mark.GetComponent<Image>(),false);
+            var label=Text(row,()=>loc.Text(key),22,true,TextAlignmentOptions.MidlineLeft);
+            label.color=WobblePalette.Surface;label.characterSpacing=3;Region(label.rectTransform,.062f,0,1,1);
         }
         private void Note(Transform content,string key)
         {
@@ -530,7 +553,7 @@ namespace Wobble.UI
         private TextMeshProUGUI Text(Transform parent,Func<string> value,int size,bool bold=false,TextAlignmentOptions alignment=TextAlignmentOptions.Center,bool popupText=false)
         {
             var text=new GameObject("Text",typeof(RectTransform),typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
-            text.transform.SetParent(parent,false);text.font=bold?(Resources.Load<TMP_FontAsset>("Menu/WobbleDisplay")??font):font;text.fontSize=size;text.fontStyle=bold?FontStyles.Bold:FontStyles.Normal;
+            text.transform.SetParent(parent,false);text.font=bold?(Resources.Load<TMP_FontAsset>("Menu/WobbleDisplay")??font):font;text.fontSize=size;text.fontStyle=FontStyles.Normal;
             text.color=White;text.alignment=alignment;text.raycastTarget=false;text.textWrappingMode=TextWrappingModes.Normal;
             Action update=()=>{if(text!=null)text.text=value();};
             (popupText?popupRefresh:refresh).Add(update);update();return text;
@@ -542,7 +565,7 @@ namespace Wobble.UI
             panel.AddComponent<StoneButtonFeedback>();
             CasualSurface.Style(panel.GetComponent<Image>());
             var colors=button.colors;colors.highlightedColor=Color.white;colors.pressedColor=new Color(.88f,.86f,.83f);colors.disabledColor=new Color(.82f,.82f,.82f,.65f);button.colors=colors;
-            var text=Text(panel.transform,value,primary?46:26,true,popupText:modal);text.color=primary?Color.white:White;Region(text.rectTransform,.025f,.02f,.975f,.98f);
+            var text=Text(panel.transform,value,primary?50:26,true,popupText:modal);text.color=primary?Color.white:White;text.characterSpacing=primary?1:0;Region(text.rectTransform,.025f,.02f,.975f,.98f);
             button.onClick.AddListener(()=>{audioManager.MenuTap();click();});return button;
         }
         private MenuIcon Icon(Transform parent,MenuIcon.Shape shape)

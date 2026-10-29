@@ -12,6 +12,7 @@ Shader "WOBBLE/Carrara"
         _RimStrength ("Theme rim strength", Float) = 0
         _StoneOrigin ("Stone coordinates", Vector) = (0,0,0,0)
         _StoneSize ("Metric size", Vector) = (1,1,1,0)
+        _EdgeLight ("Edge light", Range(0,1)) = .16
     }
     SubShader
     {
@@ -22,7 +23,7 @@ Shader "WOBBLE/Carrara"
         CBUFFER_START(UnityPerMaterial)
             float4 _Color, _StoneOrigin, _StoneSize;
             float4 _RimColor;
-            float _Glossiness, _Metallic, _Flash, _Sweep, _RimStrength;
+            float _Glossiness, _Metallic, _Flash, _Sweep, _RimStrength, _EdgeLight;
         CBUFFER_END
         TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
         struct Attributes { float4 positionOS : POSITION; float3 normalOS : NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
@@ -35,6 +36,7 @@ Shader "WOBBLE/Carrara"
             float3 normalOS : TEXCOORD3;
             float2 localTop : TEXCOORD4;
             half fog : TEXCOORD5;
+            float localY : TEXCOORD6;
             UNITY_VERTEX_OUTPUT_STEREO
         };
         Varyings vert(Attributes v)
@@ -50,6 +52,7 @@ Shader "WOBBLE/Carrara"
             o.stone = (v.positionOS.xyz * _StoneSize.xyz + _StoneOrigin.xyz) * .18;
             o.normalOS = v.normalOS;
             o.localTop = v.positionOS.xz + .5;
+            o.localY = v.positionOS.y + .5;
             o.fog = ComputeFogFactor(p.positionCS.z);
             return o;
         }
@@ -84,7 +87,13 @@ Shader "WOBBLE/Carrara"
                 data.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.positionCS);
                 data.shadowMask = half4(1,1,1,1);
                 SurfaceData surface = (SurfaceData)0;
-                surface.albedo = stone.rgb * _Color.rgb;
+                // Face separation: the cap catches more sky, the sides read as a
+                // slightly richer, darker stone so each slab has a clear silhouette.
+                half upFacing = saturate(normalize(i.normalOS).y);
+                half3 albedo = stone.rgb * _Color.rgb;
+                albedo *= lerp(half(0.93), half(1.06), upFacing);
+                albedo *= lerp(half(0.965), half(1.035), saturate(i.localY));
+                surface.albedo = albedo;
                 surface.metallic = 0;
                 surface.specular = half3(.04,.04,.04);
                 surface.smoothness = _Glossiness * (.80 + .18 * dot(stone.rgb, half3(.333,.333,.334)));
@@ -94,8 +103,12 @@ Shader "WOBBLE/Carrara"
                 float sweep = (1 - smoothstep(.005, .028, abs(i.localTop.x - _Sweep))) * step(0, _Sweep);
                 // One cheap Fresnel term gives dark themes a readable neon edge with no lights.
                 half fresnel = pow(1 - saturate(dot(normalize(i.normalWS), GetWorldSpaceNormalizeViewDir(i.positionWS))), 4);
-                surface.emission = half3(1,.94,.82) * (sweep * 2.2 + _Flash * .2) * saturate(i.normalOS.y)
-                    + _RimColor.rgb * fresnel * _RimStrength;
+                // The chamfer ring is 45 degrees, so a narrow band around that normal
+                // gives the slab a lit soft bevel without extra geometry.
+                half chamfer = smoothstep(.50, .70, abs(i.normalOS.y)) * (1 - smoothstep(.84, .98, abs(i.normalOS.y)));
+                surface.emission = half3(1,.95,.86) * (sweep * 2.2 + _Flash * .2) * upFacing
+                    + _RimColor.rgb * fresnel * _RimStrength
+                    + half3(1,.97,.91) * chamfer * _EdgeLight * (0.55 + 0.45 * upFacing);
                 half4 color = UniversalFragmentPBR(data, surface);
                 color.rgb = MixFog(color.rgb, i.fog);
                 return color;
