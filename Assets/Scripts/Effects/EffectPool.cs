@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Wobble.Themes;
 
 namespace Wobble.Effects
 {
@@ -112,9 +113,10 @@ namespace Wobble.Effects
 
         private GameObject CreateQuad(string name, Material material, Transform parent)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            go.name = name;
-            Object.Destroy(go.GetComponent<Collider>());
+            // Shared kit mesh: CreatePrimitive would ask for a MeshCollider that
+            // IL2CPP strips, and every quad only needs a filter and renderer.
+            var go = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer));
+            go.GetComponent<MeshFilter>().sharedMesh = ThemeWorldKit.QuadMesh;
             go.transform.SetParent(parent, false);
             go.transform.localRotation = Quaternion.Euler(90, 0, 0);
             var renderer = go.GetComponent<MeshRenderer>();

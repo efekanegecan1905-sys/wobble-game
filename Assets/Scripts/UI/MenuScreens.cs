@@ -15,6 +15,9 @@ namespace Wobble.UI
         private static readonly Color White = WobblePalette.TextPrimary;
         private static readonly Color Muted = WobblePalette.TextSecondary;
         private static readonly Color Charcoal = new(.04f,.07f,.11f,.72f);
+        // Content screens paint this veil; the notch strips outside the safe area
+        // reuse it so they do not expose raw sky.
+        public static Color Veil => Charcoal;
         private SaveManager save;
         private EconomyManager economy;
         private AudioManager audioManager;
@@ -84,7 +87,10 @@ namespace Wobble.UI
                 var chip=Panel(i==0?"Gem wallet":"Life wallet",root.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.45f));
                 Top(chip.GetComponent<RectTransform>(),-45,64+i*67,200,57,true);CasualSurface.Style(chip.GetComponent<Image>(),false);
                 var icon=Icon(chip.transform,i==0?MenuIcon.Shape.Gem:MenuIcon.Shape.Heart);Center(icon.rectTransform,.17f,.5f,44,44);
-                var isGem=i==0;var count=Text(chip.transform,()=>isGem?(economy.DemoMode?"DEMO":economy.Gems.ToString()):economy.Lives.ToString(),31,true);
+                // Demo builds spend without a balance; show a large fixed number so the
+                // wallet still reads as a gem count instead of an opaque "DEMO" tag.
+                var isGem=i==0;var count=Text(chip.transform,()=>isGem?(economy.DemoMode?"999999":economy.Gems.ToString()):economy.Lives.ToString(),31,true);
+                count.enableAutoSizing=economy.DemoMode;count.fontSizeMin=20;count.fontSizeMax=31;
                 count.color=WobblePalette.Surface;Region(count.rectTransform,.34f,0,.94f,1);
             }
         }
@@ -272,7 +278,7 @@ namespace Wobble.UI
                     if(theme.available){save.Data.selectedTheme=theme.id;save.Save();}
                 });
             }
-            if(economy.DemoMode){var note=Text(content,()=>loc.LocaleCode=="tr"?"DEMO · Tüm temalar açık · İlerleme kaydedilmez":"DEMO · All themes unlocked · Progress is not saved",22,false);note.gameObject.AddComponent<LayoutElement>().preferredHeight=70;}
+            if(economy.DemoMode){var note=Text(content,()=>loc.LocaleCode=="tr"?"DEMO · Tüm temalar açık · Sınırsız elmas · İlerleme kaydedilmez":"DEMO · All themes unlocked · Unlimited gems · Progress is not saved",22,false);note.gameObject.AddComponent<LayoutElement>().preferredHeight=70;}
             else Note(content,"themes.coming");
         }
 

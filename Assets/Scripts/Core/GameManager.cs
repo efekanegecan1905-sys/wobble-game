@@ -109,11 +109,14 @@ namespace Wobble.Core
             rim.type = LightType.Directional; rim.intensity = .12f; rim.color = new Color(.97f, .97f, .96f);
             rim.shadows = LightShadows.None;
 
-            var floor = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            floor.name = "Architectural plinth";
+            // Built from the shared kit instead of GameObject.CreatePrimitive: IL2CPP
+            // strips collider types the player never references, so CreatePrimitive
+            // logs a missing-component error for every call on device.
+            var floor = new GameObject("Architectural plinth", typeof(MeshFilter), typeof(MeshRenderer));
             floor.transform.SetParent(transform);
             floor.transform.position = new Vector3(0, -.43f, 0);
-            floor.transform.localScale = new Vector3(4.5f, .14f, 4.5f);
+            floor.transform.localScale = new Vector3(4.5f, .28f, 4.5f);
+            floor.GetComponent<MeshFilter>().sharedMesh = ThemeWorldKit.CylinderMesh;
             // A Resources reference survives player shader stripping.
             var shader = Resources.Load<Shader>("Shaders/Carrara");
             plinthMaterial = new Material(shader) { color = WobblePalette.StoneMid };

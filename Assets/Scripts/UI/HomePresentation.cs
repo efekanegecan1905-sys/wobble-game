@@ -135,9 +135,8 @@ namespace Wobble.UI
             cloudMaterial.SetTexture("_MainTex", cloudTexture);
             cloudMaterial.SetFloat("_Opacity", .42f);
             cloudMaterial.SetFloat("_Tiling", 4.6f);
-            var sea = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            sea.name = "Home cloud sea";
-            Destroy(sea.GetComponent<Collider>());
+            var sea = new GameObject("Home cloud sea", typeof(MeshFilter), typeof(MeshRenderer));
+            sea.GetComponent<MeshFilter>().sharedMesh = ThemeWorldKit.QuadMesh;
             sea.transform.SetParent(stage, false);
             sea.transform.localPosition = new Vector3(0, -4.6f, 12f);
             sea.transform.localRotation = Quaternion.Euler(90, 0, 0);

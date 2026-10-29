@@ -125,3 +125,28 @@ Bunlar tasarım referansıydı; kaynak kod taşınmadı.
 - Testler: Play Mode 27/28 (1 demo-only skip), Edit Mode 19/19.
 - Oynanış, ekonomi, lokalizasyon ve akış kodunda davranış değişikliği yok; yalnızca sunum katmanı ve efekt parametreleri değişti.
 
+## 13. Telefon demo yapısı
+
+Sunumu gerçek cihazda göstermek için ayrı bir **demo** derlemesi üretildi. Normal uygulama ve mağaza ekonomisi bu yapıdan etkilenmez.
+
+| Konu | Davranış |
+| --- | --- |
+| Demo tetikleyicisi | Yalnızca demo derlemesine gömülen `Resources/Demo/AllThemes` işaret dosyası. Depoda tutulmaz; derlemeden sonra silinir, normal oyunda demo modu kapalı kalır. |
+| Temalar | Beş tema da sahip olarak açılır; kilit veya elmas fiyatı gösterilmez. Karta dokunmak temayı seçer. |
+| Elmas | Cüzdanda `999999` görünür, harcama sınırsızdır (mağaza ve tema satın alma hep başarılı). |
+| Can | Mevcut kayıttan gelir (5). |
+| Kayıt | Demo oturumu bellekte çalışır; `PlayerPrefs`'e yazmaz. Skor/ayar değişiklikleri uygulama kapanınca sıfırlanır, mevcut kayıt bozulmaz. |
+| Paket | `com.efekangokce.wobble.themedemo`, görünen ad **WOBBLE Demo**, takım `2WCK86PG29`, iOS 15.0 hedefi. Normal `com.efekangokce.wobble.game` paketine dokunulmadı. |
+
+Bu turda cihazda görülen iki sunum hatası da düzeltildi:
+
+- **Collider'sız primitive'ler**: `GameObject.CreatePrimitive` IL2CPP'de collider tipleri budandığı için her çağrıda "Can't add component because class '…Collider' doesn't exist" hatası basıyordu (geliştirme konsolu ekranı kaplıyordu). Zemin, bulut denizi ve efekt dörtgenleri artık `ThemeWorldKit` mesh'leriyle collider oluşturmadan kuruluyor.
+- **Güvenli alan şeritleri**: içerik ekranlarında çentik ve home-indicator şeritleri perdenin dışında kalıp ham gökyüzünü gösteriyordu. Canvas'a perde renginde iki şerit eklendi; menü geçişiyle aynı sürede açılıp kapanıyor, Ana Menü'de görünmüyor.
+
+Ayrıca yalnızca geliştirme derlemelerinde çalışan bir yakalama kancası eklendi: `WOBBLE_SCREEN=Themes|Shop|Daily|Settings` ortam değişkeni (veya `--wobble-screen=`) açılışta ilgili ekranı açar. Cihazda ekran görüntüsü almak için kullanıldı, mağaza derlemesine girmez.
+
+Doğrulama: iPhone 17 Pro (iOS 26) üzerinde kuruldu ve açıldı; cüzdan `999999`, Temalar ekranında beş tema da açık, geliştirme konsolu hatası yok. Play Mode 27/28 (1 demo-only skip), Edit Mode 19/19.
+
+Güvenli alan şeritleri cihaz ekran görüntüleriyle ölçüldü. Temalar ekranında üst şerit, şerit eklenmeden önce ham gökyüzü rengini (`0.51 / 0.76 / 0.87`) gösteriyordu; şeritten sonra ekran gövdesiyle aynı tona (`0.29 / 0.43 / 0.49`) indi. Alt şeritte de aynı düşüş var (`0.35 / 0.63 / 0.84` → `0.18 / 0.36 / 0.47`). Ana Menü'de şeritler şeffaf kaldığı için gökyüzü kesilmiyor.
+
+

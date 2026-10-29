@@ -56,6 +56,8 @@ namespace Wobble.UI
         private int lastBlocks, lastGems;
         private RectTransform resultCardRect;
         private readonly RectTransform[] resultChips=new RectTransform[4];
+        private Image topVeil, bottomVeil;
+        private float veilAlpha;
         private bool countingResult;
         private TextMeshProUGUI resultBest;
         private TextMeshProUGUI resultBlocks, resultPerfects, resultCombo, resultGems;
@@ -85,6 +87,10 @@ namespace Wobble.UI
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1080, 1920);
             scaler.matchWidthOrHeight = .5f;
+            // Strips live outside the safe area and behind it, so a content screen's
+            // veil reaches the notch and the home indicator instead of showing sky.
+            topVeil = VeilStrip(canvasGo.transform, "Top safe area veil");
+            bottomVeil = VeilStrip(canvasGo.transform, "Bottom safe area veil");
             safeArea = new GameObject("Safe Area", typeof(RectTransform)).GetComponent<RectTransform>();
             safeArea.SetParent(canvasGo.transform, false);
             Stretch(safeArea);
@@ -133,6 +139,19 @@ namespace Wobble.UI
             IntroPlaying=false;Presentation.SetIntro(1);menuGroup.alpha=1;
             ((RectTransform)menuGroup.transform).anchoredPosition=Vector2.zero;
             menuGroup.interactable=menuGroup.blocksRaycasts=true;curtain.gameObject.SetActive(false);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            // Development-only capture hook: open a content screen straight from a
+            // launch argument or environment variable so device screenshots do not
+            // need simulated taps.
+            var request = Environment.GetEnvironmentVariable("WOBBLE_SCREEN");
+            if (string.IsNullOrEmpty(request))
+            {
+                var argument = Array.Find(Environment.GetCommandLineArgs(), a => a.StartsWith("--wobble-screen="));
+                if (argument != null) request = argument.Substring("--wobble-screen=".Length);
+            }
+            if (!string.IsNullOrEmpty(request) && Enum.TryParse<MenuScreen>(request, true, out var screen))
+                Menus.Open(screen);
+#endif
         }
         public void SkipIntro()
         {
@@ -472,6 +491,14 @@ namespace Wobble.UI
         private void LateUpdate()
         {
             if (previousSafeArea != Screen.safeArea) ApplySafeArea();
+            if (topVeil != null)
+            {
+                var target = Menus != null && Menus.Root != null && Menus.Root.activeInHierarchy
+                             && Menus.Navigation != null && Menus.Navigation.Current != MenuScreen.Home ? 1f : 0f;
+                veilAlpha = Mathf.MoveTowards(veilAlpha, target, Time.unscaledDeltaTime / .24f);
+                topVeil.canvasRenderer.SetAlpha(veilAlpha);
+                bottomVeil.canvasRenderer.SetAlpha(veilAlpha);
+            }
             if (hudLabels != null && themeManager != null)
             {
                 var accent = themeManager.Accent;
@@ -512,6 +539,22 @@ namespace Wobble.UI
             safeArea.anchorMin = new Vector2(previousSafeArea.xMin / Screen.width, previousSafeArea.yMin / Screen.height);
             safeArea.anchorMax = new Vector2(previousSafeArea.xMax / Screen.width, previousSafeArea.yMax / Screen.height);
             safeArea.offsetMin = safeArea.offsetMax = Vector2.zero;
+            if (topVeil == null) return;
+            var top = topVeil.rectTransform;
+            top.anchorMin = new Vector2(0, previousSafeArea.yMax / Screen.height);
+            top.anchorMax = Vector2.one;
+            top.offsetMin = top.offsetMax = Vector2.zero;
+            var bottom = bottomVeil.rectTransform;
+            bottom.anchorMin = Vector2.zero;
+            bottom.anchorMax = new Vector2(1, previousSafeArea.yMin / Screen.height);
+            bottom.offsetMin = bottom.offsetMax = Vector2.zero;
+        }
+        private Image VeilStrip(Transform parent, string name)
+        {
+            var image = Panel(name, parent, MenuScreens.Veil).GetComponent<Image>();
+            image.raycastTarget = false;
+            image.canvasRenderer.SetAlpha(0f);
+            return image;
         }
 
         private GameObject Panel(string name, Transform parent, Color color)
