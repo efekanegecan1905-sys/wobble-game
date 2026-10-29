@@ -18,7 +18,7 @@ Bu çalışma yalnızca sunumu kapsar. İstifleme mekaniği, blok kesme mantığ
 
 Her tema `ThemeVisuals` içinde ayrı bir sanat yönetimi tarifi kullanır: gökyüzü üç duraklı gradyan, güneş yönü/şiddeti, bulut tonu, sis mesafesi, harabe rengi, blok kenar ışığı ve ışık yükseltmesi.
 
-- **Carrara Sarayı** — Doygun seramik mavisi gökyüzü (`#53ACE6` alt, `#9FD4F4` ufuk), sıcak beyaz mermer, lacivert-gri harabe siluetleri, beyaz bulut denizi, altın aksan. Premium "gündüz saray" hissi.
+- **Carrara Sarayı** — Doygun seramik mavisi gökyüzü (`#3E9BDF` alt, `#93D0F2` ufuk), sıcak beyaz mermer, lacivert-gri harabe siluetleri, krem bulut denizi (`#FFF4E2` / `#4E8FC9`), altın aksan. Premium "gündüz saray" hissi.
 - **Obsidyen Kalesi** — Kömür karası gökyüzü, kor turuncusu ufuk (`#76301A`), volkanik kül denizi (`#5A6678` / `#232B3A`), terracotta bazalt bloklar ve turuncu Fresnel kenar. Gece teması 2.2× ışık yükseltmesiyle okunur kalır.
 - **Antik Anıt** — Kum taşı ve altın paleti, sıcak pus, altın kenar ışığı; blok yüzeyleri gün ışığında net.
 - **Neon Şehir** — Erik-mor gece, macenta ufuk (`#A326E0`), camgöbeği kenar ışığı, turkuaz taş. 1.7× ışık yükseltmesi ve 1.45 kenar parlaklığı ile siluetler ayrışır.
@@ -68,7 +68,60 @@ Her tema `ThemeVisuals` içinde ayrı bir sanat yönetimi tarifi kullanır: gök
 
 ## 8. Doğrulama
 
-- **Play Mode**: 27 geçti / 0 başarısız / 1 atlandı (atlanan yalnızca demo derlemesine özel `AllThemesDemoCanSelectAndPlayEveryTheme`).
+- **Play Mode (tam suite)**: 27 geçti / 0 başarısız / 1 atlandı (atlanan yalnızca demo derlemesine özel `AllThemesDemoCanSelectAndPlayEveryTheme`).
 - **Edit Mode**: 19 / 19 geçti.
 - Ekran görüntüleri yeniden üretildi: `Artifacts/Previews`, `Artifacts/ThemeEnvironment`, `Artifacts/Menu/Previews`, `Artifacts/Feel`.
-- Değişiklikler `a313521` commit'i ile `main` dalına gönderildi.
+- Bundle ID `com.wobble.game` (iOS + Android) değişmeden korundu.
+
+## 9. Bu tur: ne yeniden inşa edildi, ne cilalandı?
+
+Önceki tur ağırlıklı palet, materyal ve efekt cilasıydı; ekran iskeletleri prototip düzenini koruyordu. Bu turda sunum katmanı yeniden kuruldu, oynanış kurallarına dokunulmadı.
+
+| Alan | Karar | Yapılan |
+| --- | --- | --- |
+| Ana menü | **Yeniden inşa** | Uzak "monolit" harabe sırası tamamen kaldırıldı (başlığın arkasında gri bıçaklar gibi duruyordu). Yerine üç teraslı, oyulmuş etekli ve ters koni gövdesiyle dağdan koparılmış hissi veren bir kaide; üzerinde 10 dilimlik hafif sarhoş kahraman kule, altın kakma taç, yüzen kristal + hale, tema başına ada ve landmark katmanı geldi. Logo girişi, OYNA hapı, motto plakası ve "En İyi" plakası yeniden yerleştirildi. |
+| Tema seçimi | **Yeniden inşa** | Kartlar kodla boyanan `ThemePoster` sahne resmi, taş çerçeve, seçili durumda aksan çerçevesi/şeridi ve kilit/fiyat plakasıyla yenilendi; kartlar sırayla yaylanarak açılıyor. |
+| Oynanış | **Yeniden inşa** | `ThemeDistrict` ile her temaya özel landmark, midground, yüzen ada ve moloz kompozisyonu; kamera açısına göre çerçeve kenarlarına yerleşiyor. Kaide `1.0 → .46` ölçeğe indirildi; kule tekrar kadrajın kahramanı. Carrara'da 8 sütun yerine 12 parçalı kırık parapet ve 5 çalı var. |
+| Bloklar | **Cila** | Kesim, UV, ölçü ve collider aynı. Yüz ayrımı, tema kenar ışığı ve gölge eşiği okunurluğu arttırıldı. |
+| Motion | **Yeniden inşa** | Menü girişinde `EaseOutBack`, basış/yaylanma; combo `×5` ve `×8` için ayrı süre ve punch beat'leri; sonuç kartında overshoot, skor sayacı ve dört istatistik kartının sıralı pop'u. |
+| İçerik ekranları | **Cila** | Tek lacivert perde (`#0A121C`, %72), altın bölüm başlıkları, krem not metinleri. Kartlar perdenin üstünde net duruyor. |
+| Efektler | **Cila** | Combo kademesine göre kıvılcım sayısı, halka yarıçapı ve aura parlaklığı artıyor; havuzlanmış sistem ve parçacık limiti aynı. |
+
+## 10. Değişen dosyalar
+
+| Dosya | Rol |
+| --- | --- |
+| `Assets/Scripts/UI/HomePresentation.cs` | Kahraman sahne, kaide, tema ada/landmark katmanı, ışık, kamera ve giriş animasyonu |
+| `Assets/Scripts/Themes/ThemeWorldKit.cs` *(yeni)* | Beş tema için paylaşılan mesh'ler: yapılar, adalar, parapet, kaide |
+| `Assets/Scripts/Themes/ThemeDistrict.cs` *(yeni)* | Oynanış gökyüzü hattı: landmark, midground, ada, moloz, küre, kaide ölçek/renk |
+| `Assets/Scripts/UI/ThemePoster.cs` *(yeni)* | Kodla boyanan tema kartı posterleri |
+| `Assets/Scripts/UI/MenuScrim.cs` *(yeni)* | Menü gradyan perdeleri |
+| `Assets/Scripts/UI/HeroPlayPulse.cs` *(yeni)* | OYNA butonu nefes/parlama animasyonu |
+| `Assets/Scripts/UI/MenuScreens.cs` | Ana menü hiyerarşisi, tema kartları, perde, başlık/not renkleri |
+| `Assets/Scripts/UI/UIManager.cs` | HUD, combo animasyonu, sonuç ekranı girişi ve skor sayacı |
+| `Assets/Scripts/UI/MenuIcon.cs` | OYNA ve kupa ikonları |
+| `Assets/Scripts/Themes/ThemeVisuals.cs` | Carrara paleti (gökyüzü, bulut denizi) |
+| `Assets/Scripts/Themes/CarraraWorld.cs` | Oynanış sahne bağlantısı, bulut denizi, bahçeler |
+| `Assets/Scripts/Effects/EffectPool.cs` | Combo kademeli kutlama, aura ve halka |
+| `Docs/GorselYenilemeRaporu.md` | Bu rapor |
+
+## 11. İncelenen referanslar
+
+Kamera hissi, kart hareketi, seçilebilir renk durumları ve mobil çizim bütçesi için yayınlanmış yapıları incelendi:
+
+| Referans | Alınan | Alınmayan |
+| --- | --- | --- |
+| Cinemachine | Yumuşak takip, sönümlü impuls ve kadraj eğrisi yaklaşımı | Paket bağımlılığı; mevcut `CameraController` korundu |
+| Unity UI Toolkit örnekleri | Kart giriş/çıkış zamanlaması ve easing eğrileri | UI Toolkit'e geçiş; Canvas/TMP düzeni korundu |
+| Unity UI Extensions | `CanvasGroup.interactable` yerine yalnızca `blocksRaycasts` ile giriş kilitleme | Bileşen paketi |
+| Boat Attack | Paylaşılan materyal/mesh, gölge bütçesi ve mobil batching alışkanlıkları | Sahne, shader ve render pipeline kopyası |
+
+Bunlar tasarım referansıydı; kaynak kod taşınmadı.
+
+## 12. Teslim
+
+- Kod commit'i: `01b22c4` — "Rebuild the home, destination and run presentation"
+- Dal: `main`, `https://github.com/efekanegecan1905-sys/wobble-game`
+- Testler: Play Mode 27/28 (1 demo-only skip), Edit Mode 19/19.
+- Oynanış, ekonomi, lokalizasyon ve akış kodunda davranış değişikliği yok; yalnızca sunum katmanı ve efekt parametreleri değişti.
+
