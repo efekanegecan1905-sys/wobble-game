@@ -472,6 +472,19 @@ namespace Wobble.UI
                     introFragments[i].localScale = new Vector3(.22f, .12f, .18f) * fragmentsIn * fragmentsOut;
                 }
             }
+            else
+            {
+                // Occasional signature sheen: one soft highlight crosses the six
+                // letters every few seconds. Reuses the intro property block, so it
+                // costs no extra material and stays below the eye's notice.
+                var cycle = Mathf.Repeat(clock, 7.4f);
+                for (var i = 0; i < 6; i++)
+                {
+                    var phase = Mathf.Exp(-Mathf.Pow((cycle - 4.7f) * 6.2f - i * 1.1f, 2));
+                    highlight.SetColor("_Color", Color.Lerp(new Color(.97f, .95f, .92f), new Color(1f, .94f, .80f), phase * .55f));
+                    letterSurfaces[i].SetPropertyBlock(highlight);
+                }
+            }
         }
 
         private static void PushSky(Material material, Material sky)

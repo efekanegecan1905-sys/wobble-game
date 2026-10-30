@@ -652,6 +652,27 @@ MonoBehaviour:
     m_Localized: GEMS
     m_Metadata:
       m_Items: []
+  - m_Id: 7040455484104704
+    m_Localized: FLOW
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687616
+    m_Localized: FEVER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687617
+    m_Localized: WOBBLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687618
+    m_Localized: STABILIZED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687619
+    m_Localized: NEW BEST  {0}
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930434
   references:
     version: 2
     RefIds:
@@ -678,3 +699,4 @@ MonoBehaviour:
         - id: 1247749857296
         - id: 449887991750656
         - id: 4769864852955138
+        - id: 7040455496687619

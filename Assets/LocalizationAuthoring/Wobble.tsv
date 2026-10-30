@@ -80,4 +80,9 @@ hud.best	EN İYİ  {0}	BEST  {0}
 hud.perfect	MÜKEMMEL	PERFECT
 hud.combo	MÜKEMMEL\nKOMBO ×{0}	PERFECT\nCOMBO ×{0}
 hud.tap	YERLEŞTİRMEK İÇİN DOKUN	TAP TO PLACE
+hud.flow	AKIŞ	FLOW
+hud.fever	COŞKU	FEVER
+hud.wobble	SALLANIYOR	WOBBLE
+hud.stabilized	DENGELENDİ	STABILIZED
+result.newbest	YENİ REKOR  {0}	NEW BEST  {0}
 settings.credits	Ses Kaynakları	Audio Credits

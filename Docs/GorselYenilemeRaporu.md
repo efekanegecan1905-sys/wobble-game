@@ -190,3 +190,106 @@ Bu geçiş oynanışı değiştirmedi; sunum, tipografi ve yüzey okunabilirliğ
 - Play Mode **27/28** (1 demo-only skip), Edit Mode **19/19**.
 - `Artifacts/Menu/Previews` 30 ekran görüntüsü (5 ekran × 2 dil × 3 çözünürlük) yeniden üretildi; test her metin için taşma ve "No translation found" kontrolünü geçti.
 - `Artifacts/ThemeEnvironment` beş dünya için yeniden üretildi; `Artifacts/Product/Previews` sonuç ekranı güncellendi.
+
+## 15. Üçüncü geçiş: premium his ve yaşayan dünyalar
+
+Amaç, anlık istifleme ve tüm sunum anlarını "premium" hissettirmekti. Oynanış sözleşmesi **hiç** değişmedi: hareket yönleri/sınırları, kesme matematiği, örtüşme, mükemmel toleransı, skor ve kombo kuralları, giriş, ekonomi, kayıt/lokalizasyon mimarisi, ses eşlemesi ve `com.wobble.game` paket kimliği aynı. Tüm yeni durum **yalnızca sunum** katmanında; hiçbir yeni alt sistem, rastgele oynanış sapması veya ekstra ekonomi yok.
+
+### Blok yüzeyi (yalnızca render)
+
+| Konu | Önce | Şimdi |
+| --- | --- | --- |
+| Görsel kalınlık | Oynanış yüksekliğiyle birebir | **1.12×** görsel yükseklik (`.4 → ≈ .448`); collider ve yerleşim yüksekliği `.4` |
+| Pah / kenar | %2.2 içe pah | Daha derin pah + üst yüz/yan yüz ayrımı, alt temas gölgesi, güçlendirilmiş kenar ışığı |
+| Vuruş (punch) | Yok | **105 ms**, tepe **1.2–1.8%** ölçek; yalnızca görsel kök, collider'a dokunmaz |
+| Mükemmel | Tek kıvılcım | Kısa parlak süpürme (sweep) + daha geniş halka |
+| Eğilme | Yok | Merkez dışı kesimlerde **1.4–4.2°** sönümlü lean (görsel çocuk) |
+
+`StackManager` boyutu, `BoxCollider.size == Vector3.one` ve `view.Size.y == .4` korunur; testler bunu doğrular.
+
+### Yerleşim ve Perfect geri bildirimi
+
+- Normal yerleşim sakin: temas halkası + kısa kamera impulsu; ekran sarsıntısı yok.
+- Perfect belirgin şekilde daha iyi: daha geniş halka, süpürme, kısa güçlü impuls ve `MÜKEMMEL` etiketi.
+- Kombo kırıldığında parlama **~0.42 s** içinde yumuşakça sönüyor; ani kapanma yok.
+- Tüm efektler `EffectPool` üzerinden havuzlu; yerleşim başına `Instantiate`/`Destroy` yok.
+
+### FLOW / FEVER
+
+- Yeni `ComboEnergy` (yalnızca sunum): `DisplayMultiplier` 5 → **FLOW**, 8 → **FEVER**. Tam aralık saldırısı **~0.16 s**, bırakış **~0.42 s**.
+- HUD'da üst-orta **AKIŞ / COŞKU** çipi: koyu plaka, geniş harf aralığı, tema aksanına hafif ısınan metin. x5 sakince yükseliyor, x8 kahraman anı ama kaos değil.
+- Kombo enerjisi kamera, blok kenarı, dünya ışığı ve parçacıklara yayılıyor; skor/kombo matematiğine girmiyor.
+
+### WOBBLE / STABILIZED
+
+- İlk **x8 Perfect**'te kule "gerilir": her dilim kendi merkezi etrafında **< 1°** salınır (yalnızca görsel), alt-orta **SALLANIYOR** çipi belirir.
+- Gerilimde gelen ilk Perfect **stabilize eder**: `STABİLİZE` anı, sönümlü salınım, toz halkası. Ekonomi ödülü **yok**; skor yalnızca normal yerleşim puanını alır.
+- WOBBLE sırasında collider, kesme ve sıradaki yerleşim tamamen sabit.
+
+### Tema dünya reaksiyonları
+
+| Tema | Kombo/Perfect reaksiyonu |
+| --- | --- |
+| **Carrara** | Altın kenar ışığı, bulut denizinde yumuşak dalga, mercan vurgular |
+| **Obsidian** | Kor turuncusu kenarlar, lav parlaması, dumanlı toz |
+| **Ancient Stone** | Güneş altını, toz bulutu, sıcak kum tonu |
+| **Neon** | Camgöbeği → magenta kovalayan şerit, zemin halkası nabzı |
+| **Space** | Yıldız kırpışması, halka dalgası, nebula tonu |
+
+Reaksiyonlar `ThemeManager`, `CarraraWorld` ve `ThemeDistrict` içinde mevcut yapılar genişletilerek yapıldı; `Environment` sözleşmeleri ve `GeometryCount == 24` korunuyor.
+
+### Fail ve sonuç
+
+- Başarısızlıkta kamera kısa ve güçlü bir impuls alır, toz/halka patlar; sonuç arayüzü **0.72 s** sonra açılır (0.6–1.2 s aralığı).
+- Kart overshoot ile gelir, skor sayılır, istatistik çipleri sırayla açılır; **YENİ REKOR** altın plakası ve sıcak kart tonu yalnızca rekor kırıldığında görünür.
+- Skor, en iyi, blok, mükemmel, maks kombo, elmas, tekrar dene / ana menü / paylaş / devam butonları korunur; butonlar reveal bitmeden tıklanamaz.
+
+### Ana Menü mikro-hareket
+
+- Home yeniden inşa edilmedi: logo nefesi, bulut sürüklenmesi, ada salınımı, ara sıra altı harfte imza parlaması, dokunuşta tactile basış ve ekran geçişleri eklendi.
+
+### Tipografi ve HUD okunurluğu
+
+- İki aile korunuyor: **Nunito Black** (display) + **Inter SemiBold** (gövde); yedek zincir aynı karakter setini taşıyor.
+- `TypographyCoverageTests` üç TMP varlığında `A-Z a-z 0-9 ÇĞİÖŞÜ çğıöşü` + kullanılan noktalama için glif kapsamasını ve iki ailenin farklı olduğunu doğrular; `₺` kullanılmadığı için kapsam dışı.
+- Küçük puntolar büyütüldü (en iyi etiketi, alt menü, tema alt yazı/durum/fiyat, günlük ödül, notlar, ayarlar satırları); HUD'a marka ve skor için simetrik koyu plakalar eklendi, böylece güneş/ay diski veya bulut bankı arkasında bile "SEVİYE n" okunur.
+- Tüm yakalama testleri her metin için `isTextOverflowing == false` ve "No translation found" yok kontrolünü geçiyor.
+
+### Kamera / haptik / VFX
+
+- Kamera yalnızca mikro davranış: yerleşim impulsu, FLOW nabzı, x8'de kısa hero roll, fail'de güçlü ama kısa impuls. Kadraj ve hassasiyet değişmedi.
+- Haptikler mevcut eşlemeyle sınırlı; yeni yoğun post-process yok.
+
+### Performans
+
+- `CarraraWorld.GeometryCount == 24` sabit, sahne collider'ı yok.
+- Ambient parçacık limiti **≤ 36**, tüm efektler havuzlu, mesh/materyal paylaşımlı.
+- Yerleşim yolunda LINQ yok, yerleşim başına `Instantiate`/`Destroy` yok; ağır post-process eklenmedi.
+
+### Doğrulama
+
+- **Edit Mode: 27/27** (yeni `ComboEnergyTests` + `TypographyCoverageTests` dahil).
+- **Play Mode: 29 geçti / 0 başarısız / 1 atlandı** (atlanan yalnızca demo derlemesine özel `AllThemesDemoCanSelectAndPlayEveryTheme`).
+- Yeni `FeelPassCaptureTests`; FLOW x5, FEVER + WOBBLE x8, STABILIZED ve YENİ REKOR kartını üç çözünürlükte üretir, collider/ekonomi sözleşmelerini doğrular; ayrıca Obsidian / Ancient Stone / Neon / Space için x8 FEVER kareleri alır.
+- Yenilenen kanıtlar: `Artifacts/Feel/Pass`, `Artifacts/Previews`, `Artifacts/ThemeEnvironment`, `Artifacts/Product/Previews`, `Artifacts/Menu/Previews`.
+- Bundle ID `com.wobble.game` (iOS + Android) değişmedi.
+
+### Bu turda değişen dosyalar
+
+| Dosya | Rol |
+| --- | --- |
+| `Assets/Scripts/Gameplay/ComboEnergy.cs` *(yeni)* | FLOW/FEVER sunum durumu, saldırı/bırakış zamanlaması |
+| `Assets/Scripts/Gameplay/BlockView.cs` | 1.12× görsel mesh, punch, lean, dilim başına WOBBLE salınımı |
+| `Assets/Resources/Shaders/Carrara.shader` | Üst/yan ayrımı, temas gölgesi, Perfect süpürmesi |
+| `Assets/Scripts/Gameplay/StackManager.cs` | Gerilim başlatma/stabilize, efekt beslemesi (oynanış matematiği değişmedi) |
+| `Assets/Scripts/Core/GameManager.cs` | Enerji akışı, x8 gerilimi, yeni rekor, 0.72 s fail gecikmesi |
+| `Assets/Scripts/Effects/EffectPool.cs` | Temas/Perfect halkaları, aura, stabilize ve fail efektleri |
+| `Assets/Scripts/Camera/CameraController.cs` | Yerleşim/FLOW/fail impulsları, hero roll |
+| `Assets/Scripts/Themes/ThemeManager.cs`, `CarraraWorld.cs`, `ThemeDistrict.cs` | Tema bazlı kombo/dünya reaksiyonları |
+| `Assets/Scripts/UI/UIManager.cs` | AKIŞ/COŞKU, SALLANIYOR/STABİLİZE, YENİ REKOR, plakalar, punto ve kontrast |
+| `Assets/Scripts/UI/MenuScreens.cs`, `HomePresentation.cs` | Küçük punto düzeltmeleri, Home nefesi ve imza parlaması |
+| `Assets/LocalizationAuthoring/Wobble.tsv` + `Assets/Localization/*.asset` | `hud.flow`, `hud.fever`, `hud.wobble`, `hud.stabilized`, `result.newbest` (87 anahtar × 2 dil) |
+| `Assets/Editor/LocalizationSync.cs` *(yeni)* | TSV → String Table hedefli senkron + glif doğrulaması |
+| `Assets/Editor/ComboEnergyTests.cs`, `TypographyCoverageTests.cs` *(yeni)* | Sunum enerjisi ve tipografi sözleşmeleri |
+| `Assets/Tests/PlayMode/FeelPassCaptureTests.cs` *(yeni)* | Premium an yakalamaları + collider/ekonomi doğrulaması |
+| `Docs/GorselYenilemeRaporu.md` | Bu bölüm |

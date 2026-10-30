@@ -661,6 +661,27 @@ MonoBehaviour:
     m_Localized: ELMAS
     m_Metadata:
       m_Items: []
+  - m_Id: 7040455484104704
+    m_Localized: "AKI\u015E"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687616
+    m_Localized: "CO\u015EKU"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687617
+    m_Localized: SALLANIYOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687618
+    m_Localized: "DENGELEND\u0130"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687619
+    m_Localized: "YEN\u0130 REKOR  {0}"
+    m_Metadata:
+      m_Items:
+      - rid: 5129602412806930432
   references:
     version: 2
     RefIds:
@@ -687,3 +708,4 @@ MonoBehaviour:
         - id: 1247749857296
         - id: 449887991750656
         - id: 4769864852955138
+        - id: 7040455496687619

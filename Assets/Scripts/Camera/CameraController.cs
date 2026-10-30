@@ -19,6 +19,10 @@ namespace Wobble.CameraSystem
         private float failTime = 1f;
         private float comboTime = 1f;
         private float comboKick;
+        private float placementTime = 1f;
+        private float placementKick;
+        private float heroTime = 1f;
+        private float heroKick;
         private UnityEngine.Camera cam;
         private float followDistance, distanceVelocity;
         public float FollowDistance => followDistance;
@@ -44,8 +48,29 @@ namespace Wobble.CameraSystem
             target = top + Vector3.up * .35f;
         }
         public void FollowHeight(float y) => FollowTop(new Vector3(0, y, 0));
-        public void PerfectImpulse() => impulseTime = 0f;
-        public void ComboImpulse(int combo) { comboTime = 0f; comboKick = Mathf.Clamp01(combo / 8f); }
+
+        // Placement, FLOW and FEVER stay under 4.5 cm of travel so the moving slab
+        // never becomes harder to read. Fail is deliberately the strongest beat.
+        public void PlacementImpulse(float strength = .55f)
+        {
+            placementTime = 0f;
+            placementKick = Mathf.Clamp01(strength);
+        }
+
+        public void PerfectImpulse() => PlacementImpulse(1f);
+
+        public void FlowPulse(float strength = 1f)
+        {
+            heroTime = 0f;
+            heroKick = Mathf.Clamp01(strength);
+        }
+
+        public void ComboImpulse(int combo)
+        {
+            comboTime = 0f;
+            comboKick = Mathf.Clamp01(combo / 8f);
+        }
+
         public void FailImpulse() => failTime = 0f;
 
         public void RotateForLevel(int level)
@@ -83,12 +108,26 @@ namespace Wobble.CameraSystem
             impulseTime += Time.deltaTime;
             failTime += Time.deltaTime;
             comboTime += Time.deltaTime;
+            placementTime += Time.deltaTime;
+            heroTime += Time.deltaTime;
             var impulse = impulseTime < .18f ? Mathf.Sin(impulseTime / .18f * Mathf.PI * 2f) * .022f * (1f - impulseTime / .18f) : 0f;
             var combo = comboTime < .26f ? Mathf.Sin(comboTime / .26f * Mathf.PI) * .026f * comboKick : 0f;
+            // A short percussive tick on every placement; the falling body never moves.
+            var placement = placementTime < .20f
+                ? Mathf.Sin(placementTime / .20f * Mathf.PI * 2f) * .016f * placementKick * (1f - placementTime / .20f)
+                : 0f;
+            // FLOW/FEVER hero pulse: one clean, fast push rather than a sustained shake.
+            var hero = heroTime < .38f
+                ? Mathf.Sin(heroTime / .38f * Mathf.PI) * .040f * heroKick * (1f - heroTime / .38f)
+                : 0f;
+            var heroRoll = heroTime < .38f
+                ? Mathf.Sin(heroTime / .38f * Mathf.PI) * .13f * heroKick * (1f - heroTime / .38f)
+                : 0f;
             // A short, heavy settle when the tower is lost; never runs during framing checks.
-            var impact = failTime < .42f ? Mathf.Sin(failTime / .42f * Mathf.PI * 1.5f) * .085f * (1f - failTime / .42f) : 0f;
-            var shake = rotation * new Vector3(impact * .55f, impulse + combo + impact, 0f);
-            transform.SetPositionAndRotation(pivot - forward * followDistance + shake, rotation);
+            var impact = failTime < .46f ? Mathf.Sin(failTime / .46f * Mathf.PI * 1.5f) * .095f * (1f - failTime / .46f) : 0f;
+            var shake = rotation * new Vector3(impact * .55f, impulse + placement + combo + hero + impact, 0f);
+            var finalRotation = rotation * Quaternion.Euler(0f, 0f, heroRoll);
+            transform.SetPositionAndRotation(pivot - forward * followDistance + shake, finalRotation);
             cam.backgroundColor = RenderSettings.fogColor;
         }
     }

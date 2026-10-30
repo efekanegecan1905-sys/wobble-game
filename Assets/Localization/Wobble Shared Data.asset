@@ -343,6 +343,26 @@ MonoBehaviour:
     m_Key: result.gems
     m_Metadata:
       m_Items: []
+  - m_Id: 7040455484104704
+    m_Key: hud.flow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687616
+    m_Key: hud.fever
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687617
+    m_Key: hud.wobble
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687618
+    m_Key: hud.stabilized
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7040455496687619
+    m_Key: result.newbest
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

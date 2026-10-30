@@ -171,7 +171,7 @@ namespace Wobble.UI
             CasualSurface.Style(iconPlate.GetComponent<Image>(),false);
             var trophy=Icon(iconPlate.transform,MenuIcon.Shape.Trophy);
             Center(trophy.rectTransform,.5f,.5f,44,44);trophy.color=WobblePalette.PrimaryPressed;
-            var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),18,false,TextAlignmentOptions.MidlineLeft);
+            var bestLabel=Text(bestCard.transform,()=>loc.Text("home.best"),20,false,TextAlignmentOptions.MidlineLeft);
             bestLabel.color=WobblePalette.TextSecondary;bestLabel.characterSpacing=4;
             Region(bestLabel.rectTransform,.185f,.50f,.60f,.94f);
             var best=Text(bestCard.transform,()=>save.Data.bestScore.ToString(),44,true,TextAlignmentOptions.MidlineRight);
@@ -191,7 +191,7 @@ namespace Wobble.UI
                 rect.anchorMin=new Vector2(.045f+i*.235f,0); rect.anchorMax=new Vector2(.25f+i*.235f,0);
                 rect.pivot=new Vector2(.5f,0); rect.offsetMin=new Vector2(0,54); rect.offsetMax=new Vector2(0,240);
                 var icon=Icon(button.transform,icons[i]); Center(icon.rectTransform,.5f,.655f,62,62);
-                var label=Text(button.transform,()=>loc.Text(key),19,false); Center(label.rectTransform,.5f,.225f,210,40);
+                var label=Text(button.transform,()=>loc.Text(key),21,false); Center(label.rectTransform,.5f,.225f,220,44);
                 label.characterSpacing=1;
                 refresh.Add(()=>button.gameObject.SetActive(Navigation.Current==MenuScreen.Home));
             }
@@ -259,21 +259,21 @@ namespace Wobble.UI
                 var label=Text(card,()=>loc.Text(theme.nameKey),34,true,TextAlignmentOptions.MidlineLeft);
                 Region(label.rectTransform,.05f,.318f,.95f,.44f);label.characterSpacing=.5f;
                 label.enableAutoSizing=true;label.fontSizeMin=22;label.fontSizeMax=34;
-                var subtitle=Text(card,()=>ThemeSubtitle(theme.id),16,false,TextAlignmentOptions.MidlineLeft);
+                var subtitle=Text(card,()=>ThemeSubtitle(theme.id),18,false,TextAlignmentOptions.MidlineLeft);
                 subtitle.color=Muted;Region(subtitle.rectTransform,.05f,.228f,.95f,.316f);
-                subtitle.enableAutoSizing=true;subtitle.fontSizeMin=11;subtitle.fontSizeMax=16;subtitle.characterSpacing=3;
+                subtitle.enableAutoSizing=true;subtitle.fontSizeMin=13;subtitle.fontSizeMax=18;subtitle.characterSpacing=3;
 
                 var statusPlate=Panel("Theme status",card,WobblePalette.Alpha(WobblePalette.TextPrimary,.07f));
                 Region(statusPlate.GetComponent<RectTransform>(),.05f,.038f,.95f,.19f);
                 CasualSurface.Style(statusPlate.GetComponent<Image>(),false);statusPlate.GetComponent<Image>().raycastTarget=false;
                 var status=Text(statusPlate.transform,()=>ThemeStatus(theme),20,true,TextAlignmentOptions.MidlineLeft);
                 Region(status.rectTransform,.045f,0,.62f,1);status.characterSpacing=3;
-                status.enableAutoSizing=true;status.fontSizeMin=12;status.fontSizeMax=20;
+                status.enableAutoSizing=true;status.fontSizeMin=14;status.fontSizeMax=21;
                 var pricePlate=Panel("Theme price",statusPlate.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.10f));
                 Region(pricePlate.GetComponent<RectTransform>(),.62f,.16f,.965f,.84f);
                 CasualSurface.Style(pricePlate.GetComponent<Image>(),false);pricePlate.GetComponent<Image>().raycastTarget=false;
                 var gem=Icon(pricePlate.transform,MenuIcon.Shape.Gem);Center(gem.rectTransform,.16f,.5f,27,27);
-                var price=Text(pricePlate.transform,()=>theme.gemPrice.ToString(),18,true,TextAlignmentOptions.MidlineLeft);
+                var price=Text(pricePlate.transform,()=>theme.gemPrice.ToString(),20,true,TextAlignmentOptions.MidlineLeft);
                 Region(price.rectTransform,.34f,0,.96f,1);price.characterSpacing=1;
 
                 refresh.Add(()=>PaintThemeCard(theme,visuals,card,statusPlate,status,subtitle,pricePlate,gem));
@@ -431,7 +431,7 @@ namespace Wobble.UI
                 Region(card,i==6?0:i%3/3f+.008f,0,i==6?1:(i%3+1)/3f-.008f,1);CasualSurface.Style(card.GetComponent<Image>());
                 var day=Text(card,()=>loc.Text("daily.day",index+1),27,true);Region(day.rectTransform,.03f,.73f,.97f,.97f);
                 var icon=Icon(card,reward.gems>0?MenuIcon.Shape.Gem:MenuIcon.Shape.Heart);Center(icon.rectTransform,.5f,.48f,i==6?120:85,i==6?120:85);
-                var award=Text(card,()=>RewardText(reward.gems,reward.lives),22,false);Region(award.rectTransform,.04f,.04f,.96f,.25f);
+                var award=Text(card,()=>RewardText(reward.gems,reward.lives),23,false);Region(award.rectTransform,.04f,.04f,.96f,.25f);
                 refresh.Add(()=>day.color=index==Daily.NextIndex?WobblePalette.PrimaryPressed:White);
             }
             var claimRow=Row(content,145,false);
@@ -540,7 +540,7 @@ namespace Wobble.UI
         }
         private void Note(Transform content,string key)
         {
-            var row=Row(content,100,false);var label=Text(row,()=>loc.Text(key),21,false,TextAlignmentOptions.MidlineLeft);label.color=WobblePalette.Alpha(WobblePalette.Surface,.82f);Region(label.rectTransform,.02f,.05f,.98f,.95f);
+            var row=Row(content,100,false);var label=Text(row,()=>loc.Text(key),23,false,TextAlignmentOptions.MidlineLeft);label.color=WobblePalette.Alpha(WobblePalette.Surface,.82f);Region(label.rectTransform,.02f,.05f,.98f,.95f);
         }
         private RectTransform Row(Transform content,float height,bool separator=true)
         {

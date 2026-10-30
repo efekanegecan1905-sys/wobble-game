@@ -52,7 +52,9 @@ Shader "WOBBLE/Carrara"
             o.stone = (v.positionOS.xyz * _StoneSize.xyz + _StoneOrigin.xyz) * .18;
             o.normalOS = v.normalOS;
             o.localTop = v.positionOS.xz + .5;
-            o.localY = v.positionOS.y + .5;
+            // The render mesh is 1.12 units tall while the gameplay slab is 1.0;
+            // normalise here so every face shading rule stays physical.
+            o.localY = v.positionOS.y / 1.12 + .5;
             o.fog = ComputeFogFactor(p.positionCS.z);
             return o;
         }
@@ -90,9 +92,13 @@ Shader "WOBBLE/Carrara"
                 // Face separation: the cap catches more sky, the sides read as a
                 // slightly richer, darker stone so each slab has a clear silhouette.
                 half upFacing = saturate(normalize(i.normalOS).y);
+                half vertical = saturate(i.localY);
                 half3 albedo = stone.rgb * _Color.rgb;
-                albedo *= lerp(half(0.93), half(1.06), upFacing);
-                albedo *= lerp(half(0.965), half(1.035), saturate(i.localY));
+                albedo *= lerp(half(0.90), half(1.075), upFacing);
+                // Contact shading: the bottom edge of each slab sits in its own
+                // shadow, while the top surface stays clean and bright.
+                albedo *= lerp(half(0.84), half(1.028), smoothstep(0, .30, vertical));
+                albedo *= lerp(half(0.975), half(1.025), vertical);
                 surface.albedo = albedo;
                 surface.metallic = 0;
                 surface.specular = half3(.04,.04,.04);
@@ -106,9 +112,9 @@ Shader "WOBBLE/Carrara"
                 // The chamfer ring is 45 degrees, so a narrow band around that normal
                 // gives the slab a lit soft bevel without extra geometry.
                 half chamfer = smoothstep(.50, .70, abs(i.normalOS.y)) * (1 - smoothstep(.84, .98, abs(i.normalOS.y)));
-                surface.emission = half3(1,.95,.86) * (sweep * 2.2 + _Flash * .2) * upFacing
+                surface.emission = half3(1,.95,.86) * (sweep * 2.2 + _Flash * .34) * upFacing
                     + _RimColor.rgb * fresnel * _RimStrength
-                    + half3(1,.97,.91) * chamfer * _EdgeLight * (0.55 + 0.45 * upFacing);
+                    + half3(1,.97,.91) * chamfer * _EdgeLight * (0.72 + 0.52 * upFacing);
                 half4 color = UniversalFragmentPBR(data, surface);
                 color.rgb = MixFog(color.rgb, i.fog);
                 return color;

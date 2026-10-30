@@ -21,8 +21,10 @@ namespace Wobble.Effects
         private GameObject aura, ring;
         private Material auraMaterial, ringMaterial;
         private Color accent = new(.8f, .78f, .72f), accentSecondary = new(1f, .85f, .55f);
-        private float auraTime, auraStrength, auraBase = 1.2f;
+        private float auraTime, auraStrength, auraBase = 1.2f, auraBurst;
         private float ringTime, ringStrength, ringBase = .8f, ringEnd = 3.2f;
+        private float energy, energyTier;
+        private Vector3 energyPosition, energySize = Vector3.one;
         private const float AuraDuration = 1.15f;
         private const float RingDuration = .62f;
 
@@ -50,6 +52,16 @@ namespace Wobble.Effects
         {
             accent = primary;
             accentSecondary = secondary;
+        }
+
+        // Sustained combo presentation. Called every frame by StackManager so the
+        // aura keeps breathing after the one-shot placement burst has faded.
+        public void SetEnergy(float intensity, int tier, Vector3 position, Vector3 size)
+        {
+            energy = Mathf.Clamp01(intensity);
+            energyTier = tier;
+            energyPosition = position;
+            energySize = size;
         }
 
         private ParticleSystem CreateDust(Transform parent)
@@ -152,6 +164,10 @@ namespace Wobble.Effects
                 }
                 ps.Emit(new ParticleSystem.EmitParams { position = ps.transform.position + offset, velocity = offset.normalized * .09f + Vector3.up * .07f }, 1);
             }
+            // Every successful placement answers with a quiet contact ring. Perfect
+            // placements get the wider, brighter ring from Celebrate instead.
+            if (!perfect)
+                EmitRing(position - Vector3.up * (size.y * .5f - .012f), .42f, 2.1f + cutFraction * 1.2f, .55f, accent);
             host.StartCoroutine(Return(ps));
         }
 
@@ -166,13 +182,23 @@ namespace Wobble.Effects
             var high = combo >= 4;
             var primary = high ? accentSecondary : accent;
             var secondary = high ? accent : accentSecondary;
-            SpawnSparks(top, size, (perfect ? 12 + Mathf.Min(18, combo * 2) : 6) + tier * 8,
-                perfect ? primary : secondary, perfect ? 1f + tier * .18f : .55f);
+            SpawnSparks(top, size, (perfect ? 12 + Mathf.Min(18, combo * 2) : 6) + tier * 10,
+                perfect ? primary : secondary, perfect ? 1f + tier * .22f : .55f);
             if (!perfect) return;
-            EmitRing(top, .62f, 2.6f + Mathf.Min(1.4f, combo * .12f) + tier * .85f, 1.15f + tier * .22f, primary);
+            EmitRing(top, .62f, 2.6f + Mathf.Min(1.4f, combo * .12f) + tier * 1.15f, 1.15f + tier * .30f, primary);
             ShowAura(top, size, combo, secondary);
-            if (high) SpawnSparks(top, size, 8 + tier * 7, secondary, 1.1f + tier * .12f);
-            if (tier >= 2) SpawnSparks(top, size, 10, Color.Lerp(primary, Color.white, .45f), 1.35f);
+            if (high) SpawnSparks(top, size, 8 + tier * 9, secondary, 1.1f + tier * .15f);
+            if (tier >= 2) SpawnSparks(top, size, 12, Color.Lerp(primary, Color.white, .45f), 1.45f);
+        }
+
+        // The WOBBLE recovery beat. Purely presentational: a clean upward ring and
+        // a small white/gold burst, with no score or economy side effect.
+        public void Stabilized(Vector3 position, Vector3 size)
+        {
+            var top = position + Vector3.up * (size.y * .5f + .02f);
+            EmitRing(top, .55f, 4.4f, 1.5f, Color.Lerp(accentSecondary, Color.white, .35f));
+            SpawnSparks(top, size, 22, Color.Lerp(accent, Color.white, .45f), 1.25f);
+            SpawnSparks(top, size, 12, accentSecondary, 1.0f);
         }
 
         public void Fail(Vector3 position, Vector3 size)
@@ -181,6 +207,29 @@ namespace Wobble.Effects
             SpawnSparks(top, size, QualitySettings.GetQualityLevel() == 0 ? 16 : 30, accent, 1.25f);
             SpawnSparks(top, size, 16, new Color(1f, .62f, .28f), 1f);
             EmitRing(position + Vector3.up * .03f, 1.1f, 6.8f, 1.5f, accentSecondary);
+            // A low dust punch makes the miss read as weight hitting the air, not
+            // as a UI error. It reuses the same pooled dust system as placements.
+            var dust = particles.Count > 0 ? particles.Dequeue() : null;
+            if (dust != null)
+            {
+                dust.transform.position = position - Vector3.up * size.y * .1f;
+                var shape = dust.shape;
+                shape.scale = new Vector3(size.x * 1.2f, .03f, size.z * 1.2f);
+                dust.gameObject.SetActive(true);
+                dust.Play(true);
+                for (var i = 0; i < 18; i++)
+                {
+                    var angle = i * Mathf.PI * 2f / 18f;
+                    var outward = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+                    dust.Emit(new ParticleSystem.EmitParams
+                    {
+                        position = dust.transform.position + outward * Mathf.Max(size.x, size.z) * .5f,
+                        velocity = outward * .32f + Vector3.up * .12f,
+                        startSize = .02f, startLifetime = .5f
+                    }, 1);
+                }
+                host.StartCoroutine(Return(dust));
+            }
             if (aura != null) aura.SetActive(false);
         }
 
@@ -233,20 +282,41 @@ namespace Wobble.Effects
             auraMaterial.SetFloat("_Intensity", .55f);
             auraStrength = .55f + Mathf.Min(.55f, combo * .055f) + tier * .16f;
             auraTime = 0;
+            auraBurst = 1f;
             aura.SetActive(true);
         }
 
         public void Tick(float dt)
         {
-            if (aura != null && aura.activeSelf)
+            if (aura != null)
             {
-                auraTime += dt;
-                var t = auraTime / AuraDuration;
-                if (t >= 1f) aura.SetActive(false);
-                else
+                var sustain = energy;
+                if (sustain > .004f)
                 {
-                    aura.transform.localScale = Vector3.one * Mathf.Lerp(auraBase, auraBase * 1.42f, t);
-                    auraMaterial.SetFloat("_Intensity", auraStrength * (1f - t) * (1f - t) * 1.6f);
+                    // Sustained FLOW/FEVER aura: a slow breath anchored to the tower
+                    // top, with a short extra swell from the last Perfect placement.
+                    aura.SetActive(true);
+                    var baseSize = Mathf.Max(1.02f, Mathf.Max(energySize.x, energySize.z) * (.96f + energyTier * .10f));
+                    var breathe = 1f + Mathf.Sin(Time.time * 2.1f) * .022f + sustain * .03f;
+                    aura.transform.position = energyPosition + Vector3.up * (energySize.y * .5f + .015f);
+                    aura.transform.localScale = Vector3.one * baseSize * breathe * (1f + auraBurst * .13f);
+                    var color = energyTier >= 2 ? Color.Lerp(accent, accentSecondary, .55f)
+                        : energyTier >= 1 ? accentSecondary : accent;
+                    auraMaterial.SetColor("_Color", color);
+                    auraMaterial.SetFloat("_Intensity", (.18f + sustain * .38f) * (1f + auraBurst * .48f));
+                    auraTime = Mathf.Min(AuraDuration, auraTime + dt);
+                    auraBurst = Mathf.MoveTowards(auraBurst, 0f, dt / .38f);
+                }
+                else if (aura.activeSelf)
+                {
+                    auraTime += dt;
+                    var t = auraTime / AuraDuration;
+                    if (t >= 1f) aura.SetActive(false);
+                    else
+                    {
+                        aura.transform.localScale = Vector3.one * Mathf.Lerp(auraBase, auraBase * 1.42f, t);
+                        auraMaterial.SetFloat("_Intensity", auraStrength * (1f - t) * (1f - t) * 1.6f);
+                    }
                 }
             }
             if (ring != null && ring.activeSelf)

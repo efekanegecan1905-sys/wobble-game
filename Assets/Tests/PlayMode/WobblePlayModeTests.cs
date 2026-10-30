@@ -304,7 +304,7 @@ namespace Wobble.Tests
             moving.Begin(moving.Direction, stack.Top.transform.position, StackManager.TravelBoundary, 0);
             stack.PlaceCurrent();
             Assert.That(game.State, Is.EqualTo(GameState.GameOver));
-            yield return new WaitForSeconds(1.05f);
+            yield return new WaitForSeconds(1.45f);
             yield return Capture("results", 1080, 1920);
         }
 

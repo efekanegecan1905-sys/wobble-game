@@ -52,6 +52,9 @@ namespace Wobble.Themes
         private float orbScale = 14f;
         private float orbSpin;
         private float azimuth;
+        private float comboLevel, comboPulse;
+        private int comboTier, comboPulseTier;
+        private float ringAScale, ringBScale;
         private bool visible;
 
         public ThemeDistrict(Transform parent, Camera gameplayCamera)
@@ -262,8 +265,10 @@ namespace Wobble.Themes
             orbScale = id == ThemeId.Space ? 2.4f : 15f;
             orb.transform.localScale = Vector3.one * orbScale;
             var ringRadius = orbScale * .5f * 1.45f;
-            ringA.transform.localScale = new Vector3(ringRadius, 1f, ringRadius);
-            ringB.transform.localScale = new Vector3(ringRadius * .92f, 1f, ringRadius * .92f);
+            ringAScale = ringRadius;
+            ringBScale = ringRadius * .92f;
+            ringA.transform.localScale = new Vector3(ringAScale, 1f, ringAScale);
+            ringB.transform.localScale = new Vector3(ringBScale, 1f, ringBScale);
             var rings = id == ThemeId.Space || id == ThemeId.Neon;
             ringA.enabled = rings;
             ringB.enabled = rings;
@@ -342,25 +347,36 @@ namespace Wobble.Themes
             }
         }
 
+        // Presentation-only combo energy consumed by the district's accent layers.
+        public void SetCombo(float intensity, int tier, float pulse, int pulseTier)
+        {
+            comboLevel = Mathf.Clamp01(intensity);
+            comboTier = tier;
+            comboPulse = Mathf.Clamp01(pulse);
+            comboPulseTier = pulseTier;
+        }
+
         // Atmosphere follows the same recipe as the gameplay camera: sky, fog and
         // accent are pushed into the stone shader so distant masses dissolve into the
         // horizon instead of reading as cut-out props.
         public void ApplyVisuals(ThemeVisuals v, float celebrate, float fail)
         {
             visuals = v;
+            var energy = comboLevel;
+            var beat = comboPulse * (comboPulseTier >= 2 ? 1f : .55f);
             var tint = Color.Lerp(v.ruinColor, v.propLight, .52f);
-            stoneMaterial.color = Color.Lerp(tint, v.accent, celebrate * .10f);
+            stoneMaterial.color = Color.Lerp(tint, v.accent, celebrate * .10f + energy * .045f);
             darkMaterial.color = Color.Lerp(v.propDark, v.ruinColor, .30f);
-            foliageMaterial.color = Color.Lerp(v.foliage, v.accent, celebrate * .12f);
-            foundationMaterial.color = Color.Lerp(foundationTint, v.accent, celebrate * .08f);
-            accentMaterial.SetColor("_Color", Color.Lerp(v.accent, v.edgeColor, .30f));
-            accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + celebrate * .65f));
-            orbMaterial.SetColor("_Color", orbColor);
-            orbMaterial.SetFloat("_Intensity", .38f + celebrate * .22f);
-            ringMaterial.SetColor("_Color", ringColor);
-            ringMaterial.SetFloat("_Intensity", .22f + celebrate * .25f);
-            trimMaterial.SetColor("_Color", Color.Lerp(v.edgeColor, v.accent, .35f));
-            trimMaterial.SetFloat("_Intensity", .24f + celebrate * .20f + fail * .26f);
+            foliageMaterial.color = Color.Lerp(v.foliage, v.accent, celebrate * .12f + energy * .08f);
+            foundationMaterial.color = Color.Lerp(foundationTint, v.accent, celebrate * .08f + energy * .10f + beat * .06f);
+            accentMaterial.SetColor("_Color", ComboAccent(v, energy));
+            accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + celebrate * .65f + energy * .40f + beat * .55f));
+            orbMaterial.SetColor("_Color", Color.Lerp(orbColor, v.edgeColor, energy * .18f));
+            orbMaterial.SetFloat("_Intensity", .38f + celebrate * .22f + energy * .30f + beat * .15f);
+            ringMaterial.SetColor("_Color", Color.Lerp(ringColor, v.accentSecondary, energy * .25f));
+            ringMaterial.SetFloat("_Intensity", .22f + celebrate * .25f + energy * .38f + beat * .55f);
+            trimMaterial.SetColor("_Color", TrimColor(v, energy));
+            trimMaterial.SetFloat("_Intensity", .24f + celebrate * .20f + fail * .26f + energy * .36f + beat * .45f);
             if (fail > 0f)
             {
                 accentMaterial.SetColor("_Color", Color.Lerp(v.accent, new Color(1f, .34f, .22f), fail));
@@ -371,6 +387,24 @@ namespace Wobble.Themes
             PushSky(foliageMaterial, v);
             PushSky(foundationMaterial, v);
         }
+
+        private Color ComboAccent(ThemeVisuals v, float energy) => theme switch
+        {
+            ThemeId.Obsidian => Color.Lerp(Color.Lerp(v.accent, v.edgeColor, .30f), new Color(1f, .40f, .12f), energy * .35f),
+            ThemeId.Neon => Color.Lerp(Color.Lerp(v.accent, v.edgeColor, .30f), v.accentSecondary, energy * .55f),
+            ThemeId.Space => Color.Lerp(Color.Lerp(v.accent, v.edgeColor, .30f), v.accentSecondary, energy * .35f),
+            ThemeId.AncientStone => Color.Lerp(Color.Lerp(v.accent, v.edgeColor, .30f), v.sunColor, energy * .40f),
+            _ => Color.Lerp(Color.Lerp(v.accent, v.edgeColor, .30f), new Color(1f, .74f, .34f), energy * .35f)
+        };
+
+        private Color TrimColor(ThemeVisuals v, float energy) => theme switch
+        {
+            ThemeId.Obsidian => Color.Lerp(new Color(1f, .45f, .16f), Color.white, energy * .12f),
+            ThemeId.Neon => Color.Lerp(v.accentSecondary, Color.white, energy * .25f),
+            ThemeId.Space => Color.Lerp(v.accentSecondary, Color.white, energy * .20f),
+            ThemeId.AncientStone => Color.Lerp(new Color(1f, .84f, .48f), Color.white, energy * .18f),
+            _ => Color.Lerp(new Color(1f, .78f, .38f), Color.white, energy * .16f)
+        };
 
         private static void PushSky(Material material, ThemeVisuals v)
         {
@@ -401,13 +435,84 @@ namespace Wobble.Themes
             TickGroup(islands, time, towerHeight, towerDepth, stage);
             TickGroup(debris, time, towerHeight, towerDepth, stage);
 
-            orbSpin += dt * 1.4f;
+            orbSpin += dt * (1.4f + comboLevel * .5f);
             orbRoot.localRotation = Quaternion.Euler(0, orbSpin, 0);
             orbRoot.localPosition = new Vector3(orbRoot.localPosition.x, 2f + towerHeight * .12f, orbRoot.localPosition.z);
-            var pulse = 1f + Mathf.Sin(time * .5f) * .02f + celebrate * .04f;
-            orb.transform.localScale = Vector3.one * orbScale * pulse;
+            var energy = comboLevel;
+            var pulse = comboPulse * (comboPulseTier >= 2 ? 1f : .6f);
+            var pulseWave = Mathf.Pow(.5f + .5f * Mathf.Sin(time * 1.7f), 3f);
+            var breathe = 1f + Mathf.Sin(time * .5f) * .02f + celebrate * .04f + energy * .035f + pulse * .05f;
+            this.orb.transform.localScale = Vector3.one * orbScale * breathe;
+            var ripple = 1f + energy * .055f * Mathf.Sin(time * 1.35f) + pulse * .05f + (theme == ThemeId.Space ? pulseWave * energy * .06f : 0f);
+            ringA.transform.localScale = new Vector3(ringAScale * ripple, 1f, ringAScale * ripple);
+            ringB.transform.localScale = new Vector3(ringBScale * (2f - ripple), 1f, ringBScale * (2f - ripple));
             ringA.transform.localRotation = Quaternion.Euler(18 + Mathf.Sin(time * .18f) * 4f, orbSpin * 1.6f, -14);
             ringB.transform.localRotation = Quaternion.Euler(18 + Mathf.Cos(time * .22f) * 4f, -orbSpin * 1.2f, -14);
+            ApplyCombo(energy, pulse, pulseWave, time);
+        }
+
+        // Each destination reacts in its own material language. The shared timing
+        // keeps the beat readable; the colours, chase and ripple make it location-specific.
+        private void ApplyCombo(float energy, float pulse, float pulseWave, float time)
+        {
+            if (energy <= .001f && pulse <= .001f) return;
+            var v = visuals;
+            switch (theme)
+            {
+                case ThemeId.Neon:
+                {
+                    // Cyan/magenta chase across the skyline trim.
+                    var chase = .5f + .5f * Mathf.Sin(time * 2.15f);
+                    var neon = Color.Lerp(v.accentSecondary, v.accent, chase);
+                    accentMaterial.SetColor("_Color", neon);
+                    accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + energy * .62f + pulse * .45f));
+                    trimMaterial.SetColor("_Color", Color.Lerp(neon, Color.white, energy * .22f));
+                    trimMaterial.SetFloat("_Intensity", .24f + energy * .50f + pulse * .48f);
+                    break;
+                }
+                case ThemeId.Obsidian:
+                {
+                    // Ember fissure: a slow, hot pulse under the basalt.
+                    var ember = Color.Lerp(new Color(1f, .34f, .10f), new Color(1f, .72f, .22f), pulseWave);
+                    accentMaterial.SetColor("_Color", ember);
+                    accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + energy * .55f + pulseWave * .40f + pulse * .45f));
+                    trimMaterial.SetColor("_Color", Color.Lerp(ember, Color.white, .18f));
+                    trimMaterial.SetFloat("_Intensity", .24f + energy * .38f + pulseWave * .25f + pulse * .35f);
+                    break;
+                }
+                case ThemeId.AncientStone:
+                {
+                    // Sunlit gold stone with a dust shimmer.
+                    var sun = Color.Lerp(new Color(1f, .82f, .46f), Color.white, pulseWave * .18f);
+                    accentMaterial.SetColor("_Color", sun);
+                    accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + energy * .45f + pulse * .35f));
+                    foundationMaterial.color = Color.Lerp(foundationTint, sun, energy * .12f + pulse * .06f);
+                    trimMaterial.SetColor("_Color", sun);
+                    trimMaterial.SetFloat("_Intensity", .24f + energy * .34f + pulse * .30f);
+                    break;
+                }
+                case ThemeId.Space:
+                {
+                    // Cool violet/cyan energy and a ring ripple.
+                    var cosmic = Color.Lerp(v.accent, v.accentSecondary, energy * .55f + pulseWave * .18f);
+                    accentMaterial.SetColor("_Color", cosmic);
+                    accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + energy * .50f + pulse * .42f));
+                    orbMaterial.SetColor("_Color", Color.Lerp(orbColor, Color.white, energy * .20f));
+                    orbMaterial.SetFloat("_Intensity", .38f + energy * .36f + pulseWave * .12f);
+                    break;
+                }
+                default:
+                {
+                    // Warm gold light and a coral beat across the palace.
+                    var gold = Color.Lerp(new Color(1f, .78f, .36f), new Color(1f, .50f, .34f), pulseWave * .35f);
+                    accentMaterial.SetColor("_Color", gold);
+                    accentMaterial.SetFloat("_Intensity", accentIntensity * (1f + energy * .48f + pulse * .40f));
+                    foundationMaterial.color = Color.Lerp(foundationTint, gold, energy * .09f + pulse * .04f);
+                    trimMaterial.SetColor("_Color", gold);
+                    trimMaterial.SetFloat("_Intensity", .24f + energy * .36f + pulse * .32f);
+                    break;
+                }
+            }
         }
 
         private void TickGroup(Prop[] props, float time, float towerHeight, float towerDepth, float stage)

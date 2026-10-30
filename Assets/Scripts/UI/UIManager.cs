@@ -34,6 +34,11 @@ namespace Wobble.UI
         private TextMeshProUGUI levelText;
         private TextMeshProUGUI bestText;
         private TextMeshProUGUI feedbackText;
+        private TextMeshProUGUI comboBanner;
+        private TextMeshProUGUI tensionLabel;
+        private Image bannerPlate, tensionPlate;
+        private Coroutine milestoneRoutine, tensionRoutine;
+        private int milestoneTier;
         private TextMeshProUGUI resultsText;
         private TextMeshProUGUI tapHint;
         private Coroutine feedbackRoutine;
@@ -64,6 +69,9 @@ namespace Wobble.UI
         private TextMeshProUGUI resultScoreCaption, resultBestCaption, resultBlockCaption, resultPerfectCaption, resultComboCaption, resultGemCaption;
         private TextMeshProUGUI shareLabel;
         private Image flash;
+        private Image resultCardImage;
+        private Image newBestPlate;
+        private bool lastNewBest;
         private Coroutine flashRoutine, shareRoutine;
         private static Sprite verticalFade;
         private static readonly Vector3[] TravelAxes = { Vector3.right, Vector3.left, Vector3.forward, Vector3.back };
@@ -189,31 +197,60 @@ namespace Wobble.UI
             var scrimRect = scrim.rectTransform;
             scrimRect.anchorMin = new Vector2(0, 1); scrimRect.anchorMax = new Vector2(1, 1); scrimRect.pivot = new Vector2(.5f, 1);
             scrimRect.sizeDelta = new Vector2(0, 330); scrimRect.anchoredPosition = Vector2.zero;
+            // The brand block mirrors the score plate on the opposite corner: the
+            // "SEVİYE n" caption sits on bare sky otherwise and washes out against a
+            // moon, a sun disc or a cloud bank.
+            var brandPlate = Panel("Brand plate", hud.transform, new Color(.03f,.05f,.09f,.50f));
+            SetRectTop(brandPlate.GetComponent<RectTransform>(), 32, 28, 430, 142, false);
+            CasualSurface.Style(brandPlate.GetComponent<Image>(), false);
+            brandPlate.GetComponent<Image>().raycastTarget = false;
             var brand = Label("app.title", hud.transform, 36, FontStyles.Bold, TextAlignmentOptions.TopLeft, Color.white);
             SetRectTop(brand.rectTransform, 54, 52, 430, 64, false);
-            levelText = Label("hud.level", hud.transform, 24, FontStyles.Bold, TextAlignmentOptions.TopLeft, WobblePalette.Surface);
-            SetRectTop(levelText.rectTransform, 54, 114, 350, 50, false);
+            levelText = Label("hud.level", hud.transform, 27, FontStyles.Bold, TextAlignmentOptions.TopLeft, WobblePalette.Surface);
+            SetRectTop(levelText.rectTransform, 54, 114, 360, 52, false);
             // A soft plate under the score keeps the biggest number on screen legible
             // against both a bright palace sky and a neon night.
-            var scorePlate = Panel("Score plate", hud.transform, new Color(.03f,.05f,.09f,.30f));
-            SetRectTop(scorePlate.GetComponent<RectTransform>(), 40, 34, 392, 126, true);
+            var scorePlate = Panel("Score plate", hud.transform, new Color(.03f,.05f,.09f,.42f));
+            SetRectTop(scorePlate.GetComponent<RectTransform>(), 32, 28, 424, 142, true);
             CasualSurface.Style(scorePlate.GetComponent<Image>(), false);
             scorePlate.GetComponent<Image>().raycastTarget = false;
             scoreText = Label("hud.score", hud.transform, 66, FontStyles.Bold, TextAlignmentOptions.TopRight, Color.white);
-            SetRectTop(scoreText.rectTransform, 66, 40, 360, 84, true);
-            bestText = Label("hud.best", hud.transform, 24, FontStyles.Normal, TextAlignmentOptions.TopRight, WobblePalette.TextPrimary);
-            SetRectTop(bestText.rectTransform, 66, 116, 360, 46, true);
+            SetRectTop(scoreText.rectTransform, 60, 34, 368, 92, true);
+            bestText = Label("hud.best", hud.transform, 26, FontStyles.Normal, TextAlignmentOptions.TopRight, WobblePalette.TextPrimary);
+            SetRectTop(bestText.rectTransform, 60, 122, 368, 40, true);
             feedbackText = Label("hud.perfect", hud.transform, 40, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Success);
             SetRect(feedbackText.rectTransform, .5f, .60f, 560, 140);
             feedbackText.lineSpacing = -18f;
             feedbackText.canvasRenderer.SetAlpha(0);
+            bannerPlate = Panel("Combo banner plate", hud.transform, new Color(.02f, .05f, .09f, .60f)).GetComponent<Image>();
+            SetRect(bannerPlate.rectTransform, .5f, .895f, 424, 78);
+            CasualSurface.Style(bannerPlate, false);
+            bannerPlate.raycastTarget = false;
+            bannerPlate.canvasRenderer.SetAlpha(0);
+            comboBanner = Label("hud.flow", hud.transform, 34, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.Surface);
+            SetRect(comboBanner.rectTransform, .5f, .895f, 660, 88);
+            comboBanner.characterSpacing = 16;
+            comboBanner.canvasRenderer.SetAlpha(0);
+            localizedLabels.Add(() =>
+            {
+                if (milestoneTier > 0) comboBanner.text = Localization.Text(milestoneTier >= 2 ? "hud.fever" : "hud.flow");
+            });
+            tensionPlate = Panel("Tension plate", hud.transform, new Color(.02f, .05f, .09f, .62f)).GetComponent<Image>();
+            SetRect(tensionPlate.rectTransform, .5f, .185f, 444, 64);
+            CasualSurface.Style(tensionPlate, false);
+            tensionPlate.raycastTarget = false;
+            tensionPlate.canvasRenderer.SetAlpha(0);
+            tensionLabel = Label("hud.wobble", hud.transform, 30, FontStyles.Bold, TextAlignmentOptions.Center, new Color(1f, .84f, .58f));
+            SetRect(tensionLabel.rectTransform, .5f, .185f, 660, 76);
+            tensionLabel.characterSpacing = 12;
+            tensionLabel.canvasRenderer.SetAlpha(0);
             levelFlash = Label("hud.level", hud.transform, 32, FontStyles.Bold, TextAlignmentOptions.Center, new Color(.88f, .85f, .77f));
-            SetRect(levelFlash.rectTransform, .5f, .76f, 500, 80);
+            SetRect(levelFlash.rectTransform, .5f, .72f, 500, 80);
             levelFlash.canvasRenderer.SetAlpha(0);
-            tapHint = Label("hud.tap", hud.transform, 25, FontStyles.Bold, TextAlignmentOptions.Center, new Color(1, 1, 1, .65f));
-            SetRect(tapHint.rectTransform, .5f, .10f, 500, 70);
+            tapHint = Label("hud.tap", hud.transform, 27, FontStyles.Bold, TextAlignmentOptions.Center, new Color(1, 1, 1, .65f));
+            SetRect(tapHint.rectTransform, .5f, .10f, 560, 74);
             bestText.color = WobblePalette.Surface;
-            hudLabels = new[] { brand, levelText, scoreText, bestText, feedbackText, levelFlash, tapHint };
+            hudLabels = new[] { brand, levelText, scoreText, bestText, feedbackText, comboBanner, tensionLabel, levelFlash, tapHint };
             foreach (var label in hudLabels)
             {
                 label.outlineColor = new Color(.06f, .08f, .13f, .95f);
@@ -221,6 +258,29 @@ namespace Wobble.UI
                 var shadow = label.gameObject.AddComponent<Shadow>();
                 shadow.effectColor = new Color(.08f, .10f, .16f, .65f);
                 shadow.effectDistance = new Vector2(1, -2);
+            }
+            // The two escalation cues ride over bright skies, so they get a firmer
+            // outline than the resting HUD copy.
+            comboBanner.outlineWidth = .28f;
+            tensionLabel.outlineWidth = .28f;
+            // "SEVİYE n" sits directly on the sky (no plate), so it needs a warmer
+            // tone and a firmer outline than the cream HUD copy to survive gold and
+            // cloud-white destinations.
+            levelText.color = new Color(.97f, .92f, .81f);
+            levelText.outlineWidth = .22f;
+            var levelShadow = levelText.GetComponent<Shadow>();
+            if (levelShadow != null)
+            {
+                levelShadow.effectColor = new Color(.05f, .07f, .11f, .72f);
+                levelShadow.effectDistance = new Vector2(1, -2);
+            }
+            brand.outlineWidth = .28f;
+            feedbackText.outlineWidth = .42f;
+            var feedbackShadow = feedbackText.GetComponent<Shadow>();
+            if (feedbackShadow != null)
+            {
+                feedbackShadow.effectColor = new Color(.03f, .05f, .08f, .82f);
+                feedbackShadow.effectDistance = new Vector2(2, -3);
             }
         }
 
@@ -237,15 +297,23 @@ namespace Wobble.UI
             kicker.GetComponent<Image>().raycastTarget = false;
             var card=Panel("Result card",gameOver.transform,WobblePalette.Surface);
             resultCardRect=card.GetComponent<RectTransform>(); Center(resultCardRect,.5f,.556f,920,724); CasualSurface.Style(card.GetComponent<Image>());
+            resultCardImage=card.GetComponent<Image>();
             var accentBar=Panel("Result accent",card.transform,WobblePalette.Primary);
             Region(accentBar.GetComponent<RectTransform>(),.35f,.958f,.65f,.976f);CasualSurface.Style(accentBar.GetComponent<Image>(),false);
             accentBar.GetComponent<Image>().raycastTarget=false;
-            resultScoreCaption=Caption("result.score",card.transform,20,WobblePalette.TextSecondary);
-            Center(resultScoreCaption.rectTransform,.5f,.885f,420,40);
+            resultScoreCaption=Caption("result.score",card.transform,23,WobblePalette.TextSecondary);
+            Center(resultScoreCaption.rectTransform,.5f,.885f,480,44);
             resultsText = Label("result.value", card.transform, 126, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.TextPrimary);
             Center(resultsText.rectTransform,.5f,.742f,840,246);
-            resultBest = Label("hud.best", card.transform, 25, FontStyles.Normal, TextAlignmentOptions.Center, WobblePalette.PrimaryPressed);
-            Center(resultBest.rectTransform,.5f,.621f,540,58);
+            // The new-best plate sits behind the best line and only switches on when
+            // the run actually beat the stored record.
+            newBestPlate = Panel("Result new best", card.transform, WobblePalette.Accent).GetComponent<Image>();
+            Center(newBestPlate.rectTransform,.5f,.635f,548,64);
+            CasualSurface.Style(newBestPlate, false);
+            newBestPlate.raycastTarget=false;
+            newBestPlate.gameObject.SetActive(false);
+            resultBest = Label("hud.best", card.transform, 27, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.PrimaryPressed);
+            Center(resultBest.rectTransform,.5f,.635f,540,58);
             var divider=Panel("Result divider",card.transform,WobblePalette.Alpha(WobblePalette.TextPrimary,.14f));
             Region(divider.GetComponent<RectTransform>(),.10f,.576f,.90f,.579f);divider.GetComponent<Image>().raycastTarget=false;
             resultBlocks=StatChip(card.transform,.285f,.455f,"result.blocks",out resultBlockCaption);
@@ -306,9 +374,9 @@ namespace Wobble.UI
             var image = chip.GetComponent<Image>();
             CasualSurface.Style(image, false);
             image.raycastTarget = false;
-            caption = Caption(key, chip.transform, 18, WobblePalette.TextSecondary);
-            Center(caption.rectTransform, .5f, .74f, 330, 38);
-            var value = Label("result.value", chip.transform, 42, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.TextPrimary);
+            caption = Caption(key, chip.transform, 21, WobblePalette.TextSecondary);
+            Center(caption.rectTransform, .5f, .74f, 330, 40);
+            var value = Label("result.value", chip.transform, 46, FontStyles.Bold, TextAlignmentOptions.Center, WobblePalette.TextPrimary);
             Center(value.rectTransform, .5f, .33f, 340, 88);
             return value;
         }
@@ -352,9 +420,21 @@ namespace Wobble.UI
         public void ShowHome(int best)
         {
             if(menuGroup!=null){menuGroup.alpha=1;menuGroup.interactable=menuGroup.blocksRaycasts=true;}
+            StopPresentationCues();
             lastBest = best;
             Menus.ShowHome(); hud.SetActive(false); gameOver.SetActive(false);
             Presentation.Show(true);
+        }
+
+        private void StopPresentationCues()
+        {
+            if (milestoneRoutine != null) { StopCoroutine(milestoneRoutine); milestoneRoutine = null; }
+            if (tensionRoutine != null) { StopCoroutine(tensionRoutine); tensionRoutine = null; }
+            milestoneTier = 0;
+            if (comboBanner != null) comboBanner.canvasRenderer.SetAlpha(0);
+            if (tensionLabel != null) { tensionLabel.canvasRenderer.SetAlpha(0); tensionLabel.rectTransform.localRotation = Quaternion.identity; }
+            if (bannerPlate != null) bannerPlate.canvasRenderer.SetAlpha(0);
+            if (tensionPlate != null) tensionPlate.canvasRenderer.SetAlpha(0);
         }
 
         private IEnumerator ReturnHome()
@@ -367,6 +447,7 @@ namespace Wobble.UI
         public void ShowGame(int best)
         {
             SkipIntro();
+            StopPresentationCues();
             if (feedbackRoutine != null) StopCoroutine(feedbackRoutine);
             if (levelRoutine != null) StopCoroutine(levelRoutine);
             feedbackText.canvasRenderer.SetAlpha(0);
@@ -376,17 +457,29 @@ namespace Wobble.UI
             UpdateHud(0, best, 1);
         }
 
-        public void ShowGameOver(int score, int best, int perfects, int maxCombo, int blocks = 0, int gems = 0)
+        public void ShowGameOver(int score, int best, int perfects, int maxCombo, int blocks = 0, int gems = 0, bool newBest = false)
         {
+            StopPresentationCues();
             hud.SetActive(false); gameOver.SetActive(true);
             continueButton.gameObject.SetActive(economy.CanContinueWithLife());
             lastScore=score; lastBest=best; lastPerfects=perfects; lastMaximum=maxCombo;
             lastBlocks=blocks; lastGems=gems;
+            ApplyNewBest(newBest);
             if (shareRoutine != null) { StopCoroutine(shareRoutine); shareRoutine = null; }
             if (shareLabel != null) shareLabel.text = Localization.Text("gameover.share");
             RefreshLocalization();
             if (resultRoutine != null) StopCoroutine(resultRoutine);
             resultRoutine = StartCoroutine(ResultEntrance());
+        }
+
+        private void ApplyNewBest(bool newBest)
+        {
+            lastNewBest = newBest;
+            if (newBestPlate != null) newBestPlate.gameObject.SetActive(newBest);
+            if (resultCardImage != null)
+                resultCardImage.color = newBest ? Color.Lerp(WobblePalette.Surface, WobblePalette.Accent, .16f) : WobblePalette.Surface;
+            if (resultBest != null)
+                resultBest.color = newBest ? WobblePalette.TextPrimary : WobblePalette.PrimaryPressed;
         }
         public void ShowContinuedGame(int score, int best, int level)
         {
@@ -407,6 +500,7 @@ namespace Wobble.UI
             resultCardRect.localScale=Vector3.one*.90f;
             resultCardRect.anchoredPosition=new Vector2(0,64);
             for(var i=0;i<resultChips.Length;i++) if(resultChips[i]!=null) resultChips[i].localScale=Vector3.zero;
+            if (newBestPlate != null && lastNewBest) newBestPlate.rectTransform.localScale = Vector3.one * .72f;
             var shown=-1;
             const float duration=.64f;
             for(var t=0f;t<duration;t+=Time.unscaledDeltaTime)
@@ -424,12 +518,25 @@ namespace Wobble.UI
                     var cp=Mathf.Clamp01((t-.28f-i*.055f)/.32f);
                     resultChips[i].localScale=Vector3.one*Mathf.Lerp(.80f,1f,EaseOutBack(cp));
                 }
+                if (newBestPlate != null && lastNewBest)
+                {
+                    // The new-best plate lands just after the score, one beat later
+                    // than the card and just before the stat tiles settle.
+                    var bp=Mathf.Clamp01((t-.22f)/.34f);
+                    newBestPlate.rectTransform.localScale=Vector3.one*Mathf.Lerp(.72f,1f,EaseOutBack(bp));
+                    newBestPlate.canvasRenderer.SetAlpha(Mathf.Clamp01(bp*2.4f));
+                }
                 var target=Mathf.RoundToInt(lastScore*Mathf.SmoothStep(0,1,Mathf.Clamp01((t-.10f)/.46f)));
                 if(target!=shown){shown=target;resultsText.text=shown.ToString();}
                 yield return null;
             }
             resultGroup.alpha=1f;resultCardRect.localScale=Vector3.one;resultCardRect.anchoredPosition=Vector2.zero;
             for(var i=0;i<resultChips.Length;i++) if(resultChips[i]!=null) resultChips[i].localScale=Vector3.one;
+            if (newBestPlate != null)
+            {
+                newBestPlate.rectTransform.localScale = Vector3.one;
+                newBestPlate.canvasRenderer.SetAlpha(1f);
+            }
             resultsText.text=lastScore.ToString();
             countingResult=false;
             resultGroup.interactable=resultGroup.blocksRaycasts=true;
@@ -456,6 +563,135 @@ namespace Wobble.UI
         {
             if (levelRoutine != null) StopCoroutine(levelRoutine);
             levelRoutine = StartCoroutine(LevelAnimation(level));
+        }
+
+        // FLOW (x5) and FEVER (x8) are shown once per escalation. The badge is a
+        // held label, not a repeated flash, so the moving slab stays the hero.
+        public void ComboMilestone(int tier)
+        {
+            if (comboBanner == null) return;
+            milestoneTier = Mathf.Clamp(tier, 1, 2);
+            comboBanner.text = Localization.Text(milestoneTier >= 2 ? "hud.fever" : "hud.flow");
+            comboBanner.color = milestoneTier >= 2 ? Color.Lerp(WobblePalette.Accent, Color.white, .42f) : WobblePalette.Surface;
+            if (milestoneRoutine != null) StopCoroutine(milestoneRoutine);
+            milestoneRoutine = StartCoroutine(MilestoneAnimation(milestoneTier));
+        }
+
+        // Combo break: the badge relaxes over roughly a third of a second, matching
+        // the ComboEnergy release, instead of disappearing between frames.
+        public void ComboRelaxed()
+        {
+            if (comboBanner == null || milestoneTier == 0) return;
+            milestoneTier = 0;
+            if (milestoneRoutine != null) StopCoroutine(milestoneRoutine);
+            milestoneRoutine = StartCoroutine(RelaxBanner());
+        }
+
+        private IEnumerator MilestoneAnimation(int tier)
+        {
+            var hold = tier >= 2 ? 1.35f : 1.05f;
+            var punch = tier >= 2 ? .24f : .15f;
+            var from = tier >= 2 ? 1.46f : .92f;
+            for (var t = 0f; t < hold; t += Time.unscaledDeltaTime)
+            {
+                var p = t / hold;
+                var pop = EaseOutBack(Mathf.Clamp01(t / (tier >= 2 ? .30f : .22f)));
+                comboBanner.rectTransform.localScale = Vector3.one * Mathf.Lerp(from, 1f + punch, pop);
+                comboBanner.rectTransform.anchoredPosition = new Vector2(0, Mathf.Lerp(-20f, 8f, Mathf.SmoothStep(0, 1, p)));
+                comboBanner.characterSpacing = Mathf.Lerp(tier >= 2 ? 30f : 20f, tier >= 2 ? 14f : 10f, Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / .42f)));
+                comboBanner.canvasRenderer.SetAlpha(Mathf.Clamp01(Mathf.Min(t * 8f, (1f - p) * 2.6f)));
+                yield return null;
+            }
+            comboBanner.canvasRenderer.SetAlpha(0);
+            comboBanner.rectTransform.localScale = Vector3.one;
+            comboBanner.rectTransform.anchoredPosition = Vector2.zero;
+            milestoneRoutine = null;
+        }
+
+        private IEnumerator RelaxBanner()
+        {
+            var start = comboBanner.canvasRenderer.GetAlpha();
+            for (var t = 0f; t < .32f; t += Time.unscaledDeltaTime)
+            {
+                var p = Mathf.SmoothStep(0, 1, t / .32f);
+                comboBanner.canvasRenderer.SetAlpha(start * (1f - p));
+                comboBanner.rectTransform.localScale = Vector3.one * Mathf.Lerp(1f, .94f, p);
+                yield return null;
+            }
+            comboBanner.canvasRenderer.SetAlpha(0);
+            comboBanner.rectTransform.localScale = Vector3.one;
+            comboBanner.rectTransform.anchoredPosition = Vector2.zero;
+            milestoneRoutine = null;
+        }
+
+        // WOBBLE: a slow ±2° sway on the cue only. The tower has its own per-slab
+        // sway from StackManager; gameplay stays deterministic.
+        public void TenseBegin()
+        {
+            if (tensionLabel == null) return;
+            if (tensionRoutine != null) StopCoroutine(tensionRoutine);
+            tensionRoutine = StartCoroutine(TensionAnimation(false));
+        }
+
+        public void TenseStabilized()
+        {
+            if (tensionLabel == null) return;
+            if (tensionRoutine != null) StopCoroutine(tensionRoutine);
+            tensionRoutine = StartCoroutine(TensionAnimation(true));
+        }
+
+        public void TenseCleared()
+        {
+            if (tensionLabel == null || tensionRoutine == null) return;
+            StopCoroutine(tensionRoutine);
+            tensionRoutine = StartCoroutine(TensionFade());
+        }
+
+        private IEnumerator TensionAnimation(bool stable)
+        {
+            tensionLabel.text = Localization.Text(stable ? "hud.stabilized" : "hud.wobble");
+            tensionLabel.color = stable ? WobblePalette.Success : new Color(1f, .84f, .58f);
+            tensionLabel.canvasRenderer.SetAlpha(0);
+            var duration = stable ? 1.05f : float.PositiveInfinity;
+            for (var t = 0f; stable ? t < duration : true; t += Time.unscaledDeltaTime)
+            {
+                if (stable)
+                {
+                    var p = Mathf.Clamp01(t / duration);
+                    var pop = EaseOutBack(Mathf.Clamp01(t / .26f));
+                    tensionLabel.rectTransform.localScale = Vector3.one * Mathf.Lerp(1.18f, 1f, pop);
+                    tensionLabel.rectTransform.localRotation = Quaternion.identity;
+                    tensionLabel.canvasRenderer.SetAlpha(Mathf.Clamp01(Mathf.Min(t * 9f, (1f - p) * 2.2f)));
+                }
+                else
+                {
+                    tensionLabel.rectTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(t * 6.4f) * 2.2f);
+                    tensionLabel.rectTransform.localScale = Vector3.one * (1f + Mathf.Sin(t * 4.2f) * .012f);
+                    tensionLabel.canvasRenderer.SetAlpha(Mathf.Clamp01(t * 3.2f) * .92f);
+                }
+                yield return null;
+            }
+            tensionLabel.rectTransform.localRotation = Quaternion.identity;
+            tensionLabel.rectTransform.localScale = Vector3.one;
+            tensionLabel.canvasRenderer.SetAlpha(0);
+            tensionRoutine = null;
+        }
+
+        private IEnumerator TensionFade()
+        {
+            var start = tensionLabel.canvasRenderer.GetAlpha();
+            var startRotation = tensionLabel.rectTransform.localRotation;
+            for (var t = 0f; t < .36f; t += Time.unscaledDeltaTime)
+            {
+                var p = Mathf.SmoothStep(0, 1, t / .36f);
+                tensionLabel.canvasRenderer.SetAlpha(start * (1f - p));
+                tensionLabel.rectTransform.localRotation = Quaternion.Lerp(startRotation, Quaternion.identity, p);
+                yield return null;
+            }
+            tensionLabel.canvasRenderer.SetAlpha(0);
+            tensionLabel.rectTransform.localRotation = Quaternion.identity;
+            tensionLabel.rectTransform.localScale = Vector3.one;
+            tensionRoutine = null;
         }
 
         private IEnumerator FeedbackAnimation(int combo)
@@ -510,11 +746,18 @@ namespace Wobble.UI
                 var accent = themeManager.Accent;
                 // Keep the badge mostly cream: on gold/sand destinations an accent-tinted
                 // label would sink into the sky. Escalation lives in size and glow.
-                var heat = lastCombo >= 8 ? .30f : lastCombo >= 5 ? .22f : .14f;
+                var heat = lastCombo >= 8 ? .16f : lastCombo >= 5 ? .12f : .07f;
                 feedbackText.color = Color.Lerp(WobblePalette.Surface, accent, heat);
-                feedbackText.outlineWidth = lastCombo >= 5 ? .26f : .20f;
+                feedbackText.outlineWidth = lastCombo >= 5 ? .42f : .32f;
                 levelFlash.color = Color.Lerp(WobblePalette.Surface, accent, .16f);
             }
+            // The cue plates follow their labels' alpha so they never float alone.
+            // They stay a touch darker than the copy so the chip survives a bright
+            // gold or cloud-white sky as a distinct shape, not as a smudge.
+            if (bannerPlate != null && comboBanner != null)
+                bannerPlate.canvasRenderer.SetAlpha(comboBanner.canvasRenderer.GetAlpha() * .94f);
+            if (tensionPlate != null && tensionLabel != null)
+                tensionPlate.canvasRenderer.SetAlpha(tensionLabel.canvasRenderer.GetAlpha() * .94f);
             if (feedbackText == null || !hud.activeSelf || UnityEngine.Camera.main == null || feedbackText.canvasRenderer.GetAlpha() <= .001f) return;
             // Normalized coordinates work identically for native overlay UI and
             // offscreen portrait review targets, independent of the editor window.
@@ -534,7 +777,7 @@ namespace Wobble.UI
             var point = new Vector2(safeArea.rect.xMin + normalized.x * safeArea.rect.width,
                 safeArea.rect.yMin + normalized.y * safeArea.rect.height + 72f + feedbackRise);
             point.x = Mathf.Clamp(point.x, safeArea.rect.xMin + 270, safeArea.rect.xMax - 270);
-            point.y = Mathf.Clamp(point.y, safeArea.rect.yMin + safeArea.rect.height * .36f, safeArea.rect.yMax - 300);
+            point.y = Mathf.Clamp(point.y, safeArea.rect.yMin + safeArea.rect.height * .36f, safeArea.rect.yMax - 430f);
             feedbackText.rectTransform.anchorMin = feedbackText.rectTransform.anchorMax = new Vector2(.5f, .5f);
             feedbackText.rectTransform.anchoredPosition = point;
         }
@@ -605,13 +848,16 @@ namespace Wobble.UI
             bestText.text = Localization.Text("hud.best", lastBest);
             levelText.text = Localization.Text("hud.level", lastLevel);
             resultsText.text = countingResult ? resultsText.text : lastScore.ToString();
-            resultBest.text = Localization.Text("hud.best", lastBest);
+            resultBest.text = Localization.Text(lastNewBest ? "result.newbest" : "hud.best", lastBest);
             resultBlocks.text = lastBlocks.ToString();
             resultPerfects.text = lastPerfects.ToString();
             resultCombo.text = "×" + lastMaximum;
             resultGems.text = "+" + lastGems;
             feedbackText.text = Localization.Text("hud.combo", lastCombo);
             levelFlash.text = Localization.Text("hud.level", lastLevel);
+            if (milestoneTier > 0) comboBanner.text = Localization.Text(milestoneTier >= 2 ? "hud.fever" : "hud.flow");
+            if (tensionRoutine != null)
+                tensionLabel.text = Localization.Text(tensionLabel.color == WobblePalette.Success ? "hud.stabilized" : "hud.wobble");
         }
 
         private void OnDestroy() { if (Localization != null) Localization.Changed -= RefreshLocalization; }

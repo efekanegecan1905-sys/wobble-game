@@ -14,6 +14,9 @@ namespace Wobble.Gameplay
         private MaterialPropertyBlock properties;
         private Coroutine punchRoutine;
         private Coroutine wobbleRoutine;
+        private Quaternion leanRotation = Quaternion.identity;
+        private float tensionAmount, tensionPhase;
+        private bool tensionApplied;
 
         private void LateUpdate()
         {
@@ -21,6 +24,18 @@ namespace Wobble.Gameplay
             // Only nearby slabs contribute to the active tower's shadow budget.
             meshRenderer.shadowCastingMode = Mathf.Abs(transform.position.y - Wobble.CameraSystem.CameraController.FocusHeight) < 3.6f
                 ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+            // WOBBLE is render-only: each placed slab sways a fraction of a degree
+            // around its own centre. The collider, size and next placement stay exact.
+            if (visual == null) return;
+            if (tensionAmount > .0001f || tensionApplied)
+            {
+                var time = Time.time;
+                var sway = Mathf.Sin(time * 7.1f + tensionPhase) * tensionAmount;
+                var lean = Mathf.Cos(time * 5.7f + tensionPhase * 1.31f) * tensionAmount * .72f;
+                visual.localRotation = leanRotation * Quaternion.Euler(lean, 0, sway);
+                tensionApplied = tensionAmount > .0001f;
+            }
+            else visual.localRotation = leanRotation;
         }
 
         public void Initialize(Vector3 size, Material sideMaterial, Material topMaterial)
@@ -46,10 +61,10 @@ namespace Wobble.Gameplay
             if (properties != null) ApplyStoneCoordinates();
         }
 
-        public void Punch(float strength = 1f)
+        public void Punch(float strength = 1f, bool sweep = false)
         {
             if (punchRoutine != null) StopCoroutine(punchRoutine);
-            punchRoutine = StartCoroutine(PunchAnimation(strength));
+            punchRoutine = StartCoroutine(PunchAnimation(Mathf.Clamp01(strength), sweep));
         }
 
         // A short, damped lean for off-centre cuts. Rotates only the visual child,
@@ -59,6 +74,14 @@ namespace Wobble.Gameplay
             if (visual == null) return;
             if (wobbleRoutine != null) StopCoroutine(wobbleRoutine);
             wobbleRoutine = StartCoroutine(LeanAnimation(strength));
+        }
+
+        // Presentation-only tension supplied by StackManager. Amplitude is in
+        // degrees and is composed with the off-centre lean, never with the collider.
+        public void SetTension(float amount, float phase)
+        {
+            tensionAmount = Mathf.Max(0f, amount);
+            tensionPhase = phase;
         }
 
         private IEnumerator LeanAnimation(float strength)
@@ -72,10 +95,10 @@ namespace Wobble.Gameplay
             {
                 var t = elapsed / duration;
                 var angle = Mathf.Sin(t * Mathf.PI * 4f) * amount * (1f - t);
-                visual.localRotation = Quaternion.AngleAxis(angle, axis);
+                leanRotation = Quaternion.AngleAxis(angle, axis);
                 yield return null;
             }
-            visual.localRotation = Quaternion.identity;
+            leanRotation = Quaternion.identity;
             wobbleRoutine = null;
         }
 
@@ -101,17 +124,20 @@ namespace Wobble.Gameplay
             meshRenderer.SetPropertyBlock(properties);
         }
 
-        private IEnumerator PunchAnimation(float strength)
+        private IEnumerator PunchAnimation(float strength, bool sweep)
         {
-            const float duration = .22f;
+            // 70-120 ms tactile punch on the render root only. The peak is 1.2-1.8%
+            // wide and a hair flatter, which reads as weight without ever touching
+            // the gameplay footprint or the stack spacing.
+            const float duration = .105f;
+            var peak = Mathf.Lerp(.012f, .018f, strength);
             for (var elapsed = 0f; elapsed < duration; elapsed += Time.deltaTime)
             {
                 var t = elapsed / duration;
-                var pulse = Mathf.Sin(t * Mathf.PI) * (1f - t);
-                // Animate only the surface; overlap dimensions and collider stay exact.
-                visual.localScale = new Vector3(1f + pulse * .014f * strength, 1f - pulse * .035f * strength, 1f + pulse * .014f * strength);
-                properties.SetFloat("_Flash", (1f - t) * .07f * strength);
-                properties.SetFloat("_Sweep", t);
+                var pulse = Mathf.Sin(t * Mathf.PI);
+                visual.localScale = new Vector3(1f + pulse * peak, 1f - pulse * peak * 1.18f, 1f + pulse * peak);
+                properties.SetFloat("_Flash", (1f - t) * (sweep ? .62f : .12f));
+                properties.SetFloat("_Sweep", sweep ? t : -1f);
                 meshRenderer.SetPropertyBlock(properties);
                 yield return null;
             }
@@ -132,9 +158,11 @@ namespace Wobble.Gameplay
                 var uvs = new List<Vector2>();
                 var sides = new List<int>();
                 var caps = new List<int>();
-                // Shave only the rendered faces by 2%; collider and stack spacing
-                // retain their approved dimensions. The fine seam catches contact AO.
-                var ringHeights = new[] { -.49f, -.4375f, .4375f, .49f };
+                // The rendered slab is 12% taller than the .40 collider: it looks
+                // like the approved .44-.46 stone while cuts and stacking keep the
+                // original height. Adjacent slabs overlap by a few millimetres,
+                // which hides hairline gaps and reads as compressed stone.
+                var ringHeights = new[] { -.56f, -.50f, .50f, .56f };
                 var ringWidths = new[] { .478f, .5f, .5f, .478f };
                 var corners = new[] { new Vector2(-1,-1), new Vector2(1,-1), new Vector2(1,1), new Vector2(-1,1) };
                 Vector3 Ring(int ring, int corner) => new Vector3(corners[corner].x * ringWidths[ring], ringHeights[ring], corners[corner].y * ringWidths[ring]);

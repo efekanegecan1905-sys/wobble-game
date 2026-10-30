@@ -22,11 +22,19 @@ namespace Wobble.Gameplay
         private int directionIndex;
         private Vector3 lastPlacement;
         private Vector3 lastSize = Vector3.one;
+        private float tension, tensionTarget, tensionTime;
+        private bool tense;
+        private float comboEnergy;
+        private int comboTier;
 
         public BlockView Top => tower.Count == 0 ? null : tower[^1];
         public int BlockCount => Mathf.Max(0, tower.Count - 1);
         public bool CanPlace => moving != null && moving.IsMoving;
         public MovingBlock ActiveBlock => moving;
+        public bool IsTense => tense;
+        // True for the single placement that resolves WOBBLE tension. Read by the
+        // orchestrator after Placed fires; never affects score, size or input.
+        public bool StabilizedThisPlacement { get; private set; }
         public event Action<bool, Vector3> Placed;
         public event Action Missed;
 
@@ -80,6 +88,7 @@ namespace Wobble.Gameplay
         public void PlaceCurrent()
         {
             if (!CanPlace) return;
+            StabilizedThisPlacement = false;
             moving.Stop();
             var view = moving.GetComponent<BlockView>();
             var result = BlockCutter.Calculate(view, Top, moving.Axis, .11f);
@@ -101,8 +110,14 @@ namespace Wobble.Gameplay
 
             if (result.Perfect)
             {
-                view.Punch();
+                view.Punch(1f, true);
                 haptics.Perfect(); effects.Play(view.transform.position, view.Size, true);
+                if (tense)
+                {
+                    StabilizeTension();
+                    StabilizedThisPlacement = true;
+                    effects.Stabilized(view.transform.position, view.Size);
+                }
             }
             else
             {
@@ -111,10 +126,11 @@ namespace Wobble.Gameplay
                 var cutVolume=result.CutSize.x*result.CutSize.y*result.CutSize.z;
                 var keptVolume=result.KeptSize.x*result.KeptSize.y*result.KeptSize.z;
                 var cutFraction=cutVolume/(cutVolume+keptVolume);
-                view.Punch(.45f);
+                view.Punch(.55f, false);
                 view.Lean(cutFraction);
                 audio.Cut(cutFraction); haptics.Light();
                 effects.Play(view.transform.position, view.Size, false, result.CutPosition, cutFraction);
+                EndTension();
             }
             lastPlacement = view.transform.position;
             lastSize = view.Size;
@@ -126,6 +142,9 @@ namespace Wobble.Gameplay
             lastPlacement = view.transform.position;
             lastSize = view.Size;
             moving = null;
+            EndTension();
+            comboEnergy = 0f; comboTier = 0;
+            effects.SetEnergy(0f, 0, lastPlacement, lastSize);
             view.transform.SetParent(null);
             var rigidbody = view.gameObject.AddComponent<Rigidbody>();
             rigidbody.mass = 3.2f;
@@ -139,6 +158,9 @@ namespace Wobble.Gameplay
         public void ClearTower()
         {
             moving = null;
+            tense = false;
+            tension = tensionTarget = 0f;
+            comboEnergy = 0f; comboTier = 0;
             tower.Clear();
             for (var i = towerRoot.childCount - 1; i >= 0; i--)
                 UnityEngine.Object.Destroy(towerRoot.GetChild(i).gameObject);
@@ -146,7 +168,46 @@ namespace Wobble.Gameplay
 
         // Presentation-only hooks. They never touch scoring, sizing or input.
         public void SetAccents(Color primary, Color secondary) => effects.SetAccent(primary, secondary);
-        public void TickEffects(float dt) => effects.Tick(dt);
+        public void SetComboEnergy(float intensity, int tier)
+        {
+            comboEnergy = Mathf.Clamp01(intensity);
+            comboTier = tier;
+        }
+        public void TickEffects(float dt)
+        {
+            effects.Tick(dt);
+            tension = Mathf.MoveTowards(tension, tensionTarget, dt / .38f);
+            tensionTime += dt;
+            if (Top != null)
+            {
+                for (var i = 0; i < tower.Count; i++)
+                {
+                    var pair = tower[i];
+                    if (pair == null) continue;
+                    var weight = i == 0 ? .35f : i >= tower.Count - 7 ? 1f : .72f;
+                    pair.SetTension(tension * 1.55f * weight, i * .73f);
+                }
+                effects.SetEnergy(comboEnergy, comboTier, Top.transform.position, Top.Size);
+            }
+            else effects.SetEnergy(0f, 0, lastPlacement, lastSize);
+        }
+        public void BeginTension()
+        {
+            if (tense) return;
+            tense = true;
+            tensionTarget = 1f;
+            tensionTime = 0f;
+        }
+        public void StabilizeTension()
+        {
+            tense = false;
+            tensionTarget = 0f;
+        }
+        public void EndTension()
+        {
+            tense = false;
+            tensionTarget = 0f;
+        }
         public void Celebrate(bool perfect, int combo) => effects.Celebrate(perfect, lastPlacement, lastSize, combo);
         public void FailBurst() => effects.Fail(lastPlacement, lastSize);
 

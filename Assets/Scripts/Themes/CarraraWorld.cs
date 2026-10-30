@@ -39,6 +39,8 @@ namespace Wobble.Themes
         private ThemeDistrict district;
         private ThemeId districtTheme = (ThemeId)(-1);
         private float celebrate, failFlash;
+        private float comboLevel, comboPulse, contactPulse;
+        private int comboTier, comboPulseTier;
         private Color propTint = WobblePalette.StoneLight;
 
         public void SetThemes(ThemeManager value) => themes = value;
@@ -278,16 +280,33 @@ namespace Wobble.Themes
         public void Follow(float topHeight) => height = topHeight;
         public void SetLevel(int level) => targetProgress = Mathf.Clamp(level - 1, 0, 3);
 
+        // Presentation-only. Keeps the world's combo response separate from scoring.
+        public void SetCombo(float intensity, int tier)
+        {
+            comboLevel = Mathf.Clamp01(intensity);
+            comboTier = tier;
+        }
+        public void Pulse(int tier)
+        {
+            comboPulse = 1f;
+            comboPulseTier = tier;
+        }
+        public void Contact() => contactPulse = 1f;
+
         // Purely presentational pulses driven by gameplay events.
         public void Celebrate(int combo)
         {
             celebrate = Mathf.Clamp01(.32f + combo * .075f);
+            Pulse(combo >= 8 ? 2 : combo >= 5 ? 1 : 0);
             if (themes != null) failFlash = 0;
         }
 
         public void Fail()
         {
             celebrate = 0;
+            comboLevel = 0f;
+            comboPulse = 0f;
+            contactPulse = 0f;
             failFlash = 1f;
         }
 
@@ -296,6 +315,9 @@ namespace Wobble.Themes
             if (!playing) return;
             var v = themes != null ? themes.Visuals : ThemeVisuals.Carrara;
             var palette = themes != null ? themes.Environment : default;
+            var reaction = ReactionColor(themes != null ? themes.Current.id : ThemeId.Carrara, v);
+            var energy = comboLevel;
+            var beat = comboPulse * (comboPulseTier >= 2 ? .16f : .085f) + contactPulse * .055f;
             if (themes != null)
             {
                 if (districtTheme != themes.Current.id)
@@ -303,10 +325,10 @@ namespace Wobble.Themes
                     districtTheme = themes.Current.id;
                     district.SetTheme(districtTheme);
                 }
-                materials[0].color = Color.Lerp(v.ruinColor, v.propLight, .18f);
+                materials[0].color = Color.Lerp(Color.Lerp(v.ruinColor, v.propLight, .18f), reaction, energy * .08f);
                 materials[1].color = Color.Lerp(v.ruinColor, v.propDark, .30f);
                 var main = dust.main;
-                main.startColor = WobblePalette.Alpha(Color.Lerp(palette.optionalParticleTint, v.accent, .25f), .15f);
+                main.startColor = WobblePalette.Alpha(Color.Lerp(Color.Lerp(palette.optionalParticleTint, v.accent, .25f), reaction, energy * .45f), .15f + energy * .06f);
             }
             var sky = RenderSettings.skybox;
             if (sky != null)
@@ -345,29 +367,42 @@ namespace Wobble.Themes
             }
             if (district != null)
             {
+                district.SetCombo(energy, comboTier, comboPulse, comboPulseTier);
                 district.ApplyVisuals(v, celebrate, failFlash);
                 district.Tick(Time.deltaTime, height, stage, celebrate);
             }
-            UpdateCloudSea(v, stage);
+            UpdateCloudSea(v, stage, reaction, energy, beat);
             dust.transform.position = new Vector3(0, height + 1, 0);
             var emission = dust.emission;
-            emission.rateOverTime = QualitySettings.GetQualityLevel() == 0 ? .5f : Mathf.Lerp(.7f, 2.4f, stage);
+            emission.rateOverTime = QualitySettings.GetQualityLevel() == 0 ? .5f : Mathf.Lerp(.7f, 2.4f, stage) + energy * 1.4f + beat * 2f;
             celebrate = Mathf.MoveTowards(celebrate, 0, Time.deltaTime * 1.8f);
             failFlash = Mathf.MoveTowards(failFlash, 0, Time.deltaTime * 2.4f);
+            comboPulse = Mathf.MoveTowards(comboPulse, 0f, Time.deltaTime / .42f);
+            contactPulse = Mathf.MoveTowards(contactPulse, 0f, Time.deltaTime / .18f);
             // Night destinations carry a per-theme light lift so stone stays readable.
-            key.intensity = (Mathf.Lerp(1.15f, 1.22f, stage) + celebrate * .34f - failFlash * .12f) * v.keyBoost;
+            key.intensity = (Mathf.Lerp(1.15f, 1.22f, stage) + celebrate * .34f + energy * .10f + beat * .22f - failFlash * .34f) * v.keyBoost;
+            key.color = Color.Lerp(themes != null ? themes.Environment.keyLightTint : new Color(1f, .97f, .91f), reaction, energy * .24f + beat * .22f);
             key.transform.rotation = Quaternion.Euler(Mathf.Lerp(46, 51, stage), Mathf.Lerp(-32, -22, stage), 0);
         }
 
-        private void UpdateCloudSea(ThemeVisuals v, float stage)
+        private static Color ReactionColor(ThemeId id, ThemeVisuals v) => id switch
+        {
+            ThemeId.Obsidian => new Color(1f, .42f, .16f),
+            ThemeId.AncientStone => new Color(1f, .78f, .40f),
+            ThemeId.Neon => Color.Lerp(v.accentSecondary, v.accent, .35f),
+            ThemeId.Space => Color.Lerp(v.accentSecondary, v.accent, .45f),
+            _ => new Color(1f, .72f, .30f)
+        };
+
+        private void UpdateCloudSea(ThemeVisuals v, float stage, Color reaction, float energy, float beat)
         {
             var accentPulse = celebrate * celebrate;
             cloudSeaMaterial.SetColor("_Color", v.cloudSeaTop);
             cloudSeaMaterial.SetColor("_DeepColor", v.cloudSeaDeep);
-            cloudSeaMaterial.SetColor("_Accent", v.accent);
+            cloudSeaMaterial.SetColor("_Accent", Color.Lerp(v.accent, reaction, energy * .55f));
             cloudSeaMaterial.SetVector("_SunDir", v.sunDirection);
-            cloudSeaMaterial.SetFloat("_Opacity", v.cloudSeaAlpha + accentPulse * .06f);
-            cloudSeaMaterial.SetFloat("_Tiling", 3.4f);
+            cloudSeaMaterial.SetFloat("_Opacity", v.cloudSeaAlpha + accentPulse * .06f + energy * .035f);
+            cloudSeaMaterial.SetFloat("_Tiling", 3.4f + energy * .30f + beat * .4f);
             if (cloudSea != null)
             {
                 var sea = cloudSea.transform;

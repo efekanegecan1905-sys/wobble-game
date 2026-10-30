@@ -23,6 +23,7 @@ namespace Wobble.Core
         private HapticManager haptics;
         private StackManager stack;
         private ComboManager combo;
+        private ComboEnergy comboEnergy;
         private LevelManager levels;
         private CameraController cameraController;
         private UIManager ui;
@@ -32,6 +33,8 @@ namespace Wobble.Core
         private Coroutine gameOverRoutine;
         private int inputReadyFrame;
         private int awardedGems;
+        private int runStartBest;
+        private bool newBest, feverTensionShown;
 
         private void Awake()
         {
@@ -60,6 +63,7 @@ namespace Wobble.Core
             audio.SetMusicEnabled(saves.Data.musicEnabled);
             haptics = new HapticManager(saves.Data.hapticsEnabled);
             combo = new ComboManager();
+            comboEnergy = new ComboEnergy();
             levels = new LevelManager();
             BuildWorld();
 
@@ -130,6 +134,12 @@ namespace Wobble.Core
         private void Update()
         {
             themes.Tick(Time.deltaTime);
+            // One smooth presentation value drives every FLOW/FEVER reaction. It is
+            // read after the tick so audio, camera and world share the same frame.
+            comboEnergy.Tick(Time.deltaTime);
+            stack.SetComboEnergy(comboEnergy.Intensity, comboEnergy.Tier);
+            themes.SetCombo(comboEnergy.Intensity, comboEnergy.Tier);
+            world.SetCombo(comboEnergy.Intensity, comboEnergy.Tier);
             stack.TickEffects(Time.deltaTime);
             keyLight.color = themes.Environment.keyLightTint;
             plinthMaterial.color = Color.Lerp(themes.Visuals.propDark, themes.Visuals.propLight, .45f);
@@ -150,6 +160,12 @@ namespace Wobble.Core
             State = GameState.Playing;
             Score = 0;
             awardedGems = 0;
+            runStartBest = saves.Data.bestScore;
+            newBest = false;
+            feverTensionShown = false;
+            comboEnergy.Reset();
+            themes.SetCombo(0f, 0);
+            world.SetCombo(0f, 0);
             combo.ResetRun();
             audio.ResetPlacementCombo();
             levels.ResetRun();
@@ -166,14 +182,37 @@ namespace Wobble.Core
         private void OnPlaced(bool perfect, Vector3 position)
         {
             Score += combo.Register(perfect);
-            audio.Impact(perfect, combo.DisplayMultiplier);
+            var multiplier = combo.DisplayMultiplier;
+            var escalated = comboEnergy.Push(perfect, multiplier);
+            audio.Impact(perfect, multiplier);
             saves.SubmitScore(Score);
+            newBest = Score > runStartBest;
             cameraController.FollowTop(position);
             if (perfect) cameraController.PerfectImpulse();
-            cameraController.ComboImpulse(combo.DisplayMultiplier);
-            stack.Celebrate(perfect, combo.DisplayMultiplier);
-            if (perfect) world.Celebrate(combo.DisplayMultiplier);
-            ui.Feedback(perfect, combo.DisplayMultiplier, position);
+            cameraController.ComboImpulse(multiplier);
+            if (escalated > 0)
+            {
+                // x5 FLOW and x8 FEVER each get one clean hero beat: a camera push,
+                // a world pulse and a held milestone label. No extra shake stacks.
+                cameraController.FlowPulse(escalated >= 2 ? 1f : .62f);
+                themes.Pulse(escalated);
+                world.Pulse(escalated);
+                ui.ComboMilestone(escalated);
+            }
+            else if (!perfect) { ui.ComboRelaxed(); ui.TenseCleared(); }
+            // WOBBLE begins on the first x8 Perfect and is resolved by the next
+            // Perfect. It is presentation tension only: no reward and no corruption.
+            if (comboEnergy.Tier >= 2 && !feverTensionShown)
+            {
+                feverTensionShown = true;
+                stack.BeginTension();
+                ui.TenseBegin();
+            }
+            if (stack.StabilizedThisPlacement) ui.TenseStabilized();
+            if (perfect) world.Celebrate(multiplier);
+            else world.Contact();
+            stack.Celebrate(perfect, multiplier);
+            ui.Feedback(perfect, multiplier, position);
             levels.RegisterPlacement();
             ui.UpdateHud(Score, saves.Data.bestScore, levels.Level);
             stack.SpawnNext(levels.Speed);
@@ -193,6 +232,11 @@ namespace Wobble.Core
             State = GameState.GameOver;
             // Death always re-arms the placement bank at Wobble_Normal.
             audio.ResetPlacementCombo();
+            comboEnergy.Reset();
+            feverTensionShown = false;
+            themes.SetCombo(0f, 0);
+            world.SetCombo(0f, 0);
+            ui.ComboRelaxed();
             stack.FailBurst();
             world.Fail();
             cameraController.FailImpulse();
@@ -203,19 +247,25 @@ namespace Wobble.Core
 
         private IEnumerator ShowResultsAfterFall()
         {
-            yield return new WaitForSeconds(.6f);
+            // 0.72 s of falling stone and camera settle before the card appears:
+            // long enough to read the loss, short enough to tap again immediately.
+            yield return new WaitForSeconds(.72f);
             // Additive run reward: spends no existing currency and changes no price or life rule.
             var earned = Mathf.Clamp(Score / 10, 0, 99);
             var grant = Mathf.Max(0, earned - awardedGems);
             if (grant > 0) economy.GrantReward(grant, 0);
             awardedGems = earned;
-            ui.ShowGameOver(Score, saves.Data.bestScore, combo.PerfectCount, combo.MaximumCombo, stack.BlockCount, earned);
+            ui.ShowGameOver(Score, saves.Data.bestScore, combo.PerfectCount, combo.MaximumCombo, stack.BlockCount, earned, newBest);
             gameOverRoutine = null;
         }
 
         private void GoHome()
         {
             State = GameState.Home;
+            comboEnergy.Reset();
+            feverTensionShown = false;
+            themes.SetCombo(0f, 0);
+            world.SetCombo(0f, 0);
             world.Show(false);
             themes.ApplyEnvironment(1,true);
             stack.ClearTower();
@@ -227,6 +277,8 @@ namespace Wobble.Core
         {
             if (State != GameState.GameOver || gameOverRoutine != null || !economy.ConsumeLifeForContinue()) return;
             combo.BreakChain();
+            comboEnergy.Reset();
+            feverTensionShown = false;
             audio.ResetPlacementCombo();
             inputReadyFrame = Time.frameCount;
             State = GameState.Playing;

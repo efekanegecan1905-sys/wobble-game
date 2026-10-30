@@ -49,7 +49,7 @@ namespace Wobble.Tests
             yield return new WaitForSecondsRealtime(.67f);
             Assert.That(game.State,Is.EqualTo(GameState.Playing));Assert.That(ui.Transitioning,Is.False);
             var stack=(StackManager)typeof(GameManager).GetField("stack",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(game);
-            stack.ActiveBlock.transform.position+=Vector3.right*30;stack.PlaceCurrent();yield return new WaitForSecondsRealtime(.95f);
+            stack.ActiveBlock.transform.position+=Vector3.right*30;stack.PlaceCurrent();yield return new WaitForSecondsRealtime(1.4f);
             Assert.That(game.State,Is.EqualTo(GameState.GameOver));
             foreach(var language in new[]{"tr","en"})
             {
