@@ -18,18 +18,28 @@ namespace Wobble.UI
     // Explicit development-only player QA, not a second menu or gameplay manager.
     public sealed class ProductPlayerReview : MonoBehaviour
     {
-        private const string Folder="/private/tmp/wobble-concept-player/review";
+        private static string Folder=>Path.Combine(Application.persistentDataPath,"review");
         private readonly Vector2Int[] sizes={new(1080,1920),new(1170,2532),new(1080,2400)};
         private readonly List<string> report=new();
         private UIManager ui;private GameManager game;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] private static void Install()
         {
-            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--wobble-product-check")<0)return;
+            // Device QA cannot pass argv through devicectl, so the environment variable
+            // is the console-attached trigger; the launch argument stays for XCUITest.
+            var enabled=Array.IndexOf(Environment.GetCommandLineArgs(),"--wobble-product-check")>=0
+                ||Environment.GetEnvironmentVariable("WOBBLE_PRODUCT_CHECK")=="1";
+            if(!enabled)return;
             Application.runInBackground=true;new GameObject("Product player verification").AddComponent<ProductPlayerReview>();
+        }
+        private void Log(string message)
+        {
+            Debug.Log("[WOBBLE-QA] "+message);
+            try{File.AppendAllText(Path.Combine(Folder,"harness.log"),message+"\n");}catch{}
         }
         private IEnumerator Start()
         {
             Directory.CreateDirectory(Folder);var hadSave=PlayerPrefs.HasKey("wobble.save.v1");var saved=PlayerPrefs.GetString("wobble.save.v1");
+            Log("start folder="+Folder+" args="+string.Join(" ",Environment.GetCommandLineArgs()));
             yield return null;game=FindFirstObjectByType<GameManager>();ui=game.GetComponent<UIManager>();
             report.Add(SystemInfo.deviceModel+" / "+SystemInfo.graphicsDeviceName);report.Add("Development desktop samples; not mobile FPS certification.");
             yield return new WaitForSecondsRealtime(1.4f);
@@ -37,7 +47,7 @@ namespace Wobble.UI
             while(ui.IntroPlaying)yield return null;
             var deadline=Time.realtimeSinceStartup+15;while(!ui.Localization.Ready&&Time.realtimeSinceStartup<deadline)yield return null;
             if(!ui.Localization.Ready){report.Add("FAIL localization timeout");Finish(hadSave,saved);yield break;}
-            Application.targetFrameRate=-1;
+            Application.targetFrameRate=-1;Log("localization ready");
             foreach(var language in new[]{"tr","en"})
             {
                 ui.Menus.SelectLanguage(language);
@@ -53,14 +63,25 @@ namespace Wobble.UI
                     }
                 }
             }
-            ui.Menus.Open(MenuScreen.Home);yield return new WaitForSecondsRealtime(.3f);Click("home.play");yield return new WaitForSecondsRealtime(.7f);
+            ui.Menus.Open(MenuScreen.Home);yield return new WaitForSecondsRealtime(.3f);Log("menus done");Click("home.play");yield return new WaitForSecondsRealtime(.7f);
+            Log("play clicked state="+game.State);
             var stack=Field<StackManager>("stack");var audio=Field<AudioManager>("audio");audio.SetEnabled(true);
             var peak=0f;var samples=new float[1024];
             for(var i=0;i<32;i++)
             {
                 stack.ActiveBlock.transform.position=stack.Top.transform.position+Vector3.up*StackManager.BlockHeight+(i==0||i==7?stack.ActiveBlock.Axis*.12f:Vector3.zero);stack.PlaceCurrent();
+                Log("place "+(i+1)+" blocks="+stack.BlockCount+" mult="+Field<ComboManager>("combo").DisplayMultiplier);
                 for(var t=0f;t<.21f;t+=Time.unscaledDeltaTime)
                 {AudioListener.GetOutputData(samples,0);foreach(var sample in samples)peak=Mathf.Max(peak,Mathf.Abs(sample));yield return null;}
+                // Milestone holds: keep the FLOW badge, the FEVER/WOBBLE tension and
+                // the STABILIZED cue on screen long enough for a device capture pass.
+                var multiplier=Field<ComboManager>("combo").DisplayMultiplier;
+                if(stack.StabilizedThisPlacement)
+                {Log("STABILIZED at placement "+(i+1));yield return new WaitForSecondsRealtime(2.4f);}
+                else if(multiplier==8)
+                {Log("FEVER+WOBBLE at placement "+(i+1));yield return new WaitForSecondsRealtime(2.4f);}
+                else if(multiplier==5)
+                {Log("FLOW at placement "+(i+1));yield return new WaitForSecondsRealtime(1.8f);}
                 if(i==0||i==10||i==20||i==30)
                 {
                     stack.ActiveBlock.Stop();yield return new WaitForSecondsRealtime(2.6f);
@@ -69,6 +90,7 @@ namespace Wobble.UI
                 }
             }
             report.Add("Audio listener observed peak="+peak.ToString("F4")+"; signal check only, not perceptual Foley approval.");
+            Log("placements done");
             stack.ActiveBlock.Stop();yield return new WaitForSecondsRealtime(2.5f);
             foreach(var size in sizes)yield return Capture("Gameplay",size,game.GetComponentsInChildren<Camera>().First(c=>c.enabled),true);
             stack.ActiveBlock.Begin(stack.ActiveBlock.Direction,stack.Top.transform.position,StackManager.TravelBoundary,Field<LevelManager>("levels").Speed);
@@ -104,7 +126,8 @@ namespace Wobble.UI
             {text.ForceMeshUpdate();if(text.isTextOverflowing||text.text.Contains("No translation found"))report.Add("FAIL text: "+label+" / "+text.text);}
             var previous=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(size.x,size.y,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,size.x,size.y),0,0);image.Apply();
             if(image.GetPixels32().Any(p=>p.r>220&&p.g<40&&p.b>220))report.Add("FAIL shader magenta: "+label);
-            File.WriteAllBytes(Path.Combine(Folder,label+"-"+size.x+"x"+size.y+".png"),image.EncodeToPNG());
+            var file=Path.Combine(Folder,label+"-"+size.x+"x"+size.y+".png");
+            File.WriteAllBytes(file,image.EncodeToPNG());Log("capture "+file);
             RenderTexture.active=previous;camera.targetTexture=null;canvas.renderMode=RenderMode.ScreenSpaceOverlay;Destroy(image);target.Release();Destroy(target);
         }
     }
