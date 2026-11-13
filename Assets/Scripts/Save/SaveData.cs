@@ -8,6 +8,8 @@ namespace Wobble.Save
     {
         public int schemaVersion = 2;
         public int bestScore;
+        public int rushBest, balanceBest;
+        public int[] trialStars = new int[10];
         public int gems;
         public int lives = 5;
         public string selectedTheme = "Carrara";

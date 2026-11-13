@@ -47,6 +47,8 @@ namespace Wobble.Tests
             foreach(var size in Sizes)yield return Capture("Home-after-intro",size,ui.Presentation.Camera);
             Click("home.play");Click("home.play");Assert.That(game.State,Is.EqualTo(GameState.Home));
             yield return new WaitForSecondsRealtime(.67f);
+            Assert.That(game.State,Is.EqualTo(GameState.Home));
+            game.SelectMode(ArcadeMode.Classic);
             Assert.That(game.State,Is.EqualTo(GameState.Playing));Assert.That(ui.Transitioning,Is.False);
             var stack=(StackManager)typeof(GameManager).GetField("stack",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(game);
             stack.ActiveBlock.transform.position+=Vector3.right*30;stack.PlaceCurrent();yield return new WaitForSecondsRealtime(1.4f);

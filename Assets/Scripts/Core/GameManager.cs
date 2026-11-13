@@ -35,6 +35,14 @@ namespace Wobble.Core
         private int awardedGems;
         private int runStartBest;
         private bool newBest, feverTensionShown;
+        public ArcadeMode Mode { get; private set; }
+        public ArcadeRun Arcade { get; private set; }
+        public ArcadeTuning arcadeTuning = new ArcadeTuning();
+        private int selectedTrial;
+        private ArcadeModeUI modeUI;
+        private int countdownBeat;
+        public void SelectMode(ArcadeMode mode,int trial=0)
+        { Mode=mode;selectedTrial=Mathf.Clamp(trial,0,9);StartGame(); }
 
         private void Awake()
         {
@@ -75,7 +83,9 @@ namespace Wobble.Core
 
             ui = gameObject.AddComponent<UIManager>();
             ui.Build(saves, economy, audio, haptics, themes);
-            ui.PlayPressed += StartGame;
+            modeUI=gameObject.AddComponent<ArcadeModeUI>();
+            modeUI.Initialize(this,saves,ui);
+            ui.PlayPressed += modeUI.Open;
             ui.RetryPressed += StartGame;
             ui.HomePressed += GoHome;
             ui.ContinuePressed += ContinueWithLife;
@@ -144,13 +154,29 @@ namespace Wobble.Core
             keyLight.color = themes.Environment.keyLightTint;
             plinthMaterial.color = Color.Lerp(themes.Visuals.propDark, themes.Visuals.propLight, .45f);
             if (stack.Top != null) world.Follow(stack.Top.transform.position.y);
-            if (State != GameState.Playing || !stack.CanPlace) return;
+            if (State != GameState.Playing) return;
+            if(Mode!=ArcadeMode.Classic)
+            {
+                Arcade.Tick(Time.deltaTime);
+                if(Mode==ArcadeMode.Rush)
+                {
+                    stack.ActiveBlock?.SetSpeed(RunSpeed);
+                    int second=Mathf.CeilToInt(Arcade.Remaining);
+                    if(second<=10 && second>0 && second!=countdownBeat){countdownBeat=second;audio.MenuTap();cameraController.PerfectImpulse();}
+                }
+                modeUI.Refresh();
+                if(Arcade.Ended){FinishArcade();return;}
+            }
+            if (!stack.CanPlace) return;
             if (Time.frameCount <= inputReadyFrame) return;
             var tapped = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
             if (tapped && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) return;
             if (!Application.isMobilePlatform) tapped |= Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space);
             if (Input.GetMouseButtonDown(0) && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
-            if (tapped) stack.PlaceCurrent();
+            if (tapped)
+            {
+                stack.PlaceCurrent();
+            }
         }
 
         private void StartGame()
@@ -158,9 +184,12 @@ namespace Wobble.Core
             if (gameOverRoutine != null) StopCoroutine(gameOverRoutine);
             inputReadyFrame = Time.frameCount;
             State = GameState.Playing;
+            Arcade=new ArcadeRun(Mode,arcadeTuning,selectedTrial);
+            countdownBeat=-1;
+            modeUI?.Hide();
             Score = 0;
             awardedGems = 0;
-            runStartBest = saves.Data.bestScore;
+            runStartBest = ModeBest;
             newBest = false;
             feverTensionShown = false;
             comboEnergy.Reset();
@@ -175,17 +204,25 @@ namespace Wobble.Core
             world.Show(true);
             cameraController.RotateForLevel(1);
             cameraController.FollowHeight(0);
-            stack.StartRun(levels.Speed);
-            ui.ShowGame(saves.Data.bestScore);
+            stack.StartRun(RunSpeed);
+            ui.ShowGame(ModeBest);
+            modeUI?.Refresh();
         }
+
+        private float RunSpeed => Mode==ArcadeMode.Rush?(Arcade.Turbo?7.5f:5.5f):levels.Speed;
+        private int ModeBest => Mode==ArcadeMode.Rush?saves.Data.rushBest:Mode==ArcadeMode.Balance?saves.Data.balanceBest:Mode==ArcadeMode.Trials?0:saves.Data.bestScore;
 
         private void OnPlaced(bool perfect, Vector3 position)
         {
             Score += combo.Register(perfect);
+            if(Mode!=ArcadeMode.Classic)
+            { Arcade.Place(perfect,stack.PlacementOffset,Mathf.Min(stack.Top.Size.x,stack.Top.Size.z));Score=Arcade.Score;
+                if(Mode==ArcadeMode.Balance)stack.SetBalance(Arcade.Balance);
+            }
             var multiplier = combo.DisplayMultiplier;
             var escalated = comboEnergy.Push(perfect, multiplier);
             audio.Impact(perfect, multiplier);
-            saves.SubmitScore(Score);
+            if(Mode==ArcadeMode.Classic)saves.SubmitScore(Score);
             newBest = Score > runStartBest;
             cameraController.FollowTop(position);
             if (perfect) cameraController.PerfectImpulse();
@@ -214,8 +251,9 @@ namespace Wobble.Core
             stack.Celebrate(perfect, multiplier);
             ui.Feedback(perfect, multiplier, position);
             levels.RegisterPlacement();
-            ui.UpdateHud(Score, saves.Data.bestScore, levels.Level);
-            stack.SpawnNext(levels.Speed);
+            ui.UpdateHud(Score, ModeBest, levels.Level);
+            if(Mode!=ArcadeMode.Classic && Arcade.Ended){FinishArcade();return;}
+            stack.SpawnNext(RunSpeed);
         }
 
         private void OnLevelUp(int level)
@@ -229,6 +267,12 @@ namespace Wobble.Core
 
         private void OnMissed()
         {
+            if(Mode!=ArcadeMode.Classic)
+            {
+                Arcade.Miss();combo.BreakChain();audio.ResetPlacementCombo();
+                if(Arcade.Ended){FinishArcade();return;}
+                stack.StartRun(RunSpeed);cameraController.FollowHeight(0);return;
+            }
             State = GameState.GameOver;
             // Death always re-arms the placement bank at Wobble_Normal.
             audio.ResetPlacementCombo();
@@ -275,6 +319,7 @@ namespace Wobble.Core
 
         public void ContinueWithLife()
         {
+            if(Mode!=ArcadeMode.Classic)return;
             if (State != GameState.GameOver || gameOverRoutine != null || !economy.ConsumeLifeForContinue()) return;
             combo.BreakChain();
             comboEnergy.Reset();
@@ -295,5 +340,23 @@ namespace Wobble.Core
         }
 
         public void ContinueWithRewardedAd() => economy.ContinueWithRewardedAd();
+
+        private void FinishArcade()
+        {
+            if(State!=GameState.Playing)return;
+            State=GameState.GameOver;stack.ActiveBlock?.Stop();
+            if(!Arcade.Won){stack.FailBurst();world.Fail();cameraController.FailImpulse();}
+            audio.ResetPlacementCombo();comboEnergy.Reset();
+            if(Mode==ArcadeMode.Rush)saves.Data.rushBest=Mathf.Max(saves.Data.rushBest,Score);
+            if(Mode==ArcadeMode.Balance)saves.Data.balanceBest=Mathf.Max(saves.Data.balanceBest,Score);
+            if(Mode==ArcadeMode.Trials && Arcade.Won)
+            {
+                if(saves.Data.trialStars[selectedTrial]==0)saves.Data.gems+=5;
+                saves.Data.trialStars[selectedTrial]=Mathf.Max(saves.Data.trialStars[selectedTrial],Arcade.Stars);
+            }
+            saves.Save();modeUI.Results();
+        }
+        public void ArcadeHome(){GoHome();modeUI.Open();}
+        public void ReturnToMenu(){GoHome();modeUI.Hide();}
     }
 }

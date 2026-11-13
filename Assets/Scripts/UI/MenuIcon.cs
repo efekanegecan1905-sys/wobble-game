@@ -8,7 +8,7 @@ namespace Wobble.UI
     public sealed class MenuIcon : MaskableGraphic
     {
         public MenuIcon() { useLegacyMeshGeneration = false; }
-        public enum Shape { Gem, Heart, Layers, Shop, Calendar, Settings, Play, Trophy }
+        public enum Shape { Gem, Heart, Layers, Shop, Calendar, Settings, Play, Trophy, Star }
         public Shape shape;
         protected override void OnPopulateMesh(VertexHelper vh)
         {
@@ -34,6 +34,16 @@ namespace Wobble.UI
                 Facet(P(-1,.35f),P(-.55f,.9f),P(0,.35f),.30f);Facet(P(-.55f,.9f),P(.55f,.9f),P(0,.35f),.55f);
                 Facet(P(.55f,.9f),P(1,.35f),P(0,.35f),.05f);Facet(P(-1,.35f),P(0,.35f),P(0,-1),.12f);
                 Facet(P(0,.35f),P(1,.35f),P(0,-1),-.2f);return;
+            }
+            if(shape==Shape.Star)
+            {
+                for(int i=0;i<10;i++)
+                {
+                    float a=(90+i*36)*Mathf.Deg2Rad,b=(90+(i+1)*36)*Mathf.Deg2Rad;
+                    float r=i%2==0?1:.43f,s=(i+1)%2==0?1:.43f;
+                    Facet(P(0,0),P(Mathf.Cos(a)*r,Mathf.Sin(a)*r),P(Mathf.Cos(b)*s,Mathf.Sin(b)*s),i%2==0?.15f:0);
+                }
+                return;
             }
             if(shape==Shape.Heart)
             {

@@ -17,6 +17,7 @@ namespace Wobble.Gameplay
         private Quaternion leanRotation = Quaternion.identity;
         private float tensionAmount, tensionPhase;
         private bool tensionApplied;
+        public Vector2 ArcadeBalance { get; set; }
 
         private void LateUpdate()
         {
@@ -36,6 +37,7 @@ namespace Wobble.Gameplay
                 tensionApplied = tensionAmount > .0001f;
             }
             else visual.localRotation = leanRotation;
+            visual.localRotation *= Quaternion.Euler(ArcadeBalance.y*8,0,-ArcadeBalance.x*8);
         }
 
         public void Initialize(Vector3 size, Material sideMaterial, Material topMaterial)

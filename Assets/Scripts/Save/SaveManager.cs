@@ -26,6 +26,11 @@ namespace Wobble.Save
             Data.gems = Mathf.Max(0, Data.gems);
             Data.lives = Mathf.Max(0, Data.lives);
             Data.bestScore = Mathf.Max(0, Data.bestScore);
+            if(Data.trialStars==null || Data.trialStars.Length!=10)
+            {
+                var previous=Data.trialStars; Data.trialStars=new int[10];
+                if(previous!=null)Array.Copy(previous,Data.trialStars,Math.Min(10,previous.Length));
+            }
             Data.graphicsQuality = Mathf.Clamp(Data.graphicsQuality, 0, 2);
             if (Data.selectedLocale != "tr" && Data.selectedLocale != "en") Data.selectedLocale = "tr";
             Data.ownedSkins ??= new List<string>();

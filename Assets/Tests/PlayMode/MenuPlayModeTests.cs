@@ -37,6 +37,7 @@ namespace Wobble.Tests
                 yield return null;
                 ui.GetComponentsInChildren<Button>(true).Single(b=>b.name=="home.play").onClick.Invoke();
                 yield return new WaitForSecondsRealtime(.8f);
+                game.SelectMode(ArcadeMode.Classic);
                 Assert.That(game.State,Is.EqualTo(GameState.Playing));
                 typeof(GameManager).GetMethod("GoHome",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(game,null);
                 yield return null;
@@ -116,6 +117,8 @@ namespace Wobble.Tests
         {
             var lives=Save.Data.lives;var gems=Save.Data.gems;
             var play=ui.GetComponentsInChildren<Button>(true).Single(b=>b.name=="home.play");play.onClick.Invoke();yield return new WaitForSecondsRealtime(.65f);
+            Assert.That(game.State,Is.EqualTo(GameState.Home));
+            game.SelectMode(ArcadeMode.Classic);
             Assert.That(game.State,Is.EqualTo(GameState.Playing));Assert.That(Save.Data.lives,Is.EqualTo(lives));Assert.That(Save.Data.gems,Is.EqualTo(gems));
             Assert.That(ui.Presentation.Camera.gameObject.activeInHierarchy,Is.False);
             var stack=(StackManager)typeof(GameManager).GetField("stack",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(game);

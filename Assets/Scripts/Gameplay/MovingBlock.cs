@@ -13,6 +13,7 @@ namespace Wobble.Gameplay
         public float MinBoundary { get; private set; }
         public float MaxBoundary { get; private set; }
         private float speed;
+        public void SetSpeed(float value) => speed=Mathf.Max(0,value);
 
         public void Begin(MoveDirection direction, Vector3 towerCenter, float travel, float moveSpeed)
         {

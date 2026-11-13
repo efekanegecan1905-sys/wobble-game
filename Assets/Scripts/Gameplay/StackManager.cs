@@ -37,6 +37,9 @@ namespace Wobble.Gameplay
         public bool StabilizedThisPlacement { get; private set; }
         public event Action<bool, Vector3> Placed;
         public event Action Missed;
+        public Vector2 PlacementOffset { get; private set; }
+        public void SetBalance(Vector2 balance)
+        { foreach(var block in tower)block.ArcadeBalance=balance; }
 
         public StackManager(Transform parent, ThemeManager themeManager, AudioManager audioManager, HapticManager hapticManager, MonoBehaviour host)
         {
@@ -90,6 +93,8 @@ namespace Wobble.Gameplay
             if (!CanPlace) return;
             StabilizedThisPlacement = false;
             moving.Stop();
+            var offset=moving.transform.position-Top.transform.position;
+            PlacementOffset=new Vector2(offset.x,offset.z);
             var view = moving.GetComponent<BlockView>();
             var result = BlockCutter.Calculate(view, Top, moving.Axis, .11f);
             if (!result.Success)

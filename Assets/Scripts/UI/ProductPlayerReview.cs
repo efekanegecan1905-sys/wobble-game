@@ -65,6 +65,7 @@ namespace Wobble.UI
             }
             ui.Menus.Open(MenuScreen.Home);yield return new WaitForSecondsRealtime(.3f);Log("menus done");Click("home.play");yield return new WaitForSecondsRealtime(.7f);
             Log("play clicked state="+game.State);
+            game.SelectMode(ArcadeMode.Classic);
             var stack=Field<StackManager>("stack");var audio=Field<AudioManager>("audio");audio.SetEnabled(true);
             var peak=0f;var samples=new float[1024];
             for(var i=0;i<32;i++)
