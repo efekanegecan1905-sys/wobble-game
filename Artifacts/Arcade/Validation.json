@@ -1,0 +1,368 @@
+{
+  "edit": {
+    "status": "completed",
+    "duration": 0.35,
+    "summary": {
+      "total": 31,
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "inconclusive": 0
+    },
+    "tests": [
+      {
+        "name": "Wobble.Editor.ArcadeRulesTests.AllTenTrialsCanBeCompleted",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.ArcadeRulesTests.BalanceIsDeterministicAndCorrectable",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.ArcadeRulesTests.ClassicRulesStayInert",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.ArcadeRulesTests.RushExpiresAndThirdMissEnds",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.BlockCutterTests.NoOverlap_IsAMiss",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.BlockCutterTests.OffsetPlacement_ResizesKeptAndCutPieces",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.BlockCutterTests.PlacementInsideTolerance_SnapsPerfectlyWithoutLoss",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.ComboPlacementBankTests.ApprovedBankIsCompleteInExactOrder",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.ComboPlacementBankTests.RemovedStoneAndLegacyPercussiveBanksAreGone",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.ComboProfileTests.HybridProfilesKeepStoneDominantWithSubtlePitchAndClamp",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.ConceptPresentationTests.ConceptPaletteAndTypeArePresent",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.ConceptPresentationTests.EnvironmentRemainsBrightAcrossAllFourLevels",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.FeelTests.ComboCannotAlterPhysicalSpeed",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.FeelTests.ImpactAssetsAreShortBoundedDistinctAndMobileMidrangeWeighted",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.FeelTests.MixerHasAllRequestedGroups",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Editor.Tests.FeelTests.PacingRisesOnlyAtLevelBoundariesAndClamps",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ComboEnergyTests.LevelRampsInFastAndReleasesSoftly",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ComboEnergyTests.ResetClearsEverything",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ComboEnergyTests.TiersFollowPerfectMilestones",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuDataTests.ContinueHooksDoNotSpendUntilExplicitConsume",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuDataTests.DailyBlocksClockRollbackAndAllowsMissedDaysWithoutReset",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuDataTests.DailyCycleClaimsExactlyOnceAndWrapsWithoutLostRewards",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuDataTests.ExtendedDataRoundTrips",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuDataTests.OldSaveMigratesWithoutLosingScoreCurrencyOrSettings",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuDataTests.ProductAndThemeCatalogMatchesRequestedPlaceholders",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.TypographyCoverageTests.AuthoringDeckHasValidRowsAndKnownKeys",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.TypographyCoverageTests.DisplayAndBodyUseDistinctFamilies",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.TypographyCoverageTests.FontsCoverTheWholeDeck(\"Assets/Resources/Menu/WobbleDisplay.asset\")",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.TypographyCoverageTests.FontsCoverTheWholeDeck(\"Assets/Resources/Menu/WobbleBody.asset\")",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.TypographyCoverageTests.FontsCoverTheWholeDeck(\"Assets/Resources/Menu/WobbleLocalizedSans.asset\")",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "AddressableAssets.DocExampleCode.TestStub.RequiredTest",
+        "status": "Passed",
+        "message": null
+      }
+    ]
+  },
+  "play": {
+    "status": "completed",
+    "duration": 145.31,
+    "summary": {
+      "total": 35,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 1,
+      "inconclusive": 0
+    },
+    "tests": [
+      {
+        "name": "Wobble.Tests.ArcadeIntegrationTests.BalanceLeanNeverChangesStackingCollider",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ArcadeIntegrationTests.BalanceUsesActualPlacementOffset",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ArcadeIntegrationTests.LocalizedMenusFitPortraitAndTablet",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ArcadeIntegrationTests.RushHasFreeMissesAndSeparateRecord",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ArcadeIntegrationTests.TrialRewardsExactlyOnceAndClassicStillScores",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ComboAudioTests.DeathAndContinueRearmNextPlacementToNormal",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ComboAudioTests.ExplicitResetForcesSingleNormalTake",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ComboAudioTests.NormalThenX2ToX8ThenBreakRearmsNormal",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.FeelPassCaptureTests.PremiumFeelMomentsAreReadableAndColliderSafe",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.FeelPassCaptureTests.ThemeFeverReactionsStayReadable",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.FeelPlayModeTests.FourStagesRemainColliderFreeAndRenderAllPortraitRatios",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.FeelPlayModeTests.NormalAndPerfectImpactAreSynchronousAndDoNotAlterCollider",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuPlayModeTests.AllThemesDemoCanSelectAndPlayEveryTheme",
+        "status": "Skipped",
+        "message": "Only runs in the all-themes demo build copy."
+      },
+      {
+        "name": "Wobble.Tests.MenuPlayModeTests.CaptureEveryMenuInBothLanguagesAndPortraitSizes",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuPlayModeTests.DemoUnlocksAreAnimatedUnlimitedAndDoNotWritePlayerPrefs",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuPlayModeTests.PlayRetryAndHomePreserveLivesAndApprovedGame",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuPlayModeTests.SettingsDailyAndPlaceholderActionsUseExistingSave",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MenuPlayModeTests.TurkishDefaultEnglishPersistsAndEveryScreenNavigates",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveX)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeX)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveZ)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeZ)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.LiveUpdates_AllFourDirections_BounceRepeatedlyAndRemainVisible",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveX)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeX)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveZ)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeZ)",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ProductPresentationTests.SkipEndsIntroWithoutDelayedSounds",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.ProductPresentationTests.StartupIsBoundedAndPlayRetryDoNotRepeatIt",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.WobblePlayModeTests.AllThemeEnvironmentsAndCloserPortraitCamera",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.WobblePlayModeTests.FidelitySettings_AndCutTextureCoordinates_ArePreserved",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.WobblePlayModeTests.HomeToPerfectPlacement_CreatesNextMovingBlock",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.WobblePlayModeTests.MissShowsLifeContinueAndPreservesRun",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.WobblePlayModeTests.RenderHomeGameplayAndResultsForReview",
+        "status": "Passed",
+        "message": null
+      },
+      {
+        "name": "Wobble.Tests.WobblePlayModeTests.ThirtyPlacements_PreserveDirections_Levels_AndPortraitFraming",
+        "status": "Passed",
+        "message": null
+      }
+    ]
+  },
+  "console": {
+    "sampledUtc": "2026-11-17T21:38:39.578315Z",
+    "ageMs": 242,
+    "compilationFailed": false,
+    "compiling": false,
+    "consoleErrors": 0,
+    "consoleWarnings": 0,
+    "consoleLogs": 10,
+    "seeded": true
+  }
+}

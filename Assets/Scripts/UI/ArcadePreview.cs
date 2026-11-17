@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 using Wobble.Themes;
 namespace Wobble.UI
 {
@@ -15,12 +16,19 @@ namespace Wobble.UI
             var cameraObject=new GameObject("Preview camera",typeof(Camera));cameraObject.transform.SetParent(stage.transform,false);
             cameraObject.transform.localPosition=new Vector3(5,5,6);cameraObject.transform.LookAt(stage.transform.position+Vector3.up);
             var camera=cameraObject.GetComponent<Camera>();camera.targetTexture=target;camera.orthographic=true;camera.orthographicSize=2.7f;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.035f,.08f,.13f,1);camera.cullingMask=1<<30;
+            // Small menu previews do not need world shadows, HDR or extra URP copies.
+            camera.nearClipPlane=.1f;camera.farClipPlane=20;camera.allowHDR=false;camera.allowMSAA=false;
+            camera.backgroundColor=new Color(.035f,.08f,.13f,0);
+            var data=camera.GetUniversalAdditionalCameraData();data.renderPostProcessing=false;data.renderShadows=false;
+            data.requiresColorTexture=false;data.requiresDepthTexture=false;
             material=new Material(Resources.Load<Shader>("Shaders/Carrara"));material.color=color;
             blocks=new Transform[5];
             for(int i=0;i<5;i++)
             {
                 var block=new GameObject("Preview stone",typeof(MeshFilter),typeof(MeshRenderer));block.layer=30;block.transform.SetParent(stage.transform,false);
                 block.GetComponent<MeshFilter>().sharedMesh=ThemeWorldKit.BoxMesh;block.GetComponent<MeshRenderer>().sharedMaterial=material;
+                block.GetComponent<MeshRenderer>().shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
+                block.GetComponent<MeshRenderer>().receiveShadows=false;
                 block.transform.localScale=new Vector3(2,.35f,2);block.transform.localPosition=Vector3.up*i*.4f;blocks[i]=block.transform;
             }
         }
