@@ -27,3 +27,11 @@ Başlangıç: `b49ee3f`, dal: `feature/arcade-modes`. Permanent bundle ID `com.w
 ## Onay öncesi kalan değerlendirmeler
 
 Bu sürüm geliştirme/playtest sürümüdür. Yeni modlar için fiziksel iPhone performans, güvenli alan ve dokunma QA'sı henüz yapılmadı. Rush temposu, Balance toparlanma katsayısı ve Trials yıldız eşikleri gerçek oyuncu geri bildirimiyle dengelenmelidir. Önizlemeler 1080×1920 hedefinde üretildi; yeni ekranların tüm cihaz oranlarında ve iki dilde kapsamlı görsel onayı tamamlanmadı. Main merge için oynanış onayı beklenir.
+
+## 18 Kasım devamı — cihaz kurulumu
+
+- Yarım kalan Xcode derlemesinin doğrulanan engeli giderildi: mevcut SDK iOS 13 deployment target değerini reddediyordu. `IOSDeviceBuilder` izole cihaz kopyasında iOS 15 hedefler; kaynak ProjectSettings ve permanent bundle ID değiştirilmedi.
+- Trials seviye seçimine Türkçe/İngilizce MOD SEÇ / SELECT MODE dönüş düğmesi eklendi.
+- ArcadeIntegrationTests tekrar çalıştırıldı: 3/3 geçti. Mevcut önizlemeler test koşusunda yenilendi.
+- Unity IL2CPP export ve Xcode Release derlemesi başarılı. Önceki geçici kimlikle (`com.efekangokce.wobble.themedemo`) bağlı iPhone 17 Pro'ya güncelleme kuruldu; normal uygulama başlatma komutu başarılı döndü.
+- Bu kontrol cihaz kurulumu/açılış kontrolüdür. Yukarıdaki kapsamlı cihaz performans, ekran oranı ve dört modun manuel oynanış değerlendirmeleri açık kalır. App Store ikonu uyarısı da mağaza yayınından önce giderilmelidir.

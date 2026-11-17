@@ -78,6 +78,7 @@ namespace Wobble.UI
                 Button((level+1)+" · "+d.blocks+L(" BLOK · "," BLOCKS · ")+d.chain+" PERFECT · "+d.seconds+"s\n"+(unlocked?saves.Data.trialStars[level]+L(" / 3 YILDIZ"," / 3 STARS"):L("KİLİTLİ","LOCKED")),400-i*230,new Color(.38f,.24f,.6f),()=>{if(unlocked)game.SelectMode(ArcadeMode.Trials,level);});
             }
             Button(L("DİĞER SEVİYELER","MORE LEVELS"),-600,new Color(.2f,.3f,.4f),()=>{trialPage=(trialPage+4)%12;if(trialPage>=10)trialPage=0;Trials();});
+            Button(L("MOD SEÇ","SELECT MODE"),-810,new Color(.2f,.3f,.4f),Open);
         }
         public void Hide(){if(panel!=null)Destroy(panel);hud.text="";}
         public void Refresh()

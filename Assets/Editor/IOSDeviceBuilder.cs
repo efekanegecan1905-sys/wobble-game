@@ -19,6 +19,8 @@ namespace Wobble.Editor
                 throw new System.Exception("iOS localization bundles failed: " + contentResult.Error);
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS,ScriptingImplementation.IL2CPP);
             PlayerSettings.iOS.sdkVersion=iOSSdkVersion.DeviceSDK;
+            // This isolated device build targets the minimum supported by current Xcode.
+            PlayerSettings.iOS.targetOSVersionString="15.0";
             var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions {
                 scenes=new[]{"Assets/Scenes/Wobble.unity"},
                 locationPathName="/private/tmp/wobble-ios-device/Xcode",
