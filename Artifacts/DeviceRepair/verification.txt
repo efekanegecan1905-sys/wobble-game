@@ -1,0 +1,10 @@
+iPhone18,1 / Apple A19 Pro GPU
+Development desktop samples; not mobile FPS certification.
+tr-Home 1080x1920: mean=33,34ms p95=33,61ms
+tr-Home 1170x2532: mean=33,34ms p95=33,39ms
+tr-Home 1080x2400: mean=33,34ms p95=33,37ms
+Audio listener observed peak=0,1561; signal check only, not perceptual Foley approval.
+Gameplay 1080x1920: mean=33,34ms p95=33,37ms
+Gameplay 1170x2532: mean=33,34ms p95=33,37ms
+Gameplay 1080x2400: mean=33,34ms p95=33,37ms
+PASS fast retry without intro
