@@ -1,0 +1,826 @@
+{
+  "baseCommit": "f408acd90d5c18c02f6b36c38aba315945ec99b7",
+  "branch": "feature/arcade-modes",
+  "unity": "6000.0.81f1",
+  "devicePerformanceMeasured": false,
+  "tests": {
+    "editMode": {
+      "status": "completed",
+      "duration": 0.46,
+      "summary": {
+        "total": 31,
+        "passed": 31,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0
+      },
+      "results": [
+        {
+          "fullName": "Wobble.Editor.ArcadeRulesTests.AllTenTrialsCanBeCompleted",
+          "status": "Passed",
+          "duration": 0.0046313,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.ArcadeRulesTests.BalanceIsDeterministicAndCorrectable",
+          "status": "Passed",
+          "duration": 0.0006417,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.ArcadeRulesTests.ClassicRulesStayInert",
+          "status": "Passed",
+          "duration": 5.71e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.ArcadeRulesTests.RushExpiresAndThirdMissEnds",
+          "status": "Passed",
+          "duration": 9.66e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.BlockCutterTests.NoOverlap_IsAMiss",
+          "status": "Passed",
+          "duration": 0.0054542,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.BlockCutterTests.OffsetPlacement_ResizesKeptAndCutPieces",
+          "status": "Passed",
+          "duration": 0.0005076,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.BlockCutterTests.PlacementInsideTolerance_SnapsPerfectlyWithoutLoss",
+          "status": "Passed",
+          "duration": 0.0002639,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.ComboPlacementBankTests.ApprovedBankIsCompleteInExactOrder",
+          "status": "Passed",
+          "duration": 0.0105024,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.ComboPlacementBankTests.RemovedStoneAndLegacyPercussiveBanksAreGone",
+          "status": "Passed",
+          "duration": 0.0016186,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.ComboProfileTests.HybridProfilesKeepStoneDominantWithSubtlePitchAndClamp",
+          "status": "Passed",
+          "duration": 0.0028479,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.ConceptPresentationTests.ConceptPaletteAndTypeArePresent",
+          "status": "Passed",
+          "duration": 0.0614453,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.ConceptPresentationTests.EnvironmentRemainsBrightAcrossAllFourLevels",
+          "status": "Passed",
+          "duration": 0.0094674,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.FeelTests.ComboCannotAlterPhysicalSpeed",
+          "status": "Passed",
+          "duration": 0.0001508,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.FeelTests.ImpactAssetsAreShortBoundedDistinctAndMobileMidrangeWeighted",
+          "status": "Passed",
+          "duration": 0.335321,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.FeelTests.MixerHasAllRequestedGroups",
+          "status": "Passed",
+          "duration": 0.0014736,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Editor.Tests.FeelTests.PacingRisesOnlyAtLevelBoundariesAndClamps",
+          "status": "Passed",
+          "duration": 0.0020136,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ComboEnergyTests.LevelRampsInFastAndReleasesSoftly",
+          "status": "Passed",
+          "duration": 0.0002672,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ComboEnergyTests.ResetClearsEverything",
+          "status": "Passed",
+          "duration": 0.000105,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ComboEnergyTests.TiersFollowPerfectMilestones",
+          "status": "Passed",
+          "duration": 0.0001136,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuDataTests.ContinueHooksDoNotSpendUntilExplicitConsume",
+          "status": "Passed",
+          "duration": 0.0007022,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuDataTests.DailyBlocksClockRollbackAndAllowsMissedDaysWithoutReset",
+          "status": "Passed",
+          "duration": 0.0005458,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuDataTests.DailyCycleClaimsExactlyOnceAndWrapsWithoutLostRewards",
+          "status": "Passed",
+          "duration": 0.0002268,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuDataTests.ExtendedDataRoundTrips",
+          "status": "Passed",
+          "duration": 0.0002961,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuDataTests.OldSaveMigratesWithoutLosingScoreCurrencyOrSettings",
+          "status": "Passed",
+          "duration": 0.000127,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuDataTests.ProductAndThemeCatalogMatchesRequestedPlaceholders",
+          "status": "Passed",
+          "duration": 0.0002637,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.TypographyCoverageTests.AuthoringDeckHasValidRowsAndKnownKeys",
+          "status": "Passed",
+          "duration": 0.0011063,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.TypographyCoverageTests.DisplayAndBodyUseDistinctFamilies",
+          "status": "Passed",
+          "duration": 0.0003075,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.TypographyCoverageTests.FontsCoverTheWholeDeck(\"Assets/Resources/Menu/WobbleDisplay.asset\")",
+          "status": "Passed",
+          "duration": 0.0004084,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.TypographyCoverageTests.FontsCoverTheWholeDeck(\"Assets/Resources/Menu/WobbleBody.asset\")",
+          "status": "Passed",
+          "duration": 3.9e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.TypographyCoverageTests.FontsCoverTheWholeDeck(\"Assets/Resources/Menu/WobbleLocalizedSans.asset\")",
+          "status": "Passed",
+          "duration": 3.18e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "AddressableAssets.DocExampleCode.TestStub.RequiredTest",
+          "status": "Passed",
+          "duration": 4.4e-05,
+          "message": null,
+          "stackTrace": null
+        }
+      ]
+    },
+    "fullPlayMode": {
+      "status": "completed",
+      "duration": 208.95,
+      "summary": {
+        "total": 39,
+        "passed": 38,
+        "failed": 0,
+        "skipped": 1,
+        "inconclusive": 0
+      },
+      "results": [
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.BalanceLeanNeverChangesStackingCollider",
+          "status": "Passed",
+          "duration": 0.7507492,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.BalanceUsesActualPlacementOffset",
+          "status": "Passed",
+          "duration": 0.8787419,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.DedicatedHudsFitBothLanguagesAndPortraitSizes",
+          "status": "Passed",
+          "duration": 12.0814797,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.EveryWorldThemeSupportsEveryMode",
+          "status": "Passed",
+          "duration": 0.5092321,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.LocalizedMenusFitPortraitAndTablet",
+          "status": "Passed",
+          "duration": 46.1551922,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.RushHasFreeMissesAndSeparateRecord",
+          "status": "Passed",
+          "duration": 0.8753361,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.ShowcaseRapidNavigationReusesPreviewAndResetsMotion",
+          "status": "Passed",
+          "duration": 1.0074758,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.TrialRewardsExactlyOnceAndClassicStillScores",
+          "status": "Passed",
+          "duration": 2.172931,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.UrgencyRecoveryAndObjectivesHaveDedicatedPresentation",
+          "status": "Passed",
+          "duration": 3.50933,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ComboAudioTests.DeathAndContinueRearmNextPlacementToNormal",
+          "status": "Passed",
+          "duration": 0.9415445,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ComboAudioTests.ExplicitResetForcesSingleNormalTake",
+          "status": "Passed",
+          "duration": 0.1751959,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ComboAudioTests.NormalThenX2ToX8ThenBreakRearmsNormal",
+          "status": "Passed",
+          "duration": 1.2903629,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.FeelPassCaptureTests.PremiumFeelMomentsAreReadableAndColliderSafe",
+          "status": "Passed",
+          "duration": 4.2265834,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.FeelPassCaptureTests.ThemeFeverReactionsStayReadable",
+          "status": "Passed",
+          "duration": 6.0144839,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.FeelPlayModeTests.FourStagesRemainColliderFreeAndRenderAllPortraitRatios",
+          "status": "Passed",
+          "duration": 32.6466854,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.FeelPlayModeTests.NormalAndPerfectImpactAreSynchronousAndDoNotAlterCollider",
+          "status": "Passed",
+          "duration": 0.6749433,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuPlayModeTests.AllThemesDemoCanSelectAndPlayEveryTheme",
+          "status": "Skipped",
+          "duration": 0.1593325,
+          "message": "Only runs in the all-themes demo build copy.",
+          "stackTrace": "at Wobble.Tests.MenuPlayModeTests+<AllThemesDemoCanSelectAndPlayEveryTheme>d__0.MoveNext () [0x00043] in /Users/efekangokce/Documents/ChatGPT/wobble block/Assets/Tests/PlayMode/MenuPlayModeTests.cs:23\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in ./Library/PackageCache/com.unity.test-framework@082c24152fd4/UnityEngine.TestRunner/NUnitExtensions/Attributes/TestEnumerator.cs:44\n"
+        },
+        {
+          "fullName": "Wobble.Tests.MenuPlayModeTests.CaptureEveryMenuInBothLanguagesAndPortraitSizes",
+          "status": "Passed",
+          "duration": 10.7904083,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuPlayModeTests.DemoUnlocksAreAnimatedUnlimitedAndDoNotWritePlayerPrefs",
+          "status": "Passed",
+          "duration": 3.8675168,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuPlayModeTests.PlayRetryAndHomePreserveLivesAndApprovedGame",
+          "status": "Passed",
+          "duration": 1.6819262,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuPlayModeTests.SettingsDailyAndPlaceholderActionsUseExistingSave",
+          "status": "Passed",
+          "duration": 1.1529518,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MenuPlayModeTests.TurkishDefaultEnglishPersistsAndEveryScreenNavigates",
+          "status": "Passed",
+          "duration": 3.0614895,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveX)",
+          "status": "Passed",
+          "duration": 0.0020574,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeX)",
+          "status": "Passed",
+          "duration": 0.0001257,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(PositiveZ)",
+          "status": "Passed",
+          "duration": 0.0001056,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.ExactBoundary_ReversesInPlace_AndPreservesObject(NegativeZ)",
+          "status": "Passed",
+          "duration": 0.0001006,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.LiveUpdates_AllFourDirections_BounceRepeatedlyAndRemainVisible",
+          "status": "Passed",
+          "duration": 11.0142031,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveX)",
+          "status": "Passed",
+          "duration": 0.000427,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeX)",
+          "status": "Passed",
+          "duration": 8.37e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(PositiveZ)",
+          "status": "Passed",
+          "duration": 6.3e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.MovingBlockBounceTests.Overshoot_IsReflectedWithoutLosingSpeedOrWrapping(NegativeZ)",
+          "status": "Passed",
+          "duration": 5.72e-05,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ProductPresentationTests.SkipEndsIntroWithoutDelayedSounds",
+          "status": "Passed",
+          "duration": 6.1424302,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ProductPresentationTests.StartupIsBoundedAndPlayRetryDoNotRepeatIt",
+          "status": "Passed",
+          "duration": 9.6737144,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.WobblePlayModeTests.AllThemeEnvironmentsAndCloserPortraitCamera",
+          "status": "Passed",
+          "duration": 15.278103,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.WobblePlayModeTests.FidelitySettings_AndCutTextureCoordinates_ArePreserved",
+          "status": "Passed",
+          "duration": 0.3579658,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.WobblePlayModeTests.HomeToPerfectPlacement_CreatesNextMovingBlock",
+          "status": "Passed",
+          "duration": 0.2223263,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.WobblePlayModeTests.MissShowsLifeContinueAndPreservesRun",
+          "status": "Passed",
+          "duration": 1.1539766,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.WobblePlayModeTests.RenderHomeGameplayAndResultsForReview",
+          "status": "Passed",
+          "duration": 5.4093746,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.WobblePlayModeTests.ThirtyPlacements_PreserveDirections_Levels_AndPortraitFraming",
+          "status": "Passed",
+          "duration": 24.8294321,
+          "message": null,
+          "stackTrace": null
+        }
+      ]
+    },
+    "finalArcadeRegression": {
+      "status": "completed",
+      "duration": 67.98,
+      "summary": {
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0
+      },
+      "results": [
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.BalanceLeanNeverChangesStackingCollider",
+          "status": "Passed",
+          "duration": 0.7487293,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.BalanceUsesActualPlacementOffset",
+          "status": "Passed",
+          "duration": 0.8840815,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.DedicatedHudsFitBothLanguagesAndPortraitSizes",
+          "status": "Passed",
+          "duration": 12.0695274,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.EveryWorldThemeSupportsEveryMode",
+          "status": "Passed",
+          "duration": 0.509708,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.LocalizedMenusFitPortraitAndTablet",
+          "status": "Passed",
+          "duration": 46.0868139,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.RushHasFreeMissesAndSeparateRecord",
+          "status": "Passed",
+          "duration": 0.8697444,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.ShowcaseRapidNavigationReusesPreviewAndResetsMotion",
+          "status": "Passed",
+          "duration": 1.0153199,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.TrialRewardsExactlyOnceAndClassicStillScores",
+          "status": "Passed",
+          "duration": 2.1935171,
+          "message": null,
+          "stackTrace": null
+        },
+        {
+          "fullName": "Wobble.Tests.ArcadeIntegrationTests.UrgencyRecoveryAndObjectivesHaveDedicatedPresentation",
+          "status": "Passed",
+          "duration": 3.5153716,
+          "message": null,
+          "stackTrace": null
+        }
+      ]
+    }
+  },
+  "captures": [
+    {
+      "file": "Balance-danger.png",
+      "sha256": "0f2fd36126a0e6f23645b03c0c7193383c5f80d0d882aba5e898559f2c73c3f2"
+    },
+    {
+      "file": "Balance-recovery.png",
+      "sha256": "7896cf84aa6931c46c1c8b688a685b12db19f54f058d9d8e0aac5dca7001d363"
+    },
+    {
+      "file": "Balance.png",
+      "sha256": "bba9d157815216bae3e6776a7986d69bb53a9e5b454ebf9926b1409b8d987b21"
+    },
+    {
+      "file": "Classic.png",
+      "sha256": "b7d608f5ec6ccbd9e7a7f4c725d116c2d9673745d34c5e89d624f5e2b81a118e"
+    },
+    {
+      "file": "HUD-1-en-1920.png",
+      "sha256": "bdaae4b159182ad76723be6afefd2dd74898192373077b8603495c78b9fef5e8"
+    },
+    {
+      "file": "HUD-1-en-2400.png",
+      "sha256": "a3842cd5972e15fb12e3d301723ccaef3e65f3956a14be39b9293441276a9628"
+    },
+    {
+      "file": "HUD-1-en-2532.png",
+      "sha256": "417a654d9695aee4f100ad9fb2ebee60a4b4431b2c2a96042560558dfd537563"
+    },
+    {
+      "file": "HUD-1-tr-1920.png",
+      "sha256": "e3deb6f866392d9b42efccfbf29775ff74a6c282a99b403297863ceec39a248c"
+    },
+    {
+      "file": "HUD-1-tr-2400.png",
+      "sha256": "11218e68a20bec2a4314e07f9aafe3880e876c305ba2a522bb2611716a83f3b3"
+    },
+    {
+      "file": "HUD-1-tr-2532.png",
+      "sha256": "efb784796f498cffdd2416db0f6f58909012ba16eb8761f4e21d70fc0f406e32"
+    },
+    {
+      "file": "HUD-2-en-1920.png",
+      "sha256": "3b0a6e000b7a27cea20c95907e0c3ea2fb889c86ec3f7d701e2e492d96bbafcb"
+    },
+    {
+      "file": "HUD-2-en-2400.png",
+      "sha256": "93c421ba638e7f730ad70c98ef564233afad44898e272c5898f5e56678246850"
+    },
+    {
+      "file": "HUD-2-en-2532.png",
+      "sha256": "99d97b5b115db95357124c1432c5e7147810d329151c40d738497aea009a8228"
+    },
+    {
+      "file": "HUD-2-tr-1920.png",
+      "sha256": "f9e8acef150250587ffaaa60ee77fc7b828626c330c9b155895e416d43341989"
+    },
+    {
+      "file": "HUD-2-tr-2400.png",
+      "sha256": "a86b46d3594bb5075d7f607e21a64345f75534ead3fcb29d5479d8a6cc87797b"
+    },
+    {
+      "file": "HUD-2-tr-2532.png",
+      "sha256": "06e21e4d51f78bcc1d8122b113e66549ac13bf540e5bc7886be7fc7e9a823bb4"
+    },
+    {
+      "file": "HUD-3-en-1920.png",
+      "sha256": "845a12ff4497b452926903053a7261d5fb6aa8e57c41197fe0673ab44d586bc2"
+    },
+    {
+      "file": "HUD-3-en-2400.png",
+      "sha256": "a168f18f631e7a5960ab1c5a78d5dd2a9bfcb780839c39e5e2c549fa182d1a7e"
+    },
+    {
+      "file": "HUD-3-en-2532.png",
+      "sha256": "928e176662e2d650aea606ad0cf6e28fd1123a03d174bc4d0d65186a5ac0bea2"
+    },
+    {
+      "file": "HUD-3-tr-1920.png",
+      "sha256": "63b0470790206cc88be8923d72b80c3ad2dc38953f713a37b15d51c5b4383c47"
+    },
+    {
+      "file": "HUD-3-tr-2400.png",
+      "sha256": "f91e870bb3d31c98a72238d39888a6f1056ff55b532c9c8138e9458950c32508"
+    },
+    {
+      "file": "HUD-3-tr-2532.png",
+      "sha256": "11957def6346a8bb37749f4fab0b6912cb38d3c04f0a8f6f907e070b06499818"
+    },
+    {
+      "file": "Rush-final10.png",
+      "sha256": "3a1f96adf1a46b983fde4dfdd11783845e3660afbabeefc215550450a5677e42"
+    },
+    {
+      "file": "Rush.png",
+      "sha256": "96339d44fefc0c1f579cee326753eae15a61017c44cf6c845d86ca2a1df0d819"
+    },
+    {
+      "file": "Selection-tablet-en.png",
+      "sha256": "f6a96f255d93d2c823e6c386984d48d9cc79116d74c2d470191aff75e01da57b"
+    },
+    {
+      "file": "Selection-tablet-tr.png",
+      "sha256": "f5c52f57b1fa10ef488ee76b3b99b7858c18d6f0876fa1f308809126056abd60"
+    },
+    {
+      "file": "Selection.png",
+      "sha256": "50c6665d78ed1ae7667dd19536dc79e00250377667bd7cac973ab9d7ccf34d31"
+    },
+    {
+      "file": "Showcase-0-en-1920.png",
+      "sha256": "4134576cc42ed3c784b2460d271fce15f7ec0bdc1ab4d66a6036074b985ac209"
+    },
+    {
+      "file": "Showcase-0-en-2400.png",
+      "sha256": "98929da7e5d409753bfca2cc2018335d8019e445fd5f342026ce815af6dcdd98"
+    },
+    {
+      "file": "Showcase-0-en-2532.png",
+      "sha256": "0039e8c8969ffa367f76562636c07c74c4e37a95c98a246d3f8b140ec8b9ccb7"
+    },
+    {
+      "file": "Showcase-0-tr-1920.png",
+      "sha256": "c17c3b3ed07824b8e90aa031ca87e8c29e02e45a0e62b0d0294c299f2e31a9de"
+    },
+    {
+      "file": "Showcase-0-tr-2400.png",
+      "sha256": "4b48632d583ab0b8c9ff8ac79d792c3690977a24ca2ac2a839121bf6ab26bea4"
+    },
+    {
+      "file": "Showcase-0-tr-2532.png",
+      "sha256": "f7b1cb60e19b4f7fe500c9f3f4eb5084b2af418ced9830613678936dbd8df27f"
+    },
+    {
+      "file": "Showcase-1-en-1920.png",
+      "sha256": "30d268cc362071a569f2bc2416dd95e52fbf827d579b4982b63ff46d12194d2c"
+    },
+    {
+      "file": "Showcase-1-en-2400.png",
+      "sha256": "ea7ee6776c6e6765c43ef1f074b25902aeda343fb150bc1da2459f781096ac84"
+    },
+    {
+      "file": "Showcase-1-en-2532.png",
+      "sha256": "adfae5a9f96ee831b91894d49aa4486895388c7276a37adb35f8959771e39abd"
+    },
+    {
+      "file": "Showcase-1-tr-1920.png",
+      "sha256": "79fa6b17f6a6a049a2b16e88367cc1b44a634c405c15e56a9406e31ccaff22d1"
+    },
+    {
+      "file": "Showcase-1-tr-2400.png",
+      "sha256": "620813bbfb71054dbfcbfc07625f1e70f1594bee41df12ce3bece05398ceddfe"
+    },
+    {
+      "file": "Showcase-1-tr-2532.png",
+      "sha256": "cf30c26874ffaf737f0ab38bc515ee0b9b3de7550ab34bfb4149e7c7ffb08579"
+    },
+    {
+      "file": "Showcase-2-en-1920.png",
+      "sha256": "b5da78aee35c84993b2b37efa740d4b2be7cd47e7500de6b8a08b02f9a81b6f6"
+    },
+    {
+      "file": "Showcase-2-en-2400.png",
+      "sha256": "592b0fb13f63434744a8122e15b9e1eced8aa884ba6ae8400d69dfdf6263523c"
+    },
+    {
+      "file": "Showcase-2-en-2532.png",
+      "sha256": "a04a5b6513fcc9891118b16fc89ca5d9c98064dba6a53dfb586b19c24ec15d11"
+    },
+    {
+      "file": "Showcase-2-tr-1920.png",
+      "sha256": "c2d0d6817fd9cc43738ae7b87b8df249078fc06b9469e1b5302c6e431ec33e90"
+    },
+    {
+      "file": "Showcase-2-tr-2400.png",
+      "sha256": "70b1db7bd0b7187c6bebfebb50b6711d9259d6c5a4e828c403362fa4affa3e8c"
+    },
+    {
+      "file": "Showcase-2-tr-2532.png",
+      "sha256": "fa72f128c9866f9dc4454db96824df7a06ad2b72a5cbc8fb01533f70736f7799"
+    },
+    {
+      "file": "Showcase-3-en-1920.png",
+      "sha256": "51a7217198f160950b3447d56a0269f2d7fc4d6dda0e978a0620fc90409c3fd4"
+    },
+    {
+      "file": "Showcase-3-en-2400.png",
+      "sha256": "532d0d62a71a4d9f603537c0922067e1dc7443c6abe04be58f761a9d21d0bdd8"
+    },
+    {
+      "file": "Showcase-3-en-2532.png",
+      "sha256": "46af5a1901561c8925d37d61dc248cb48a8f26a262a2e62dc2117f91d59bcd73"
+    },
+    {
+      "file": "Showcase-3-tr-1920.png",
+      "sha256": "cef555cc1f4bd78ce6b007af8ec4d8d172f133a2a0a90663dfce4fd8e7ccb0b7"
+    },
+    {
+      "file": "Showcase-3-tr-2400.png",
+      "sha256": "0200d74b430fd775eaaf1b8cd8e5bee2968213db142f74fc08afd3c11cc8dd4c"
+    },
+    {
+      "file": "Showcase-3-tr-2532.png",
+      "sha256": "28c2f4896947e00b7ee1c7b5d3e63be753aa4e884ea8b2ff5225461dd34420f8"
+    },
+    {
+      "file": "TrialLevels-en.png",
+      "sha256": "45d605a5f5243dcef81111f5388cdeb4b73ca41d783dd4e0d9324c87ea41881d"
+    },
+    {
+      "file": "TrialLevels-tr.png",
+      "sha256": "c93abf2e677259e85278242873562b9827b1591f205f7873a0c45124adf5f58b"
+    },
+    {
+      "file": "Trials-completion.png",
+      "sha256": "028daf312d4948b62c0a3f93f7d89849c1b9b20c88d18def455bedc5aa49e701"
+    },
+    {
+      "file": "Trials-objectives.png",
+      "sha256": "c09575fa5f48cfb935d98d5a338a45bce481994950b8606ad904f612f873d158"
+    },
+    {
+      "file": "Trials.png",
+      "sha256": "6da4d8dd88e1263648a8c4cc707fb915481450bb55bafecd727c88e4cf0bfb07"
+    }
+  ]
+}

@@ -38,8 +38,14 @@ namespace Wobble.Gameplay
         public event Action<bool, Vector3> Placed;
         public event Action Missed;
         public Vector2 PlacementOffset { get; private set; }
+        private Vector2 balanceTarget, balanceVisual, balanceVelocity;
+        private bool balancePresentation;
+        private float balanceSpring=70, balanceDamping=13;
+        public Vector2 VisualBalance=>balanceVisual;
+        public void ConfigureBalance(bool enabled,ArcadeTuning tuning)
+        {balancePresentation=enabled;balanceTarget=balanceVisual=balanceVelocity=Vector2.zero;balanceSpring=tuning.balanceSpring;balanceDamping=tuning.balanceDamping;}
         public void SetBalance(Vector2 balance)
-        { foreach(var block in tower)block.ArcadeBalance=balance; }
+        { balanceTarget=Vector2.ClampMagnitude(balance,1.4f); }
 
         public StackManager(Transform parent, ThemeManager themeManager, AudioManager audioManager, HapticManager hapticManager, MonoBehaviour host)
         {
@@ -180,6 +186,13 @@ namespace Wobble.Gameplay
         }
         public void TickEffects(float dt)
         {
+            if(balancePresentation)
+            {
+                // Fixed small integration steps keep the visual spring stable after a slow frame.
+                float remaining=Mathf.Min(dt,.1f);
+                while(remaining>0){float step=Mathf.Min(remaining,1f/120f);balanceVelocity+=((balanceTarget-balanceVisual)*Mathf.Max(1,balanceSpring)-balanceVelocity*Mathf.Max(1,balanceDamping))*step;balanceVisual+=balanceVelocity*step;remaining-=step;}
+                foreach(var block in tower)if(block!=null)block.ArcadeBalance=balanceVisual;
+            }
             effects.Tick(dt);
             tension = Mathf.MoveTowards(tension, tensionTarget, dt / .38f);
             tensionTime += dt;

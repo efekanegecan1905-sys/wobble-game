@@ -444,6 +444,8 @@ namespace Wobble.UI
             Transitioning=false;HomePressed?.Invoke();
         }
 
+        public void UseArcadeHud(bool arcade)=>hud.SetActive(!arcade);
+
         public void ShowGame(int best)
         {
             SkipIntro();

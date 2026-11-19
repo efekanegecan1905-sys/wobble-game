@@ -38,6 +38,10 @@ namespace Wobble.Gameplay
             }
             else visual.localRotation = leanRotation;
             visual.localRotation *= Quaternion.Euler(ArcadeBalance.y*8,0,-ArcadeBalance.x*8);
+            // A coherent bend above the foundation: move only the render child.
+            // All collider roots and the next cut's mathematical footprint remain unchanged.
+            float height=Mathf.Max(0,transform.position.y);
+            visual.localPosition=new Vector3(ArcadeBalance.x*height*.09f/Size.x,0,ArcadeBalance.y*height*.09f/Size.z);
         }
 
         public void Initialize(Vector3 size, Material sideMaterial, Material topMaterial)

@@ -11,6 +11,8 @@ namespace Wobble.Gameplay
         public float rushDuration = 60, turboAt = 30, balanceGain = .65f;
         public float recovery = .08f, dangerGrace = 2;
         public int rushPerfect = 150, rushNormal = 60;
+        public float rushSpeed=5.5f, rushTurboSpeed=7.5f;
+        public float balanceSpring=70f, balanceDamping=13f;
     }
 
     public readonly struct TrialDefinition

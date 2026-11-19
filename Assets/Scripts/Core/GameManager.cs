@@ -41,6 +41,9 @@ namespace Wobble.Core
         private int selectedTrial;
         private ArcadeModeUI modeUI;
         private int countdownBeat;
+        public bool TrialFirstClear { get; private set; }
+        public float TowerWidth=>stack?.Top!=null?Mathf.Min(stack.Top.Size.x,stack.Top.Size.z):0;
+        public void ArcadePreviewBeat()=>audio.MenuTap();
         public void SelectMode(ArcadeMode mode,int trial=0)
         { Mode=mode;selectedTrial=Mathf.Clamp(trial,0,9);StartGame(); }
 
@@ -153,6 +156,15 @@ namespace Wobble.Core
             stack.TickEffects(Time.deltaTime);
             keyLight.color = themes.Environment.keyLightTint;
             plinthMaterial.color = Color.Lerp(themes.Visuals.propDark, themes.Visuals.propLight, .45f);
+            // Mode accents are composed after theme updates, and never change theme assets.
+            if(State==GameState.Playing && Mode==ArcadeMode.Rush)
+            {
+                float pulse=Arcade.Turbo?Mathf.Pow((Mathf.Sin(Time.time*4)+1)*.5f,3)*.16f:.025f;
+                keyLight.color=Color.Lerp(keyLight.color,ArcadeStyle.Coral,pulse);
+                plinthMaterial.color=Color.Lerp(plinthMaterial.color,ArcadeStyle.Coral,pulse);
+            }
+            else if(State==GameState.Playing && Mode==ArcadeMode.Balance)
+                plinthMaterial.color=Color.Lerp(plinthMaterial.color,ArcadeStyle.Violet,Mathf.Clamp01(Arcade.Balance.magnitude)*.16f);
             if (stack.Top != null) world.Follow(stack.Top.transform.position.y);
             if (State != GameState.Playing) return;
             if(Mode!=ArcadeMode.Classic)
@@ -185,6 +197,8 @@ namespace Wobble.Core
             inputReadyFrame = Time.frameCount;
             State = GameState.Playing;
             Arcade=new ArcadeRun(Mode,arcadeTuning,selectedTrial);
+            TrialFirstClear=false;
+            stack.ConfigureBalance(Mode==ArcadeMode.Balance,arcadeTuning);
             countdownBeat=-1;
             modeUI?.Hide();
             Score = 0;
@@ -199,17 +213,18 @@ namespace Wobble.Core
             audio.ResetPlacementCombo();
             levels.ResetRun();
             themes.SelectTheme(saves.Data.selectedTheme, true);
-            themes.ApplyEnvironment(1, true);
-            stack.SetAccents(themes.Accent, themes.AccentSecondary);
+            themes.ApplyEnvironment(Mode==ArcadeMode.Trials?selectedTrial+1:1, true);
+            stack.SetAccents(Mode==ArcadeMode.Classic?themes.Accent:ArcadeStyle.Accent(Mode),themes.AccentSecondary);
             world.Show(true);
             cameraController.RotateForLevel(1);
             cameraController.FollowHeight(0);
             stack.StartRun(RunSpeed);
             ui.ShowGame(ModeBest);
+            ui.UseArcadeHud(Mode!=ArcadeMode.Classic);
             modeUI?.Refresh();
         }
 
-        private float RunSpeed => Mode==ArcadeMode.Rush?(Arcade.Turbo?7.5f:5.5f):levels.Speed;
+        private float RunSpeed => Mode==ArcadeMode.Rush?(Arcade.Turbo?arcadeTuning.rushTurboSpeed:arcadeTuning.rushSpeed):levels.Speed;
         private int ModeBest => Mode==ArcadeMode.Rush?saves.Data.rushBest:Mode==ArcadeMode.Balance?saves.Data.balanceBest:Mode==ArcadeMode.Trials?0:saves.Data.bestScore;
 
         private void OnPlaced(bool perfect, Vector3 position)
@@ -351,7 +366,8 @@ namespace Wobble.Core
             if(Mode==ArcadeMode.Balance)saves.Data.balanceBest=Mathf.Max(saves.Data.balanceBest,Score);
             if(Mode==ArcadeMode.Trials && Arcade.Won)
             {
-                if(saves.Data.trialStars[selectedTrial]==0)saves.Data.gems+=5;
+                TrialFirstClear=saves.Data.trialStars[selectedTrial]==0;
+                if(TrialFirstClear)saves.Data.gems+=5;
                 saves.Data.trialStars[selectedTrial]=Mathf.Max(saves.Data.trialStars[selectedTrial],Arcade.Stars);
             }
             saves.Save();modeUI.Results();
