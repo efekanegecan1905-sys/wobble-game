@@ -18,6 +18,8 @@ namespace Wobble.Gameplay
         private float tensionAmount, tensionPhase;
         private bool tensionApplied;
         public Vector2 ArcadeBalance { get; set; }
+        public void SetMovingPresentation(bool moving)
+        {if(properties==null)return;properties.SetFloat("_MovingAccent",moving?1:0);meshRenderer.SetPropertyBlock(properties);}
 
         private void LateUpdate()
         {
@@ -114,6 +116,7 @@ namespace Wobble.Gameplay
             var height = transform.position.y;
             StoneOrigin = new Vector3(height * 2.37f, height * .73f, height * 1.19f);
             properties.SetFloat("_Sweep", -1f);
+            properties.SetFloat("_GameplayReadability",1f);
             ApplyStoneCoordinates();
         }
 

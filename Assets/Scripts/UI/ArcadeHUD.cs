@@ -13,7 +13,7 @@ namespace Wobble.UI
         private UnityEngine.UI.Image timeFill,urgency;
         private readonly UnityEngine.UI.Image[] misses=new UnityEngine.UI.Image[3];
         private readonly MenuIcon[] milestones=new MenuIcon[3];
-        private ArcadeGauge gauge;private float needle,needleVelocity;
+        private ArcadeGauge gauge;private float needle,needleVelocity,scorePunch;private int previousScore;
         private bool TR=>saves.Data.selectedLocale=="tr";private string L(string tr,string en)=>TR?tr:en;
         public void Initialize(Canvas c,GameManager g,SaveManager s)
         {
@@ -21,7 +21,9 @@ namespace Wobble.UI
             rush=ArcadeStyle.Rect("Rush HUD",root,Vector2.zero,new Vector2(1080,1900)).gameObject;
             balance=ArcadeStyle.Rect("Balance HUD",root,Vector2.zero,new Vector2(1080,1900)).gameObject;
             trials=ArcadeStyle.Rect("Trials HUD",root,Vector2.zero,new Vector2(1080,1900)).gameObject;
-            BuildRush();BuildBalance();BuildTrials();Hide();
+            BuildRush();BuildBalance();BuildTrials();
+            foreach(var text in root.GetComponentsInChildren<TextMeshProUGUI>(true))GameplayTypography.Apply(text);
+            Hide();
         }
         private void OnEnable()=>Canvas.willRenderCanvases+=Fit;
         private void OnDisable()=>Canvas.willRenderCanvases-=Fit;
@@ -41,6 +43,7 @@ namespace Wobble.UI
             var track=ArcadeStyle.Surface("Rush time track",p,new Vector2(0,472),new Vector2(920,12),ArcadeStyle.Cream);
             timeFill=ArcadeStyle.Surface("Rush time remaining",track.transform,Vector2.zero,Vector2.zero,ArcadeStyle.Coral);
             timeFill.rectTransform.anchorMin=Vector2.zero;timeFill.rectTransform.anchorMax=Vector2.one;timeFill.rectTransform.offsetMin=timeFill.rectTransform.offsetMax=Vector2.zero;
+            ArcadeStyle.Surface("Rush hint contrast",p,new Vector2(0,405),new Vector2(980,85),ArcadeStyle.Cream);
             rushHint=Text(p,"Rush urgency hint","",0,405,940,75,27);
         }
         private void BuildBalance()
@@ -50,7 +53,8 @@ namespace Wobble.UI
             Text(p,"Balance title","WOBBLE BALANCE",-100,845,700,60,37);
             balanceScore=Text(p,"Balance points","",345,778,200,70,42);
             var r=ArcadeStyle.Rect("Stability dial",p,new Vector2(-60,650),new Vector2(690,230));gauge=r.gameObject.AddComponent<ArcadeGauge>();gauge.raycastTarget=false;
-            balanceState=Text(p,"Stability state","",0,495,880,65,35);
+            balanceState=Text(p,"Stability state","",0,520,880,65,35);
+            ArcadeStyle.Surface("Balance hint contrast",p,new Vector2(0,405),new Vector2(980,95),ArcadeStyle.Cream);
             balanceHint=Text(p,"Counterbalance guidance","",0,405,940,90,27,false);
         }
         private void BuildTrials()
@@ -64,19 +68,22 @@ namespace Wobble.UI
             trialWidth=Text(p,"Width objective","",0,555,880,60,27,false);
             for(int i=0;i<3;i++){var r=ArcadeStyle.Rect("Trial milestone "+i,p,new Vector2((i-1)*85,440),new Vector2(54,54));milestones[i]=r.gameObject.AddComponent<MenuIcon>();milestones[i].shape=MenuIcon.Shape.Star;milestones[i].raycastTarget=false;}
         }
-        public void Hide(){if(root!=null)root.gameObject.SetActive(false);needle=needleVelocity=0;}
+        public void Hide(){if(root!=null)root.gameObject.SetActive(false);needle=needleVelocity=scorePunch=0;previousScore=0;}
         public void Refresh()
         {
             bool visible=game.State==GameState.Playing&&game.Mode!=ArcadeMode.Classic;root.gameObject.SetActive(visible);if(!visible)return;
             rush.SetActive(game.Mode==ArcadeMode.Rush);balance.SetActive(game.Mode==ArcadeMode.Balance);trials.SetActive(game.Mode==ArcadeMode.Trials);
             var run=game.Arcade;
+            if(previousScore!=game.Score){previousScore=game.Score;scorePunch=.18f;}
+            scorePunch=Mathf.Max(0,scorePunch-Time.unscaledDeltaTime);
+            rushScore.rectTransform.localScale=Vector3.one*(1+.09f*Mathf.Sin(scorePunch/.18f*Mathf.PI));
             if(game.Mode==ArcadeMode.Rush)
             {
                 int seconds=Mathf.CeilToInt(run.Remaining);timer.text=seconds.ToString("00");rushScore.text=game.Score.ToString();
                 rushPhase.text=run.Turbo?"TURBO\n<size=22>"+L("TAM GAZ","FULL SPEED")+"</size>":L("PUAN\n<size=22>SERİNİ BÜYÜT</size>","POINTS\n<size=22>BUILD YOUR COMBO</size>");
                 timeFill.rectTransform.anchorMax=new Vector2(run.Remaining/run.Tuning.rushDuration,1);
                 for(int i=0;i<3;i++)misses[i].color=i<run.Misses?Color.Lerp(ArcadeStyle.Cream,ArcadeStyle.Ink,.2f):ArcadeStyle.Coral;
-                bool final=seconds<=10;float beat=final?Mathf.Pow(1-Mathf.Repeat(run.Remaining,1),4):0;
+                bool final=seconds<=15;float beat=final?Mathf.Pow(1-Mathf.Repeat(run.Remaining,1),4):0;
                 timer.color=final?Color.Lerp(ArcadeStyle.Ink,ArcadeStyle.Coral,.7f+beat*.3f):ArcadeStyle.Ink;timer.rectTransform.localScale=Vector3.one*(1+beat*.045f);
                 urgency.color=run.Turbo?ArcadeStyle.Coral:ArcadeStyle.Aqua;
                 rushHint.text=final?L("SON ","FINAL ")+seconds+L(" SANİYE · ŞİMDİ!"," SECONDS · GO!"):L("KALAN HATA HAKKI  ","MISSES LEFT  ")+(3-run.Misses);
@@ -84,7 +91,8 @@ namespace Wobble.UI
             else if(game.Mode==ArcadeMode.Balance)
             {
                 float signed=run.Balance.x+run.Balance.y*.65f;float target=Mathf.Sign(signed)*Mathf.Clamp01(run.Balance.magnitude);
-                needle=Mathf.SmoothDamp(needle,target,ref needleVelocity,.18f,Mathf.Infinity,Time.deltaTime);gauge.Value=needle;
+                if(Time.deltaTime>0)needle=Mathf.SmoothDamp(needle,target,ref needleVelocity,.18f,Mathf.Infinity,Time.deltaTime);
+                gauge.Value=needle;
                 balanceScore.text=game.Score.ToString();bool danger=run.Balance.magnitude>=.8f;
                 balanceState.text=danger?L("DENGE KRİTİK","CRITICAL BALANCE"):L("DENGE ","STABILITY ")+Mathf.RoundToInt((1-Mathf.Clamp01(run.Balance.magnitude))*100)+"%";
                 balanceState.color=danger?ArcadeStyle.Coral:ArcadeStyle.Ink;

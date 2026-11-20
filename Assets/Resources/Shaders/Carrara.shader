@@ -12,6 +12,8 @@ Shader "WOBBLE/Carrara"
         _RimStrength ("Theme rim strength", Float) = 0
         _StoneOrigin ("Stone coordinates", Vector) = (0,0,0,0)
         _StoneSize ("Metric size", Vector) = (1,1,1,0)
+        _GameplayReadability ("Gameplay face separation", Float) = 0
+        _MovingAccent ("Active gameplay block", Float) = 0
         _EdgeLight ("Edge light", Range(0,1)) = .16
     }
     SubShader
@@ -23,7 +25,7 @@ Shader "WOBBLE/Carrara"
         CBUFFER_START(UnityPerMaterial)
             float4 _Color, _StoneOrigin, _StoneSize;
             float4 _RimColor;
-            float _Glossiness, _Metallic, _Flash, _Sweep, _RimStrength, _EdgeLight;
+            float _Glossiness, _Metallic, _Flash, _Sweep, _RimStrength, _EdgeLight, _GameplayReadability, _MovingAccent;
         CBUFFER_END
         TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
         struct Attributes { float4 positionOS : POSITION; float3 normalOS : NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
@@ -99,6 +101,8 @@ Shader "WOBBLE/Carrara"
                 // shadow, while the top surface stays clean and bright.
                 albedo *= lerp(half(0.84), half(1.028), smoothstep(0, .30, vertical));
                 albedo *= lerp(half(0.975), half(1.025), vertical);
+                // Opt-in on gameplay BlockViews only: approved menu previews keep zero defaults.
+                albedo *= lerp(1,lerp(.91,1.025,upFacing),_GameplayReadability);
                 surface.albedo = albedo;
                 surface.metallic = 0;
                 surface.specular = half3(.04,.04,.04);
@@ -114,7 +118,7 @@ Shader "WOBBLE/Carrara"
                 half chamfer = smoothstep(.50, .70, abs(i.normalOS.y)) * (1 - smoothstep(.84, .98, abs(i.normalOS.y)));
                 surface.emission = half3(1,.95,.86) * (sweep * 2.2 + _Flash * .34) * upFacing
                     + _RimColor.rgb * fresnel * _RimStrength
-                    + half3(1,.97,.91) * chamfer * _EdgeLight * (0.72 + 0.52 * upFacing);
+                    + half3(1,.97,.91) * chamfer * (_EdgeLight + _MovingAccent*.20) * (0.72 + 0.52 * upFacing);
                 half4 color = UniversalFragmentPBR(data, surface);
                 color.rgb = MixFog(color.rgb, i.fog);
                 return color;

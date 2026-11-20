@@ -20,6 +20,7 @@ namespace Wobble.UI
         public event Action ContinuePressed;
 
         private TMP_FontAsset font;
+        private SaveManager gameplaySaves;
         public MenuScreens Menus { get; private set; }
         public MenuLocalization Localization { get; private set; }
         public HomePresentation Presentation { get; private set; }
@@ -78,6 +79,7 @@ namespace Wobble.UI
 
         public void Build(SaveManager saves, EconomyManager economy, AudioManager audioManager, HapticManager haptics, ThemeManager themes)
         {
+            gameplaySaves=saves;
             this.audioManager=audioManager;
             themeManager=themes;
             this.economy=economy;
@@ -459,8 +461,30 @@ namespace Wobble.UI
             UpdateHud(0, best, 1);
         }
 
+        public void ApplyGameplayTypography()
+        {
+            foreach(var label in hudLabels){GameplayTypography.Apply(label);label.outlineWidth=.08f;}
+            foreach(var label in new[]{feedbackText,comboBanner,tensionLabel,levelFlash})GameplayTypography.Apply(label,true);
+            feedbackText.fontSize=48;comboBanner.fontSize=40;comboBanner.characterSpacing=5;tensionLabel.characterSpacing=4;
+            foreach(var label in gameOver.GetComponentsInChildren<TextMeshProUGUI>(true))
+                if(label!=continueLabel)GameplayTypography.Apply(label,label.name.StartsWith("gameover."));
+            GameplayTypography.Apply(resultsText);GameplayTypography.Apply(resultBest);
+        }
+        public void ShowRecordComparison(Wobble.Gameplay.RunRecord record)
+        {
+            classicRecord=record;
+            resultBest.fontSize=24;
+            bool tr=gameplaySaves.Data.selectedLocale=="tr";
+            resultBest.text=(tr?"ÖNCEKİ ":"PREVIOUS ")+record.Previous+"  ·  "+(tr?"EN İYİ ":"BEST ")+record.Best;
+            var title=gameOver.transform.Find("gameover.title").GetComponent<TextMeshProUGUI>();
+            title.text=record.Improved?(tr?"YENİ REKOR!":"NEW BEST!"):record.NearRecord?(tr?"ÇOK YAKLAŞTIN!":"SO CLOSE!"):Localization.Text("gameover.title");
+            title.color=record.Improved?WobblePalette.Accent:WobblePalette.Surface;
+        }
+        private Wobble.Gameplay.RunRecord? classicRecord;
+
         public void ShowGameOver(int score, int best, int perfects, int maxCombo, int blocks = 0, int gems = 0, bool newBest = false)
         {
+            classicRecord=null;
             StopPresentationCues();
             hud.SetActive(false); gameOver.SetActive(true);
             continueButton.gameObject.SetActive(economy.CanContinueWithLife());
@@ -496,7 +520,7 @@ namespace Wobble.UI
             // Selectables paint their disabled tint, which leaves the result buttons
             // washed out until the next pointer event.
             resultGroup.interactable=true;
-            resultGroup.blocksRaycasts=false;
+            resultGroup.blocksRaycasts=true;
             countingResult=true;
             resultGroup.alpha=0f;
             resultCardRect.localScale=Vector3.one*.90f;
@@ -851,6 +875,7 @@ namespace Wobble.UI
             levelText.text = Localization.Text("hud.level", lastLevel);
             resultsText.text = countingResult ? resultsText.text : lastScore.ToString();
             resultBest.text = Localization.Text(lastNewBest ? "result.newbest" : "hud.best", lastBest);
+            if(classicRecord.HasValue)ShowRecordComparison(classicRecord.Value);
             resultBlocks.text = lastBlocks.ToString();
             resultPerfects.text = lastPerfects.ToString();
             resultCombo.text = "×" + lastMaximum;

@@ -83,7 +83,9 @@ namespace Wobble.CameraSystem
         private void LateUpdate()
         {
             if (cam == null) return;
-            pivot = Vector3.SmoothDamp(pivot, target, ref followVelocity, .16f, Mathf.Infinity, Time.deltaTime);
+            // SmoothDamp can divide by zero when a paused frame reaches its target.
+            if(Time.deltaTime>0)
+                pivot = Vector3.SmoothDamp(pivot, target, ref followVelocity, .13f, Mathf.Infinity, Time.deltaTime);
             orbitTime = Mathf.Min(OrbitDuration, orbitTime + Time.deltaTime);
             angle = Mathf.LerpAngle(orbitStart, desiredAngle, Mathf.SmoothStep(0, 1, orbitTime / OrbitDuration));
             var rotation = Quaternion.Euler(Elevation, -90f - angle, 0);
@@ -104,7 +106,7 @@ namespace Wobble.CameraSystem
             }
             // Smooth inward movement, with a visibility floor during an orbit or aspect change.
             followDistance = followDistance == 0 ? requiredDistance : Mathf.Max(requiredDistance,
-                Mathf.SmoothDamp(followDistance, requiredDistance, ref distanceVelocity, .35f));
+                Time.deltaTime>0?Mathf.SmoothDamp(followDistance, requiredDistance, ref distanceVelocity, .35f):followDistance);
             impulseTime += Time.deltaTime;
             failTime += Time.deltaTime;
             comboTime += Time.deltaTime;

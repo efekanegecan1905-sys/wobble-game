@@ -27,6 +27,7 @@ namespace Wobble.Gameplay
             TravelSign = positive ? 1 : -1;
             SetCoordinate(positive ? MinBoundary : MaxBoundary);
             IsMoving = true;
+            GetComponent<BlockView>()?.SetMovingPresentation(true);
         }
 
         private void Update() => Advance(Time.deltaTime);
@@ -54,7 +55,7 @@ namespace Wobble.Gameplay
             SetCoordinate(coordinate);
         }
 
-        public void Stop() => IsMoving = false;
+        public void Stop(){IsMoving=false;GetComponent<BlockView>()?.SetMovingPresentation(false); }
         private float GetCoordinate(Vector3 point) => Axis.x != 0 ? point.x : point.z;
         private void SetCoordinate(float value)
         {

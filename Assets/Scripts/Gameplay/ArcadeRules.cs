@@ -39,7 +39,9 @@ namespace Wobble.Gameplay
         public int Chain { get; private set; }
         public int BestChain { get; private set; }
         public int Misses { get; private set; }
-        public float Remaining { get; private set; }
+        private double remaining;
+        public float Remaining => (float)remaining;
+        public bool TimedOut=>Ended && remaining==0 && (Mode==ArcadeMode.Rush||Mode==ArcadeMode.Trials);
         public Vector2 Balance { get; private set; }
         public bool Ended { get; private set; }
         public bool Won { get; private set; }
@@ -49,14 +51,14 @@ namespace Wobble.Gameplay
         public ArcadeRun(ArcadeMode mode, ArcadeTuning tuning, int trial=0)
         {
             Mode=mode; Tuning=tuning; Trial=Mathf.Clamp(trial,0,9);
-            Remaining=mode==ArcadeMode.Rush?tuning.rushDuration:mode==ArcadeMode.Trials?TrialDefinition.All[Trial].seconds:0;
+            remaining=mode==ArcadeMode.Rush?tuning.rushDuration:mode==ArcadeMode.Trials?TrialDefinition.All[Trial].seconds:0;
         }
         public void Tick(float dt)
         {
             if(Ended || Mode==ArcadeMode.Classic)return;
             dt=Mathf.Max(0,dt);
             if(Mode==ArcadeMode.Rush || Mode==ArcadeMode.Trials)
-            { Remaining=Mathf.Max(0,Remaining-dt); if(Remaining==0)Ended=true; }
+            { remaining=System.Math.Max(0,remaining-dt); if(remaining<=.00001){remaining=0;Ended=true;} }
             if(Mode==ArcadeMode.Balance)
             { danger=Balance.magnitude>=1?danger+dt:0; if(danger>=Tuning.dangerGrace)Ended=true; }
         }
